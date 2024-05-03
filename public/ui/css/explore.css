@@ -1,0 +1,13 @@
+body {
+   text-align: center;
+}
+
+@media (min-width: 992px) {
+   body {
+      text-align: left;
+   }
+
+   .pe-0.pe-lg-3 {
+      padding-right: calc(var(--bs-gutter-x) * .5) !important;
+   }
+}

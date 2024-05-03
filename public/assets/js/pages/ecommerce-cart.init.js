@@ -1,0 +1,1 @@
+(()=>{var a={};$('[data-toggle="touchspin"]').each((function(t,n){var c=$.extend({},a,$(n).data());$(n).TouchSpin(c)}))})();

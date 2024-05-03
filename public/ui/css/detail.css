@@ -1,0 +1,148 @@
+/* main.wrapper {
+	color: rgba(0, 0, 0, .5);
+} */
+
+
+/* foto detail produk coffee */
+
+#fotoDetailCoffee .carousel-indicators {
+	position: relative;
+	margin: 0 auto;
+	max-width: 480px;
+}
+
+#fotoDetailCoffee .carousel-indicators [data-bs-target] {
+	width: auto;
+	height: auto;
+	border-width: 0;
+	text-indent: initial;
+	background-color: #f1f2f2;
+	margin: 0 .5rem;
+}
+
+@media (min-width: 992px) {
+	#fotoDetailCoffee .carousel-indicators {
+		flex-direction: column;
+		max-width: 15%;
+	}
+
+	#fotoDetailCoffee .carousel-indicators [data-bs-target] {
+		margin: .25rem 0;
+	}
+
+	#fotoDetailCoffee .carousel-indicators [data-bs-target]:first-of-type {
+		margin-top: 0;
+	}
+
+	#fotoDetailCoffee .carousel-indicators [data-bs-target]:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
+@media (min-width: 1400px) {
+	.col-xxl-auto #fotoDetailCoffee {
+		max-width: 464px;
+	}
+}
+
+#fotoDetailCoffee .carousel-control {
+	opacity: 0;
+	transition: .36s;
+}
+
+#fotoDetailCoffee:hover .carousel-control {
+	opacity: 1;
+}
+
+#fotoDetailCoffee .carousel-control-prev,
+#fotoDetailCoffee .carousel-control-next {
+	font-size: 2rem;
+	background-color: rgba(255, 255, 255, .5);
+}
+
+
+/* spesifikasi produk */
+
+.spesifikasi-produk {
+	text-transform: capitalize;
+}
+
+.spesifikasi-produk h1,
+.spesifikasi-produk h2,
+.spesifikasi-produk h3,
+.spesifikasi-produk h4,
+.spesifikasi-produk h5,
+.spesifikasi-produk p,
+.spesifikasi-produk a {
+	line-height: normal;
+	margin-bottom: 1rem;
+}
+
+
+/* how to serve media */
+
+.media .media-header {
+	max-width: 25px;
+}
+
+
+/* rating & reviews */
+
+.progress {
+	height: .75em;
+}
+
+
+/* reviews list */
+
+.reviews-list li {
+	border-bottom: solid 1px #dee2e6;
+	margin-bottom: 1.5rem;
+}
+
+.reviews-list li:last-child,
+.reviews-list li:last-child p:last-of-type {
+	margin-bottom: 0;
+	border-color: transparent;
+}
+
+
+/* notifikasi cart toast */
+
+#cartToast {
+	position: fixed;
+	top: calc(65.63px - .5rem);
+	right: 11px;
+}
+
+@media (min-width: 576px) {
+	#cartToast {
+		right: calc(50% - calc(270px - 11px));
+	}
+}
+
+@media (min-width: 768px) {
+	#cartToast {
+		right: calc(50% - calc(360px - 11px));
+	}
+}
+
+@media (min-width: 992px) {
+	#cartToast {
+		/* top: calc(114.75px - .5rem); */
+		top: 112px;
+		right: calc(50% - calc(480px - 11px));
+	}
+}
+
+@media (min-width: 1200px) {
+	#cartToast {
+		right: calc(50% - calc(570px - 11px));
+	}
+}
+
+@media (min-width: 1400px) {
+	#cartToast {
+		right: calc(50% - calc(660px - 11px));
+	}
+}

@@ -1,0 +1,127 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Brand_model;
+
+use Illuminate\Http\Request;
+use Validator;
+
+class BrandController extends Controller
+{
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $get_Brand = Brand_model::all();
+        // $get_Brand = "list";
+        // dd($get_Brand);
+        return view('brand.index',compact('get_Brand'))
+            ->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create()
+    {
+        //
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'brand'   => 'required',
+        ]);
+
+        if ($validator->passes()) {
+            $Brand = Brand_model::create([
+                'brand'   => $request->brand,
+                'created_by'    => $request->created_by,
+                'created_date'  => $request->created_date,
+            ]);
+
+            return response()->json(['success'=>'Added new records brand.']);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $Brand = Brand_model::find($id);
+
+        return response()->json([
+            'success' => true,
+            'data'    => $Brand
+        ]);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'brand_update'   => 'required',
+        ]);
+
+        if ($validator->passes()) {
+            $data = Brand_model::find($request->id_update);
+            $data->brand = $request->brand_update;
+            $data->created_by = $request->created_by_update;
+            $data->created_date = $request->created_date_update;
+            $data->update_by = $request->update_by;
+            $data->update_date = $request->update_date;
+            $data->save();
+
+            return response()->json(['success'=>'Added update records brand.']);
+        }
+
+        return response()->json(['error'=>$validator->errors()->all()]);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id)
+    {
+        Brand_model::find($id)->delete();
+        return response()->json(['success'=>'Success Delete records brand.']);
+    }
+}

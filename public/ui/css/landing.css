@@ -1,0 +1,63 @@
+/*HOME BANNER*/
+
+#homeBanner {
+	border-top-left-radius: 1rem !important;
+	border-top-right-radius: 1rem !important;
+}
+
+@media (min-width: 1200px) {
+	#homeBanner .carousel-caption {
+		left: 10%;
+		right: 10%;
+	}
+
+	#homeBanner .carousel-control-prev,
+	#homeBanner .carousel-control-next {
+		width: 10%;
+	}
+}
+
+#homeBanner .carousel-indicators button {
+	width: 100%;
+	margin: 0;
+	border-width: 0;
+	height: calc(5px + .25vw);
+	background-color: #f1f2f2;
+}
+
+
+/*HOME COFFEE FORM*/
+
+@media (max-width: 991.98px) {
+	#homeCoffeeForm .table-responsive .baris-coffee-form {
+		width: 1040px;
+	}
+}
+
+
+/*POPUP*/
+
+.popup .btn-primary {
+	min-width: 256px;
+}
+
+
+/* CARD PRODUCT */
+/* .card-product {
+	max-width: 230px;
+	margin: 0 auto;
+} */
+
+.mySwiper .swiper-button-next,
+.mySwiper .swiper-button-prev {
+	top: 32%;
+	color: #323232;
+	opacity: 0;
+	visibility: hidden;
+}
+
+.mySwiper:hover .swiper-button-next,
+.mySwiper:hover .swiper-button-prev {
+	opacity: 1;
+	visibility: visible;
+}

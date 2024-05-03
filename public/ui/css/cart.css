@@ -1,0 +1,65 @@
+/* TABLE CART */
+
+.table-cart th,
+.table-cart td {
+   vertical-align: middle;
+}
+
+.table-cart tbody {
+   position: relative;
+}
+
+/* .table-cart tbody::before {
+   content: '';
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   height: 1.25px;
+   background-color: #323232;
+} */
+
+.table-cart tbody tr {
+   background-color: transparent;
+   transition: .36s;
+}
+
+.table-cart tbody tr:hover {
+   background-color: #f1f2f2;
+}
+
+.table-cart tbody tr:last-child {
+   border-color: transparent !important;
+}
+
+.table-cart tbody tr.item-giftbox:hover {
+   background-color: transparent;
+}
+
+.table-cart tbody tr td:nth-child(2) img {
+   background-color: #f1f2f2;
+   border-radius: .5rem;
+}
+
+.table-cart tbody tr.item-giftbox td:nth-child(2) img {
+   background-color: transparent;
+}
+
+.table-cart tbody .btn-delete-cart {
+   background-color: transparent;
+   color: #878787;
+}
+
+
+/* custom input vouchers list */
+
+#modalInputVouchers .form-check .form-check-label .card {
+   background-color: #f1f2f2;
+   color: #323232;
+   border-color: transparent;
+}
+
+#modalInputVouchers .form-check input:checked~.form-check-label .card {
+   background-color: #fd4f00;
+   color: white;
+}

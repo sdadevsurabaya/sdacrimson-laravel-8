@@ -1,0 +1,129 @@
+#benefit {
+   background-color: #f9f9f9;
+}
+
+#benefit .container-fluid {
+   padding: 2rem 15px;
+}
+
+#benefit .benefit-title {
+   margin-bottom: 2rem;
+}
+
+#benefit .header-title {
+   position: absolute;
+   top: 50%;
+   left: 50%;
+   transform: translate(-50%, -50%);
+   text-align: center;
+}
+
+#benefit .img-medal {
+   position: absolute;
+   top: 0;
+   right: 15px;
+   transform: translateY(-40%);
+}
+
+@media (min-width: 992px) {
+   #benefit .container-fluid {
+      padding: 3rem;
+   }
+
+   #benefit .benefit-title {
+      margin-bottom: 3rem;
+   }
+
+   #benefit .row {
+      margin: 0 -1.5rem;
+   }
+
+   #benefit .col {
+      padding: 0 1.5rem;
+   }
+}
+
+@media (min-width: 1200px) {
+   #benefit .container-fluid {
+      padding: 5rem;
+   }
+
+   #benefit .benefit-title {
+      margin-bottom: 5rem;
+   }
+
+   #benefit .row {
+      margin: 0 -2.5rem;
+   }
+
+   #benefit .col {
+      padding: 0 2.5rem;
+   }
+}
+
+#benefit .card-header {
+   padding-top: 100%;
+   background-color: #edeeee;
+   position: relative;
+}
+
+#benefit .media .bi-circle-fill {
+   font-size: .75em;
+   padding: .25em 0;
+   margin-right: .875em;
+   color: #878787;
+}
+
+
+
+
+
+.kolom-layer {
+   height: 100%;
+   background-color: #f9f9f9;
+}
+
+.kolom-layer .media .media-title {
+   font-size: 3.5rem;
+   min-width: 35px;
+   text-align: center;
+   margin-right: 1rem;
+   font-family: 'Gotham Bold';
+   line-height: .8;
+}
+
+.kolom-layer .media .media-body {
+   padding-top: 21px;
+}
+
+.kolom-layer>.container-fluid {
+   position: relative;
+   z-index: 10;
+}
+
+.kolom-layer>.container-fluid::before {
+   content: '';
+   position: absolute;
+   top: 123px;
+   left: 0;
+   bottom: 0;
+   background-color: #edeeee;
+   width: 35.5px;
+   height: calc(100% - 123px - 63px);
+   z-index: -1;
+}
+
+@media (min-width: 1200px) {
+   .kolom-layer .media .media-title {
+      min-width: 51px;
+      font-size: 5rem;
+   }
+
+   .kolom-layer .media .media-body {
+      padding-top: 35px;
+   }
+
+   .kolom-layer>.container-fluid::before {
+      width: 77.5px;
+   }
+}

@@ -1,0 +1,7 @@
+#navdown a i {
+   opacity: .5;
+}
+
+#navdown a.active i {
+   opacity: 1;
+}

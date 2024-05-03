@@ -1,0 +1,165 @@
+.btn-user {
+   padding: .75rem .75rem .75rem 0;
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   width: 100%;
+   height: 48px;
+   text-transform: capitalize;
+   background-color: white;
+   position: relative;
+   border-width: 0;
+   border-radius: 0;
+   z-index: 1;
+}
+
+.btn-user span {
+   z-index: 20;
+}
+
+.btn-user::before {
+   content: '';
+   position: absolute;
+   top: 50%;
+   left: 0;
+   transform: translateY(-50%);
+   width: 100%;
+   height: 52px;
+   background-color: white;
+   z-index: 5;
+}
+
+.btn-user.collapsed::before {
+   background-color: transparent;
+}
+
+.btn-user::after {
+   content: '';
+   position: absolute;
+   top: 50%;
+   left: 0;
+   transform: translateY(-50%);
+   width: 100%;
+   height: 52px;
+   background-image: linear-gradient(to right, transparent, rgba(0, 0, 0, .1));
+   border-radius: 0 .5em .5em 0;
+   z-index: 10;
+}
+
+.btn-user.collapsed::after {
+   background-image: none;
+   background-color: transparent;
+}
+
+
+/* accordion */
+
+.accordion .accordion-item {
+   border-radius: 0;
+   border-width: 0;
+}
+
+.accordion-body {
+   padding: 1rem 0;
+}
+
+@media (min-width: 992px) {
+   .accordion-body {
+      padding: 0;
+   }
+}
+
+
+
+.card-vouchers {
+   padding: 40px 15px 15px 15px;
+   display: inline-block;
+   line-height: 1;
+   border-radius: .5rem;
+   background-color: #fd4f00;
+   color: white;
+   font-size: 1.5rem;
+   margin-bottom: .5rem;
+}
+
+
+
+/*nav pills*/
+
+.nav-pills .nav-link {
+   color: #fff;
+   background-color: #878787;
+   border-color: #878787;
+   text-transform: uppercase;
+   font-family: 'Gotham Bold';
+   width: calc(50% - .25rem);
+   flex: 0 0 calc(50% - .25rem);
+}
+
+.nav-pills .nav-link:hover {
+   color: #fff;
+   background-color: #656565;
+   border-color: #656565;
+}
+
+.nav-pills .nav-link.active {
+   color: #fff;
+   background-color: #565656;
+   border-color: #565656;
+}
+
+@media (min-width: 992px) {
+   .nav-pills .nav-link {
+      width: auto;
+      flex: auto;
+   }
+}
+
+
+.table-price {
+   max-width: 110px;
+}
+
+
+/* MODAL SIDE PANEL MEMBERSHIP */
+
+#sideMember .list-group.list-group-flush>.list-group-item {
+   position: relative;
+   padding-right: 0;
+}
+
+#sideMember .list-group.list-group-flush>.list-group-item::after {
+   content: '';
+   width: 5px;
+   height: 5px;
+   border-radius: 100%;
+   background-color: #323232;
+   position: absolute;
+   left: 0;
+   top: calc(.5rem + 9.4px);
+}
+
+#sideMember .card:last-of-type .list-group.list-group-flush>.list-group-item::after {
+   background-color: #fff;
+}
+
+
+/* PROGRESS */
+
+.progress {
+   background-color: #f1f2f2 !important;
+}
+
+.progress .bg-secondary {
+   background-color: #878787 !important;
+}
+
+#pills-tabUser .progress {
+   height: .875rem;
+   font-size: .6em;
+   margin-bottom: .25rem;
+}
+
+#pills-tabUser .card .card-title {
+   min-height: 50px;
+}

@@ -1,0 +1,4 @@
+Atau jika database tidak terlalu besar, cobalah buka file database tersebut dengan menggunakan notepad++ . Setelah dibuka, lakukan pencarian utf8mb4 dan replace ke utf8.
+
+
+Lakukan hal yang sama untuk karakter utf8mb4_unicode_520_ci menjadi utf8_general_ci

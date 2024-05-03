@@ -1,0 +1,20 @@
+#navtop .navbar-nav .nav-link {
+   color: #b4b4b4;
+}
+
+#navtop .navbar-nav .nav-link.active {
+   color: #323232;
+}
+
+@media (max-width: 991.98px) {
+   #navcol {
+      position: fixed;
+      right: 0;
+      bottom: 53px;
+      left: 0;
+      z-index: 1035;
+      background-color: white;
+      padding: 15px;
+      border-top: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
+   }
+}

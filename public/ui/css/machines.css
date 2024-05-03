@@ -1,0 +1,49 @@
+html,
+body,
+.carousel-product .caraousel-item,
+.carousel-product .carousel-inner .carousel-item.active,
+.carousel-product .carousel-inner .carousel-item-next,
+.carousel-product .carousel-inner .carousel-item-prev,
+.card,
+.card-product.out-stock .card-header {
+   background-color: #ededed;
+   --bs-card-bg: #ededed;
+}
+
+.card-product.out-stock .card-header::after {
+   background-color: rgba(237, 237, 237, .875);
+}
+
+.navbar {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   z-index: 1030;
+}
+
+#navdown {
+   bottom: 62px;
+}
+
+.wrapper {
+   text-align: center;
+}
+
+.ikon-list img {
+   max-width: 125px;
+}
+
+.machines-banner {
+   height: calc(100vh - 62px);
+}
+
+@media (min-width: 992px) {
+   .machines-banner {
+      height: 100vh;
+   }
+}
+
+.card-product .card-header {
+   background-color: white;
+}
