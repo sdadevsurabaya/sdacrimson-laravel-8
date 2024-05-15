@@ -41,7 +41,7 @@ class GeneralController extends Controller
         $this->middleware('auth');
     }
 
-     /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -50,21 +50,23 @@ class GeneralController extends Controller
     {
 
 
-        if (Auth::user()->hasRole("Admin") == 1 || Auth::user()->hasRole("Verifikator") == 1 ) {
-            $data = General_model::join("users","users.id","=","general_informations.ar")
-            ->orderBy('general_informations.id','desc')
-            ->get(['*', 'general_informations.id as id_general']);
+        if (Auth::user()->hasRole("Admin") == 1 || Auth::user()->hasRole("Verifikator") == 1) {
+            $data = General_model::join("users", "users.id", "=", "general_informations.ar")
+                ->orderBy('general_informations.id', 'desc')
+                ->get(['*', 'general_informations.id as id_general']);
         } else {
-            $data = General_model::join("users","users.id","=","general_informations.ar")
-            ->where('ar', Auth::user()->id)
-            ->orderBy('general_informations.id','desc')
-            ->get(['*', 'general_informations.id as id_general']);
+            $data = General_model::join("users", "users.id", "=", "general_informations.ar")
+                ->where('ar', Auth::user()->id)
+                ->orderBy('general_informations.id', 'desc')
+                ->get(['*', 'general_informations.id as id_general']);
         }
 
-        $getId = General_model::orderBy('id','desc')->get();
-        $id_customer = $getId[1]->id_customer;
+        $getId = General_model::orderBy('id', 'desc')->get();
+        // $id_customer = $getId[1]->id_customer;
 
-        return view('general.index',compact('data', 'id_customer'))
+        // return view('general.index',compact('data', 'id_customer'))
+        //     ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('general.index', compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
@@ -73,27 +75,27 @@ class GeneralController extends Controller
         // $roles = Role::pluck('name','name')->all();
         // $data = General_model::orderBy('id','desc')->get();
         $data = General_model::count();
-         if ($data == 0) {
-             $id = 0;
-         } else {
-             $getId = General_model::orderBy('id','desc')->get();
-             $id = $getId[0]->id_customer;
-         }
+        if ($data == 0) {
+            $id = 0;
+        } else {
+            $getId = General_model::orderBy('id', 'desc')->get();
+            $id = $getId[0]->id_customer;
+        }
         // dd($id);
         // die;
-        return view('general.create',compact('id'));
+        return view('general.create', compact('id'));
     }
 
     public function generate_id_customer(Request $request)
     {
         $covert_huruf_besar = strtoupper($request->nama_usaha);
-        $huruf = substr($covert_huruf_besar,0,3);
+        $huruf = substr($covert_huruf_besar, 0, 3);
         // $data = General_model::orderBy('id','desc')->get(['general_informations.id as id_general']);
         // $urutan = $data[0]->id_general;
-        $urutan = substr($request->id_general,-3);
+        $urutan = substr($request->id_general, -3);
         // $urutan = "LAN-001";
         $urutan++;
-        $id_customer = $huruf ."-". sprintf("%03s", $urutan);
+        $id_customer = $huruf . "-" . sprintf("%03s", $urutan);
 
         DrafId_model::create([
             'id_customer' => $id_customer,
@@ -111,8 +113,7 @@ class GeneralController extends Controller
         // $data->id_outlet = $id_outlet;
         // $data->save();
 
-        return response()->json(['success'=>$id_customer]);
-
+        return response()->json(['success' => $id_customer]);
     }
 
     public function store(Request $request)
@@ -123,7 +124,7 @@ class GeneralController extends Controller
             ]);
         } else {
             $validator = Validator::make($request->all(), [
-            // 'id_customer'   => 'required',
+                // 'id_customer'   => 'required',
                 'type_usaha'    => 'required|not_in:0',
                 'nama_usaha'    => 'required',
                 'nama_lengkap'  => 'required',
@@ -148,19 +149,19 @@ class GeneralController extends Controller
         if ($validator->passes()) {
 
             $covert_huruf_besar = strtoupper($request->nama_usaha);
-            $huruf = substr($covert_huruf_besar,0,3);
+            $huruf = substr($covert_huruf_besar, 0, 3);
             // $data = General_model::orderBy('id','desc')->get(['general_informations.id as id_general']);
             // $urutan = $data[0]->id_general;
             if ($request->to_data == "localStorage") {
-                $getId = General_model::orderBy('id','desc')->get();
+                $getId = General_model::orderBy('id', 'desc')->get();
                 // $id = $getId[0]->id_customer;
-                $urutan = substr($getId[0]->id_customer,-3);
+                $urutan = substr($getId[0]->id_customer, -3);
             } else {
-                $urutan = substr($request->id_general,-3);
+                $urutan = substr($request->id_general, -3);
             }
             // $urutan = "LAN-001";
             $urutan++;
-            $id_customer = $huruf ."-". sprintf("%03s", $urutan);
+            $id_customer = $huruf . "-" . sprintf("%03s", $urutan);
 
             $cekGeneral = General_model::where('id_customer', $id_customer)->get();
 
@@ -172,9 +173,9 @@ class GeneralController extends Controller
                 // return back();
 
                 echo '<script>
-                        alert("Maaf data dengan ID Customer '.$id_customer.' belum lengkap, silahkan lengkapi data pada menu berkas sesuai ID Customer.");
-                        window.location.href="'. url('admin/generals') .'";
-                        </script>' ;
+                        alert("Maaf data dengan ID Customer ' . $id_customer . ' belum lengkap, silahkan lengkapi data pada menu berkas sesuai ID Customer.");
+                        window.location.href="' . url('admin/generals') . '";
+                        </script>';
             } else {
                 $data = General_model::create([
                     'id_customer' => $id_customer,
@@ -200,7 +201,7 @@ class GeneralController extends Controller
                     // 'update_by' => "null",
                 ]);
 
-                return response()->json(['success'=>$id_customer]);
+                return response()->json(['success' => $id_customer]);
 
                 // Alert::success('Berhasil ditambahkan', 'Data general berhasil ditambahkan');
                 // return redirect("admin/generals/berkas/".$id_customer)
@@ -209,11 +210,9 @@ class GeneralController extends Controller
                 //             'success' => 'New general information has been created ID Customer : '.$id_customer.''
                 //         ]);
             }
-
         }
 
-        return response()->json(['error'=>$validator->errors()->all()]);
-
+        return response()->json(['error' => $validator->errors()->all()]);
     }
 
     public function show($id)
@@ -230,110 +229,110 @@ class GeneralController extends Controller
         //     ->get(['*', 'general_informations.id as id_general', 'ar.name as ar', 'created_by.name as created_by', 'update_by.name as update_by']);
         // } else {
 
-            $get_general = General_model::join("users as ar","ar.id","=","general_informations.ar")
-            ->join("users as created_by","created_by.id","=","general_informations.created_by")
+        $get_general = General_model::join("users as ar", "ar.id", "=", "general_informations.ar")
+            ->join("users as created_by", "created_by.id", "=", "general_informations.created_by")
             ->where('general_informations.id', $id)
             ->get(['*', 'general_informations.email as email_general', 'ar.name as ar', 'created_by.name as created_by']);
 
-            $get_legal = General_model::join("legal","legal.id_customer","=","general_informations.id_customer")
-            ->join("users as ar","ar.id","=","legal.ar")
-            ->join("users as created_by","created_by.id","=","legal.created_by")
+        $get_legal = General_model::join("legal", "legal.id_customer", "=", "general_informations.id_customer")
+            ->join("users as ar", "ar.id", "=", "legal.ar")
+            ->join("users as created_by", "created_by.id", "=", "legal.created_by")
             ->where('general_informations.id', $id)
             ->get(['*', 'legal.status as status_legal', 'legal.remarks as remarks_legal']);
 
-            $get_kontak = General_model::join("outlet","outlet.id_customer","=","general_informations.id_customer")
-            ->join("contact_person","contact_person.id_outlet","=","outlet.id_outlet")
-            ->join("users as ar","ar.id","=","contact_person.ar")
-            ->join("users as created_by","created_by.id","=","contact_person.created_by")
+        $get_kontak = General_model::join("outlet", "outlet.id_customer", "=", "general_informations.id_customer")
+            ->join("contact_person", "contact_person.id_outlet", "=", "outlet.id_outlet")
+            ->join("users as ar", "ar.id", "=", "contact_person.ar")
+            ->join("users as created_by", "created_by.id", "=", "contact_person.created_by")
             ->where('general_informations.id', $id)
             ->get(['*', 'contact_person.email as email_kontak', 'contact_person.status as status_kontak']);
 
-            $get_account = General_model::join("account","account.id_customer","=","general_informations.id_customer")
-            ->join("users as ar","ar.id","=","account.ar")
-            ->join("users as created_by","created_by.id","=","account.created_by")
+        $get_account = General_model::join("account", "account.id_customer", "=", "general_informations.id_customer")
+            ->join("users as ar", "ar.id", "=", "account.ar")
+            ->join("users as created_by", "created_by.id", "=", "account.created_by")
             ->where('general_informations.id', $id)
             ->get(['*', 'account.status as status_account', 'account.remarks as remarks_account']);
 
-            $get_attachment = General_model::join("attachment","attachment.id_customer","=","general_informations.id_customer")
+        $get_attachment = General_model::join("attachment", "attachment.id_customer", "=", "general_informations.id_customer")
             ->where('general_informations.id', $id)
             ->get(['*']);
 
-            $get_outlet = General_model::join("outlet","outlet.id_customer","=","general_informations.id_customer")
-            ->join("users as ar","ar.id","=","outlet.ar")
-            ->join("users as created_by","created_by.id","=","outlet.created_by")
-            ->leftJoin("area","area.id","=","outlet.id_area")
+        $get_outlet = General_model::join("outlet", "outlet.id_customer", "=", "general_informations.id_customer")
+            ->join("users as ar", "ar.id", "=", "outlet.ar")
+            ->join("users as created_by", "created_by.id", "=", "outlet.created_by")
+            ->leftJoin("area", "area.id", "=", "outlet.id_area")
             ->where('general_informations.id', $id)
             ->get(['*', 'area.area as area', 'outlet.id as id', 'outlet.status as status_outlet', 'outlet.remarks as remarks_outlet']);
 
 
-            $get_statusData = StatusData_model::where('status_data.id_customer', $id)
+        $get_statusData = StatusData_model::where('status_data.id_customer', $id)
             ->get(['status_data.id as id_status_data']);
         // }
 
         // if (count($get_legal) > 0 ){
-            if (count($get_outlet) > 0) {
-                // if (count($get_account) > 0) {
-                    // if (count($get_attachment) > 0) {
-                        $attachment = $get_attachment;
-                        $general = $get_general;
-                        $legal = $get_legal;
-                        $kontak = $get_kontak;
-                        $account = $get_account;
-                        $outlet = $get_outlet;
-                        $status_data = $get_statusData;
-                    // } else {
-                    //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Attachment pada menu berkas")->autoClose(20000);
-                    //     return back();
+        if (count($get_outlet) > 0) {
+            // if (count($get_account) > 0) {
+            // if (count($get_attachment) > 0) {
+            $attachment = $get_attachment;
+            $general = $get_general;
+            $legal = $get_legal;
+            $kontak = $get_kontak;
+            $account = $get_account;
+            $outlet = $get_outlet;
+            $status_data = $get_statusData;
+            // } else {
+            //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Attachment pada menu berkas")->autoClose(20000);
+            //     return back();
 
-                        // echo '<script>
-                        //     alert("Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Attachment pada menu berkas");
-                        //     window.location.href="'. url('admin/generals') .'";
-                        //     </script>' ;
-                    // }
-                // } else {
-                //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Account pada menu berkas")->autoClose(20000);
-                //     return back();
+            // echo '<script>
+            //     alert("Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Attachment pada menu berkas");
+            //     window.location.href="'. url('admin/generals') .'";
+            //     </script>' ;
+            // }
+            // } else {
+            //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Account pada menu berkas")->autoClose(20000);
+            //     return back();
 
-                    // echo '<script>
-                    //     alert("Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Account pada menu berkas");
-                    //     window.location.href="'. url('admin/generals') .'";
-                    //     </script>' ;
-                // }
-            } else {
-                Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Outlet pada menu berkas")->autoClose(20000);
-                return back();
+            // echo '<script>
+            //     alert("Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Account pada menu berkas");
+            //     window.location.href="'. url('admin/generals') .'";
+            //     </script>' ;
+            // }
+        } else {
+            Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer " . $cek_general->id_customer . " belum ada, silahkan tambahkan Data Outlet pada menu berkas")->autoClose(20000);
+            return back();
 
-                // echo '<script>
-                //   alert("Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Outlet pada menu berkas");
-                //   window.location.href="'. url('admin/generals') .'";
-                //   </script>' ;
-            }
+            // echo '<script>
+            //   alert("Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Outlet pada menu berkas");
+            //   window.location.href="'. url('admin/generals') .'";
+            //   </script>' ;
+        }
         // } else {
         //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Legal pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Legal pada menu berkas")->autoClose(20000);
         //     return back();
 
-            // echo '<script>
-            //       alert("Maaf data dengan ID Customer '.$cek_general->id_customer.' sudah terdaftar, silahkan melanjutkan pengisian pada menu berkas sesuai ID Customer.");
-            //       window.location.href="'. url('admin/generals') .'";
-            //       </script>' ;
+        // echo '<script>
+        //       alert("Maaf data dengan ID Customer '.$cek_general->id_customer.' sudah terdaftar, silahkan melanjutkan pengisian pada menu berkas sesuai ID Customer.");
+        //       window.location.href="'. url('admin/generals') .'";
+        //       </script>' ;
         // }
 
-        return view('general.detail_customer',compact('general', 'legal', 'kontak', 'account', 'attachment', 'outlet', 'status_data'));
+        return view('general.detail_customer', compact('general', 'legal', 'kontak', 'account', 'attachment', 'outlet', 'status_data'));
     }
 
     public function edit($id)
     {
-        $general = General_model::join("users","users.id","=","general_informations.ar")
+        $general = General_model::join("users", "users.id", "=", "general_informations.ar")
             ->where('general_informations.id', $id)
             ->get(['*', 'general_informations.id as id_general']);
 
-        return view('general.edit_customer',compact('general'));
+        return view('general.edit_customer', compact('general'));
     }
 
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-        // 'id_customer'   => 'required',
+            // 'id_customer'   => 'required',
             'type_usaha'    => 'required|not_in:0',
             'nama_usaha'    => 'required',
             'nama_lengkap'  => 'required',
@@ -385,12 +384,12 @@ class GeneralController extends Controller
         $getGeneral = General_model::find($id);
         General_model::find($id)->delete();
         Legal_model::where('id_customer', $getGeneral->id_customer)->delete();
-        ContactPerson_model::join("outlet","outlet.id_outlet","=","contact_person.id_outlet")->where('id_customer', $getGeneral->id_customer)->delete();
+        ContactPerson_model::join("outlet", "outlet.id_outlet", "=", "contact_person.id_outlet")->where('id_customer', $getGeneral->id_customer)->delete();
         Outlet_model::where('id_customer', $getGeneral->id_customer)->delete();
         Account_model::where('id_customer', $getGeneral->id_customer)->delete();
         Attachment_model::where('id_customer', $getGeneral->id_customer)->delete();
         StatusData_model::where('id_customer', $id)->delete();
-        return response()->json(['success'=>'Success Delete records General.']);
+        return response()->json(['success' => 'Success Delete records General.']);
     }
 
     public function berkas($id)
@@ -399,8 +398,8 @@ class GeneralController extends Controller
         // dump($id);
         // die;
         // dd($id);
-        return view('berkas.index',compact('id'));
-            // ->with('i', ($request->input('page', 1) - 1) * 5);
+        return view('berkas.index', compact('id'));
+        // ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
     public function atribut(Request $request)
@@ -409,36 +408,32 @@ class GeneralController extends Controller
         // die;
         $general = General_model::find($request->id);
 
-        $legal = Legal_model::join("users","users.id","=","legal.ar")
-            ->orderBy('legal.id','desc')
+        $legal = Legal_model::join("users", "users.id", "=", "legal.ar")
+            ->orderBy('legal.id', 'desc')
             ->where('id_customer', $general->id_customer)
             ->get(['*', 'legal.id as id_legal', 'legal.status as status_legal', 'legal.remarks as remarks_legal']);
 
-        $contact_person = ContactPerson_model::
-            join("outlet","outlet.id_outlet","=","contact_person.id_outlet")
-            ->join("users","users.id","=","contact_person.ar")
-            ->orderBy('contact_person.id','desc')
+        $contact_person = ContactPerson_model::join("outlet", "outlet.id_outlet", "=", "contact_person.id_outlet")
+            ->join("users", "users.id", "=", "contact_person.ar")
+            ->orderBy('contact_person.id', 'desc')
             ->where('outlet.id_customer', $general->id_customer)
             ->get(['*', 'contact_person.email as email_kontak', 'contact_person.id as id_contact_person', 'contact_person.status as status_kontak']);
 
-        $outlet = Outlet_model::
-            join("users","users.id","=","outlet.ar")
-            ->leftJoin("area","area.id","=","outlet.id_area")
-            ->orderBy('outlet.id','desc')
+        $outlet = Outlet_model::join("users", "users.id", "=", "outlet.ar")
+            ->leftJoin("area", "area.id", "=", "outlet.id_area")
+            ->orderBy('outlet.id', 'desc')
             ->where('id_customer', $general->id_customer)
             ->get(['*', 'area.area as area', 'outlet.id as id_outlet', 'outlet.id_outlet as id_outlet_custom']);
 
-        $detail_distributor = DetailDistributor_model::
-            join("outlet","outlet.id_outlet","=","detail_customers.id_outlet")
-            ->join("customers","customers.id_cust","=","detail_customers.id_cust")
-            ->join("users","users.id","=","detail_customers.ar")
-            ->orderBy('detail_customers.id','desc')
+        $detail_distributor = DetailDistributor_model::join("outlet", "outlet.id_outlet", "=", "detail_customers.id_outlet")
+            ->join("customers", "customers.id_cust", "=", "detail_customers.id_cust")
+            ->join("users", "users.id", "=", "detail_customers.ar")
+            ->orderBy('detail_customers.id', 'desc')
             ->where('outlet.id_customer', $general->id_customer)
             ->get(['*', 'detail_customers.id as id_detail_distributor', 'outlet.id_outlet as id_outlet', 'customers.id_cust as id_customers', 'customers.nama_cust as nama_customer', 'detail_customers.brand as brand', 'detail_customers.status as status', 'users.name as name']);
 
-        $account = Account_model::
-            join("users","users.id","=","account.ar")
-            ->orderBy('account.id','desc')
+        $account = Account_model::join("users", "users.id", "=", "account.ar")
+            ->orderBy('account.id', 'desc')
             ->where('id_customer', $general->id_customer)
             ->get(['*', 'account.id as id_account']);
 
@@ -474,35 +469,35 @@ class GeneralController extends Controller
             ->orderby('bank', 'asc')
             ->get();
 
-        return view('general.atribut',compact('general', 'legal', 'account', 'contact_person', 'distributor', 'outlet', 'detail_distributor', 'jne_api', 'type_outlet', 'area', 'brand', 'bank'));
+        return view('general.atribut', compact('general', 'legal', 'account', 'contact_person', 'distributor', 'outlet', 'detail_distributor', 'jne_api', 'type_outlet', 'area', 'brand', 'bank'));
         // ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
     public function export_excel_general(Request $request)
-	{
+    {
         $dari = $request->dari;
         $sampai = $request->sampai;
         $date = date('Y-m-d');
 
         ob_end_clean();
         ob_start();
-		$data = Excel::download(new GeneralExport($dari, $sampai), 'general-'.$date.'.xlsx');
+        $data = Excel::download(new GeneralExport($dari, $sampai), 'general-' . $date . '.xlsx');
 
         return $data;
-	}
+    }
 
     public function export_excel_outlet(Request $request)
-	{
+    {
         $dari = $request->dari;
         $sampai = $request->sampai;
         $date = date('Y-m-d');
 
         ob_end_clean();
         ob_start();
-		$data = Excel::download(new OutletExport($dari, $sampai), 'outlet-'.$date.'.xlsx');
+        $data = Excel::download(new OutletExport($dari, $sampai), 'outlet-' . $date . '.xlsx');
 
         return $data;
-	}
+    }
 
     public function generate_qrcode(Request $request)
     {
@@ -526,19 +521,19 @@ class GeneralController extends Controller
     public function scan_qrcode(Request $request)
     {
         // dd($request->qr_code);
-        $data = General_model::join("outlet","outlet.id_customer","=","general_informations.id_customer")
-        ->where('outlet.id_outlet', $request->qr_code)
-        // ->where('outlet.id', 13)
-        // ->first();
-        ->get(['*','general_informations.id as id_general']);
+        $data = General_model::join("outlet", "outlet.id_customer", "=", "general_informations.id_customer")
+            ->where('outlet.id_outlet', $request->qr_code)
+            // ->where('outlet.id', 13)
+            // ->first();
+            ->get(['*', 'general_informations.id as id_general']);
 
         if (count($data) > 0) {
             return response()->json([
                 'status' => 200,
                 // 'id_general' => $data[0]->id_general,
-                'url'=> route('generals.show', ['id' => $data[0]->id_general]),
+                'url' => route('generals.show', ['id' => $data[0]->id_general]),
             ]);
-        }else{
+        } else {
             return response()->json([
                 'status' => 400,
                 // 'id_general' => $data[0]->id_general,
