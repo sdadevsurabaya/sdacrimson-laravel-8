@@ -9,7 +9,7 @@
             font-weight: 400;
             font-style: normal;
         }
-        
+
         @font-face {
             font-family: HelveticaNeueMedium;
             src: url(https://indracostore.com/assets/fonts/HelveticaNeue.woff2);
@@ -40,13 +40,13 @@
 
             <div class="lh-sm mb-2 text-center">
                 {{-- <strong class="gotham-bold  fs-2 fs-lg-3">Welcome.!</strong> --}}
-                <img src="{{ URL::asset('/assets/images/ro-logos.png') }}" alt="" height="50"
+                <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="75"
                 {{-- <img src="{{ URL::asset('/assets/images/iris.png') }}" alt="" --}}
                 class="logo logo-dark mb-3">
-                <p class="mb-5" style="font-size: 15px;"><b>Registration Information System</b><br>
+                <p class="mb-5" style="font-size: 15px;"><b>Customer Service Management System</b><br>
             </div>
 
-          
+
 
             <form method="POST" action="{{ route('login') }}">
             @csrf
