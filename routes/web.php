@@ -61,6 +61,10 @@
     //Area
     use App\Http\Controllers\AreaController;
 
+    //Jadwal Check IN/OUT
+    use App\Http\Controllers\CheckController;
+
+
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
     Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
@@ -120,6 +124,10 @@
 
         //Area
         Route::resource('admin/area', AreaController::class);
+
+        //Checkin & Chekcout
+        Route::get('checkin', [App\Http\Controllers\CheckController::class, 'checkin'])->name('check.checkin');
+        Route::get('checkout', [App\Http\Controllers\CheckController::class, 'checkout'])->name('check.checkout');
 
 
         // General Informations
@@ -250,5 +258,7 @@
     Route::get('show_all_outlet', [App\Http\Controllers\MapsController::class, 'show_all']);
     Route::get('show_all_outlet_by_area/{id}', [App\Http\Controllers\MapsController::class, 'show_all_by_area']);
     Route::get('show_all_outlet_by_radius', [App\Http\Controllers\MapsController::class, 'show_all_by_radius']);
+
+
     // route index
     Route::get('/', [FrontLandingController::class, 'index'])->name('landing');

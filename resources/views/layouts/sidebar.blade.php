@@ -8,7 +8,7 @@
                 <img src="{{ URL::asset('/assets/images/ro-logo.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('/assets/images/ro-logos.png') }}" alt="" height="28">
+                <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="45">
             </span>
         </a>
 
@@ -17,7 +17,7 @@
                 <img src="{{ URL::asset('/assets/images/ro-logo.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('/assets/images/ro-logos.png') }}" alt="" height="28">
+                <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="45">
             </span>
         </a>
     </div>
@@ -72,7 +72,7 @@
                             <li><a href="{{ route('brand.index') }}">@lang('Master Brand')</a></li>
                             <li><a href="{{ route('distributor.index') }}">@lang('Master Distributor')</a></li>
                             <li><a href="{{ route('area.index') }}">@lang('Master Area')</a></li>
-                           
+
                             {{-- <li><a href="#">@lang('Master Harga')</a></li> --}}
                         </ul>
                     </li>
