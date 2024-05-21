@@ -327,8 +327,15 @@ class GeneralController extends Controller
             ->where('general_informations.id', $id)
             ->get(['*', 'general_informations.id as id_general']);
 
-        $checkin = Attendance::where('general_id', $id)->where('status', 'check in')->first();
-        $checkout = Attendance::where('general_id', $id)->where('status', 'check out')->first();
+            $checkin = Attendance::where('general_id', $id)
+            ->where('status', 'check in')
+            ->whereDate('created_at', now()->toDateString()) 
+            ->first();
+
+            $checkout = Attendance::where('general_id', $id)
+                        ->where('status', 'check out')
+                        ->whereDate('created_at', now()->toDateString()) 
+                        ->first();
 
         return view('general.edit_customer', compact('general', 'checkin', 'checkout'));
     }
