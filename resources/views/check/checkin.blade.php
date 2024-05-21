@@ -371,9 +371,11 @@
             bodyFormData.append('longitude', Longitude); // Pastikan Longitude didefinisikan sebelumnya
             bodyFormData.append('foto', imageBlob, 'photo.png');
 
+            var url = "{{ url('/') }}";
+            var urlPost = url + '/api/attendance';
             $.ajax({
                 type: 'POST',
-                url: 'http://127.0.0.1:8000/api/attendance',
+                url: urlPost,
                 data: bodyFormData,
                 processData: false, // Jangan proses data
                 contentType: false, // Jangan set tipe konten
