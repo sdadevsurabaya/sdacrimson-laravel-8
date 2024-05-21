@@ -96,7 +96,8 @@ Route::post('scan_qrcode', [PostImageController::class, 'scan']);
 Route::get('getjenistoko', [GetJenisTokoController::class, 'index']);
 
 
-
+Route::post('/upload-csvs', [App\Http\Controllers\UploadCsvController::class, 'index'])->name('upload.csv');
+Route::post('/attendance', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
