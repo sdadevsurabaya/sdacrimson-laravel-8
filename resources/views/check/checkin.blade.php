@@ -258,13 +258,13 @@
                         `.json?types=poi&access_token=pk.eyJ1Ijoic2dpd2ViIiwiYSI6ImNrc3E1bDFpazA5cnIyd252amJ6dmV6YzgifQ.eGVUcbmYW0T0vZ3rfZkEFw`,
                 })
                 .then(response => {
-                    console.log(response.data);
-                    console.log('space');
-                    console.log('space');
-                    console.log(response.data.features[0].context);
+                    // console.log(response.data);
+                    // console.log('space');
+                    // console.log('space');
+                    // console.log(response.data.features[0].context);
 
-                    console.log('ini isinya place');
-                    console.log(response.data.features[0].context[2].text);
+                    // console.log('ini isinya place');
+                    // console.log(response.data.features[0].context[2].text);
                     var text = '';
                     var i = 0;
                     while (i < response.data.features[0].context.length) {
@@ -287,8 +287,8 @@
                     $("#take-photo").show();
                 })
                 .catch(function(err) {
-                    console.log(err);
-                    console.log('iki gak metu mape')
+                    // console.log(err);
+                    // console.log('iki gak metu mape')
                     // document.getElementById('mapinfo').innerHTML = 'undefined mapbox timeout exceeded';
                     // document.getElementById('alamat').value = 'undefined mapbox timeout exceeded';
                     // this.setState({status_loading: false});
@@ -301,9 +301,9 @@
 
             Latitude = position.coords.latitude;
             Longitude = position.coords.longitude;
-            console.log("coba");
-            console.log(Latitude);
-            console.log(Longitude);
+            // console.log("coba");
+            // console.log(Latitude);
+            // console.log(Longitude);
             document.getElementById('pendeteksian').innerHTML =
                 '<i class="bi bi-check-circle fs-4 ms-2" style="color: lime;"></i>';
             document.getElementById('longitude').innerHTML = Longitude;
@@ -325,12 +325,12 @@
         }
 
         window.onload = function() {
-            console.log("test lagi");
+            // console.log("test lagi");
             getLocation()
             webcam.start()
                 .then(result => {
                     cameraStarted();
-                    console.log("webcam started");
+                    // console.log("webcam started");
                 })
                 .catch(err => {
                     displayError();
@@ -378,7 +378,7 @@
                 processData: false, // Jangan proses data
                 contentType: false, // Jangan set tipe konten
                 success: function(response) {
-                    console.log(response);
+                    // console.log(response);
                     window.location.href = "{{ 'admin/generals' }}";
                 },
                 error: function(xhr, status, error) {
