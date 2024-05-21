@@ -40,6 +40,7 @@ class AttendanceController extends Controller
             'longitude' => 'required|string',
             'note' => 'nullable|string',
             'status' => 'required|string',
+            'iduser' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -79,7 +80,7 @@ class AttendanceController extends Controller
         }
 
         $attendance = Attendance::create([
-            'user_id' => 1,
+            'user_id' => $request->input('iduser'),
             'general_id' => $request->input('general_id'),
             'foto' =>  $name,
             'status' => $request->input('status'),
