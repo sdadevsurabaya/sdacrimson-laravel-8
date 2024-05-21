@@ -369,7 +369,7 @@
             bodyFormData.append('status', 'check in');
             bodyFormData.append('latitude', Latitude); // Pastikan Latitude didefinisikan sebelumnya
             bodyFormData.append('longitude', Longitude); // Pastikan Longitude didefinisikan sebelumnya
-            bodyFormData.append('foto', imageBlob, 'photo.png');
+            bodyFormData.append('foto', imageBlob, 'photo.jpg');
 
             var url = "{{ url('/') }}";
             var urlPost = url + '/api/attendance';
