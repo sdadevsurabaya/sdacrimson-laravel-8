@@ -12,15 +12,19 @@
     <div class="absen">
         <div class="col-12 mb-3">
             <div class="gap-3 d-flex justify-content-center">
+
                 <div class="col col-auto" id="checkin">
                     <a href="{{ route('check.checkin', ['id_general' => $general[0]->id_general]) }}"
-                        class="btn btn-outline-success w-100 fw-bold">Check In</a>
+                        class="btn btn-outline-success w-100 fw-bold @if ($checkin) disabled @endif">Check
+                        In</a>
 
                     {{-- <a href="#" class="btn btn-outline-success w-100 fw-bold"> Check In
                         &nbsp;<i class="uil uil-arrow-from-right"></i></i></a> --}}
                 </div>
                 <div class="col col-auto" id="checkout">
-                    <a href="{{ route('check.checkout') }}" class="btn btn-outline-danger w-100 fw-bold"> Check Out</a>
+                    <a href="{{ route('check.checkout', ['id_general' => $general[0]->id_general]) }}"
+                        class="btn btn-outline-danger w-100 fw-bold @if ($checkout) disabled @endif">
+                        Check Out</a>
                     {{-- <a href="#" class="btn btn-outline-danger w-100 fw-bold"> Check Out
                         &nbsp;<i class="uil uil-left-arrow-from-left"></i></i></i></a> --}}
                 </div>
@@ -167,59 +171,59 @@
                         <div class="col-md-10">
                             <input type="Number" class="form-control @error('no_npwp') border border-danger @enderror"
                                 name="no_npwp" id="formrow-nonpwp-input" placeholder=an nomor NPWP "
-                                                value="{{ old('no_npwp', $general[0]->no_npwp) }}">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="formrow-namanpwp-input" class="col-md-2 col-form-label">Nama NPWP</label>
-                                        <div class="col-md-10">
-                                            <input type="text" class="form-control @error('nama_npwp') border border-danger @enderror"
-                                                name="nama_npwp" id="formrow-namanpwp-input" placeholder="Masukan nama NPWP"
-                                                value="{{ old('nama_npwp', $general[0]->nama_npwp) }}">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="formrow-alamatnpwp-input" class="col-md-2 col-form-label">Alamat NPWP</label>
-                                        <div class="col-md-10">
-                                            <input type="text"
-                                                class="form-control @error('alamat_npwp') border border-danger @enderror"
-                                                name="alamat_npwp" id="formrow-alamatnpwp-input" placeholder="Masukan alamat NPWP"
-                                                value="{{ old('alamat_npwp', $general[0]->alamat_npwp) }}">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="formrow-nik-input" class="col-md-2 col-form-label">NIK</label>
-                                        <div class="col-md-10">
-                                            <input type="number" class="form-control @error('nik') border border-danger @enderror"
-                                                name="nik" id="formrow-nik-input" placeholder="Masukan nomor induk kependudukan"
-                                                value="{{ old('nik', $general[0]->nik) }}">
-                                        </div>
-                                    </div>
-                                    <div class="mb-3 row">
-                                        <label for="formrow-ar-input" class="col-md-2 col-form-label">AR</label>
-                                        <div class="col-md-10">
-                                            <input type="text" class="form-control" name="" id="formrow-ar-input"
-                                                value="{{ $general[0]->name }}" disabled>
-                                            <input type="hidden" class="form-control" name="ar" id="formrow-ar-input"
-                                                value="{{ $general[0]->ar }}">
-                                            <input type="hidden" class="form-control" name="update_by" id="formrow-ar-input"
-                                                value="{{ Str::ucfirst(Auth::user()->id) }}
+                                                                                                                            value="{{ old('no_npwp', $general[0]->no_npwp) }}">
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="mb-3 row">
+                                                                                                                    <label for="formrow-namanpwp-input" class="col-md-2 col-form-label">Nama NPWP</label>
+                                                                                                                    <div class="col-md-10">
+                                                                                                                        <input type="text" class="form-control @error('nama_npwp') border border-danger @enderror"
+                                                                                                                            name="nama_npwp" id="formrow-namanpwp-input" placeholder="Masukan nama NPWP"
+                                                                                                                            value="{{ old('nama_npwp', $general[0]->nama_npwp) }}">
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="mb-3 row">
+                                                                                                                    <label for="formrow-alamatnpwp-input" class="col-md-2 col-form-label">Alamat NPWP</label>
+                                                                                                                    <div class="col-md-10">
+                                                                                                                        <input type="text"
+                                                                                                                            class="form-control @error('alamat_npwp') border border-danger @enderror"
+                                                                                                                            name="alamat_npwp" id="formrow-alamatnpwp-input" placeholder="Masukan alamat NPWP"
+                                                                                                                            value="{{ old('alamat_npwp', $general[0]->alamat_npwp) }}">
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="mb-3 row">
+                                                                                                                    <label for="formrow-nik-input" class="col-md-2 col-form-label">NIK</label>
+                                                                                                                    <div class="col-md-10">
+                                                                                                                        <input type="number" class="form-control @error('nik') border border-danger @enderror"
+                                                                                                                            name="nik" id="formrow-nik-input" placeholder="Masukan nomor induk kependudukan"
+                                                                                                                            value="{{ old('nik', $general[0]->nik) }}">
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                                <div class="mb-3 row">
+                                                                                                                    <label for="formrow-ar-input" class="col-md-2 col-form-label">AR</label>
+                                                                                                                    <div class="col-md-10">
+                                                                                                                        <input type="text" class="form-control" name="" id="formrow-ar-input"
+                                                                                                                            value="{{ $general[0]->name }}" disabled>
+                                                                                                                        <input type="hidden" class="form-control" name="ar" id="formrow-ar-input"
+                                                                                                                            value="{{ $general[0]->ar }}">
+                                                                                                                        <input type="hidden" class="form-control" name="update_by" id="formrow-ar-input"
+                                                                                                                            value="{{ Str::ucfirst(Auth::user()->id) }}
                             ">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 text-center">
-                                <a href="{{ route('generals.index') }}" class="btn btn-md btn-success">Kembali</a>
-                                <button type="submit" class="btn btn-primary">Update</button>
-                            </div>
-                        </div> <!-- end col -->
-                    </div> <!-- end row -->
-                    {!! Form::close() !!}
+                                                                                                                    </div>
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        <div class="col-12 text-center">
+                                                                                                            <a href="{{ route('generals.index') }}" class="btn btn-md btn-success">Kembali</a>
+                                                                                                            <button type="submit" class="btn btn-primary">Update</button>
+                                                                                                        </div>
+                                                                                                    </div> <!-- end col -->
+                                                                                                </div> <!-- end row -->
+                                                                                                {!! Form::close() !!}
 @endsection
 @section('script')
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
-                    <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
-                    <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
-                    <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+                                                                                                <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
+                                                                                                <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
+                                                                                                <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
 @endsection

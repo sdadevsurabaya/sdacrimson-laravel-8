@@ -2,32 +2,33 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Auth;
 
-use App\Models\General_model;
+use Validator;
+use App\Models\Attendance;
 use App\Models\Legal_model;
-use App\Models\ContactPerson_model;
+use App\Models\DrafId_model;
 use App\Models\Outlet_model;
+use Illuminate\Http\Request;
+use App\Exports\OutletExport;
 use App\Models\Account_model;
+use App\Models\General_model;
+use App\Exports\GeneralExport;
+
 use App\Models\Attachment_model;
 use App\Models\StatusData_model;
 use App\Models\Distributor_model;
-use App\Models\DetailDistributor_model;
-use App\Models\DrafId_model;
+use Illuminate\Support\Facades\DB;
 
-use App\Exports\GeneralExport;
-use App\Exports\OutletExport;
-use Maatwebsite\Excel\Facades\Excel;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-
+use App\Models\ContactPerson_model;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Models\DetailDistributor_model;
+use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
-use Validator;
-use Auth;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class GeneralController extends Controller
 {
@@ -326,7 +327,10 @@ class GeneralController extends Controller
             ->where('general_informations.id', $id)
             ->get(['*', 'general_informations.id as id_general']);
 
-        return view('general.edit_customer', compact('general'));
+        $checkin = Attendance::where('general_id', $id)->where('status', 'check in')->first();
+        $checkout = Attendance::where('general_id', $id)->where('status', 'check out')->first();
+
+        return view('general.edit_customer', compact('general', 'checkin', 'checkout'));
     }
 
     public function update(Request $request, $id)
