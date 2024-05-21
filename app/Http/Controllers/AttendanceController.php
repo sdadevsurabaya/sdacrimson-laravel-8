@@ -74,7 +74,7 @@ class AttendanceController extends Controller
             $formattedDate = $now->format('Ymd_');
             $name = $status . $formattedDate . Str::random(5) . '.' . $file->getClientOriginalExtension();
             $path = public_path('attendance/' . $name);
-            Image::make($file)->resize(850, null, function ($constraint) {
+            Image::make($file)->resize(650, null, function ($constraint) {
                 $constraint->aspectRatio();
             })->save($path);
         }
