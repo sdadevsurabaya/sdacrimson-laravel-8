@@ -43,7 +43,7 @@
                 <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="75"
                 {{-- <img src="{{ URL::asset('/assets/images/iris.png') }}" alt="" --}}
                 class="logo logo-dark mb-3">
-                <p class="mb-5" style="font-size: 15px;"><b>Customer Service Management System</b><br>
+                <p class="mb-5" style="font-size: 15px;"><b>Customer RelationshIp Management SDA ONline</b><br>
             </div>
 
 

@@ -97,7 +97,7 @@
             <button class="btn text-light p-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i class="bi bi-chat-square-text fs-5"></i>
             </button>
-            <a href="admin/dashboard" class="btn-close btn-close-white"></a>
+            <a href="admin/generals" class="btn-close btn-close-white"></a>
         </div>
     </nav>
 
