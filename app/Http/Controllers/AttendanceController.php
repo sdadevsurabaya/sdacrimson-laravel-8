@@ -84,6 +84,7 @@ class AttendanceController extends Controller
             'general_id' => $request->input('general_id'),
             'foto' =>  $name,
             'status' => $request->input('status'),
+            'note' => $request->input('note'),
             'latitude' => $request->input('latitude'),
             'longitude' => $request->input('longitude'),
         ]);
