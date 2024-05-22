@@ -13,7 +13,7 @@
             General
         @endslot
         @slot('title')
-            List Kunjungan TOKO ABC
+            List Kunjungan {{$general->nama_usaha}}
         @endslot
     @endcomponent
 
@@ -44,18 +44,20 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- @foreach ($data as $key => $general) --}}
+                                @foreach ($attendance as $key => $general)
                                 <tr>
-                                    <td>1</td>
-                                    <td>Eko Budi</td>
-                                    <td>23-Juli-2023</td>
-                                    <td>tes sadasd</td>
-                                    <td>checkin</td>
-                                    <td><a href="#" class="btn btn-sm btn-success m-1" data-bs-toggle="modal"
-                                            data-bs-target="#exampleModal">
-                                            Detail Visit</a></td>
+                                    <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                    <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                    <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td> {{-- Formatting the date --}}
+                                    <td>{{ $general->description }}</td> {{-- Assuming there's a 'description' field --}}
+                                    <td>{{ $general->status }}</td> {{-- Assuming there's a 'status' field --}}
+                                    <td>
+                                        <a href="#" class="btn btn-sm btn-success m-1 detail-visit" data-id="{{ $general->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                            Detail Visit
+                                        </a>
+                                    </td>
                                 </tr>
-                                {{-- @endforeach --}}
+                            @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -73,25 +75,54 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="row mb-2 mb-lg-5 ">
+                    <div class="row mb-2 mb-lg-5">
                         <div class="col col-12 text-center">
                             <p class="fw-bold text-capitalize fs-4">Check In</p>
-                            <img src="{{ URL::asset('/attendance/checkin.jpg') }}" width="350" height="550">
+                            <img src="" alt="Check-in Image" width="350" height="550"> <!-- Gambar akan diubah melalui AJAX -->
                         </div>
-                        {{-- <div class="col col-md-6">
-                            <p class="fw-bold text-capitalize fs-4">Check Out</p>
-                            <img src="{{ URL::asset('/attendance/checkin.jpg') }}" class="img-fluid">
-                        </div> --}}
                     </div>
                     <div class="col-12 text-center">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d112.73070261744382!3d-7.2511037000000025!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    
 @endsection
 @section('script')
+
+<script>
+    $(document).ready(function(){
+        $('.detail-visit').on('click', function() {
+            console.log('klikl');
+            var attendanceId = $(this).data('id');
+            
+            $.ajax({
+                url: '/api/attendance-id/' + attendanceId,
+                type: 'GET',
+                success: function(response) {
+                    // Manipulasi modal dengan data yang diterima
+                    $('#exampleModal .modal-body .fw-bold').text(response.status); // Sesuaikan sesuai field yang diinginkan
+                    $('#exampleModal .modal-body img').attr('src', response.foto); // Path gambar dari response
+                    // Isi detail lain jika ada
+                    // $('#exampleModal .modal-body .description').text(response.description);
+                    // $('#exampleModal .modal-body .date').text(response.created_at);
+                    
+                    // Example for embedding a map based on some coordinates
+                    // Assuming response has latitude and longitude fields
+                    var mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
+                    $('#exampleModal .modal-body iframe').attr('src', mapUrl);
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+    </script>
+
+
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>

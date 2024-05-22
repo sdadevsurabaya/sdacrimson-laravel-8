@@ -552,9 +552,13 @@ class GeneralController extends Controller
         }
     }
 
-    public function visit()
+    public function visit($id)
     {
-        // dd('sembarang');
-        return view('general.visit');
+        // dd($id);
+
+        $general = General_model::find($id);
+        $attendance = Attendance::with(['user'])->orderBy('created_at','desc')->get();
+        // dd($attendance);
+        return view('general.visit', compact('general', 'attendance'));
     }
 }

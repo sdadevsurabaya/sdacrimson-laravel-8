@@ -201,7 +201,7 @@
     Route::get('admin/generals/update/{id}', [App\Http\Controllers\GeneralController::class, 'update']);
     Route::get('admin/generals/berkas/{id}', [App\Http\Controllers\GeneralController::class, 'berkas']);
     Route::get('admin/generals/outlet/{id}', [App\Http\Controllers\GeneralController::class, 'outlet']);
-    Route::get('admin/general/visit', [App\Http\Controllers\GeneralController::class, 'visit'])->name('generals.visit');
+    Route::get('admin/general/visit/{id}', [App\Http\Controllers\GeneralController::class, 'visit'])->name('generals.visit');
     Route::post('export_excel_general', [App\Http\Controllers\GeneralController::class, 'export_excel_general'])->name('generals.export_excel_general');
     Route::post('export_excel_outlet', [App\Http\Controllers\GeneralController::class, 'export_excel_outlet'])->name('generals.export_excel_outlet');
     Route::get('generate/{id}', [App\Http\Controllers\GeneralController::class, 'generate_qrcode'])->name('generals.generate');

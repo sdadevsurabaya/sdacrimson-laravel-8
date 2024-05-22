@@ -91,4 +91,13 @@ class AttendanceController extends Controller
 
         return response()->json(['succes' => true,  'message' => 'Checked in successfully', 'attendance' => $attendance], 200);
     }
+
+
+    public function getAttendanceDetails($id)
+    {
+        $attendance = Attendance::with('user')->findOrFail($id);
+
+        $attendance->foto = asset('attendance/' . $attendance->foto);
+        return response()->json($attendance);
+    }
 }
