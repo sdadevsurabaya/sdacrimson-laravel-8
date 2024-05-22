@@ -149,7 +149,7 @@
                         <div class="col-md-10">
                             <input type="email" class="form-control @error('email') border border-danger @enderror"
                                 name="email" id="formrow-email-input" placeholder="Contoh : ceriaabadi@gmail.com"
-                                value="{{ old('email', $general[0]->email) }}" disabled>
+                                value="{{ old('email', $general[0]->emails) }}" disabled>
                         </div>
                     </div>
                     <div class="mb-3 row">
@@ -220,3 +220,4 @@
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    @endsection
