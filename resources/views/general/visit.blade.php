@@ -88,7 +88,7 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 @section('script')
 
@@ -97,7 +97,7 @@
         $('.detail-visit').on('click', function() {
             console.log('klikl');
             var attendanceId = $(this).data('id');
-            
+
             $.ajax({
                 url: '/api/attendance-id/' + attendanceId,
                 type: 'GET',
@@ -108,7 +108,7 @@
                     // Isi detail lain jika ada
                     // $('#exampleModal .modal-body .description').text(response.description);
                     // $('#exampleModal .modal-body .date').text(response.created_at);
-                    
+
                     // Example for embedding a map based on some coordinates
                     // Assuming response has latitude and longitude fields
                     var mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
@@ -121,8 +121,9 @@
         });
     });
     </script>
+@endsection
 
-
+@section('script')
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
