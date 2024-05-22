@@ -329,12 +329,12 @@ class GeneralController extends Controller
 
             $checkin = Attendance::where('general_id', $id)
             ->where('status', 'check in')
-            ->whereDate('created_at', now()->toDateString()) 
+            ->whereDate('created_at', now()->toDateString())
             ->first();
 
             $checkout = Attendance::where('general_id', $id)
                         ->where('status', 'check out')
-                        ->whereDate('created_at', now()->toDateString()) 
+                        ->whereDate('created_at', now()->toDateString())
                         ->first();
 
         return view('general.edit_customer', compact('general', 'checkin', 'checkout'));
@@ -550,5 +550,11 @@ class GeneralController extends Controller
                 // 'id_general' => $data[0]->id_general,
             ]);
         }
+    }
+
+    public function visit()
+    {
+        // dd('sembarang');
+        return view('general.visit');
     }
 }

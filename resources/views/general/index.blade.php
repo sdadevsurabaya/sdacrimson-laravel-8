@@ -96,6 +96,7 @@
                                                 <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-sm  btn-success m-1">Edit</a>
                                                 <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-sm btn-primary m-1">Detail</a>
                                                 <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-sm btn-warning m-1">Berkas</a>
+                                                <a href="{{ route('generals.visit', $general->id_general)}}" class="btn btn-sm btn-secondary">Visit</a>
                                                 <button class="btn btn-sm btn-danger m-1" onclick="destroyGeneral({{ $general->id_general }})">Hapus</button>
                                             @elseif (Auth::user()->hasRole("Sales") == 1)
                                                 {{-- <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a> --}}
