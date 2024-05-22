@@ -93,34 +93,31 @@
 @section('script')
 
 <script>
-    $(document).ready(function(){
-        $('#datatable-home').DataTable();
-        $('.detail-visit').on('click', function() {
-            console.log('klikl');
-            var attendanceId = $(this).data('id');
+$(document).ready(function(){
+  
+    $('#datatable-home').DataTable();
 
-            $.ajax({
-                url: '/api/attendance-id/' + attendanceId,
-                type: 'GET',
-                success: function(response) {
-                    // Manipulasi modal dengan data yang diterima
-                    $('#exampleModal .modal-body .fw-bold').text(response.status); // Sesuaikan sesuai field yang diinginkan
-                    $('#exampleModal .modal-body img').attr('src', response.foto); // Path gambar dari response
-                    // Isi detail lain jika ada
-                    // $('#exampleModal .modal-body .description').text(response.description);
-                    // $('#exampleModal .modal-body .date').text(response.created_at);
+   
+    $(document).on('click', '.detail-visit', function() {
+        console.log('klikl');
+        var attendanceId = $(this).data('id');
 
-                    // Example for embedding a map based on some coordinates
-                    // Assuming response has latitude and longitude fields
-                    var mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
-                    $('#exampleModal .modal-body iframe').attr('src', mapUrl);
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
-                }
-            });
+        $.ajax({
+            url: '/api/attendance-id/' + attendanceId,
+            type: 'GET',
+            success: function(response) {
+                $('#exampleModal .modal-body .fw-bold').text(response.status); 
+                $('#exampleModal .modal-body img').attr('src', response.foto); 
+                var mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
+                $('#exampleModal .modal-body iframe').attr('src', mapUrl);
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+            }
         });
     });
+});
+
     </script>
 
 
