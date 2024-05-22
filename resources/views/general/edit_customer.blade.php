@@ -22,8 +22,8 @@
                     <a href="{{ route('check.checkout', ['id_general' => $general[0]->id_general]) }}"
                         class="btn w-100 fw-bold  @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
                         Check Out <i class="uil uil-left-arrow-from-left"></i></a>
-            </div>
-        </div>
+          </div>
+   </div>
     </div>
     @component('common-components.breadcrumb')
         @slot('pagetitle')
@@ -79,8 +79,8 @@
                     <div class="mb-3 row">
                         <label for="floatingSelectGrid" class="col-md-2 col-form-label">Type Usaha</label>
                         <div class="col-md-10">
-                            <select class="form-select @error('type_usaha') border border-danger @enderror"
-                                name="type_usaha" id="floatingSelectGrid" aria-label="Floating label select example">
+                             <select class="form-select @error('type_usaha') border border-danger @enderror"
+                                name="type_usaha" id="floatingSelectGrid" aria-label="Floating label select example" disabled>
                                 <option value="">-- Pilih Type Usaha --</option>
                                 <option value="TK" @if (old('type_usaha') == 'TK') selected="selected" @endif
                                     {{ $general[0]->type_usaha == 'TK' ? 'selected' : '' }}>TK</option>
@@ -96,8 +96,8 @@
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Usaha</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control @error('nama_usaha') border border-danger @enderror"
-                                name="nama_usaha" id="formrow-nama-input"
+                            <input type="text" class="form-control  @error('nama_usaha') border border-danger @enderror"
+                                name="nama_usaha" id="formrow-nama-input" disabled
                                 placeholder="Contoh : SUKA CERIA ABADI (*Wajib kapital)"
                                 value="{{ old('nama_usaha', $general[0]->nama_usaha) }}">
                         </div>
@@ -149,7 +149,7 @@
                         <div class="col-md-10">
                             <input type="email" class="form-control @error('email') border border-danger @enderror"
                                 name="email" id="formrow-email-input" placeholder="Contoh : ceriaabadi@gmail.com"
-                                value="{{ old('email', $general[0]->email) }}">
+                                value="{{ old('email', $general[0]->email) }}" disabled>
                         </div>
                     </div>
                     <div class="mb-3 row">
