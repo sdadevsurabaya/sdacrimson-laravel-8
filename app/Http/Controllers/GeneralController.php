@@ -557,7 +557,7 @@ class GeneralController extends Controller
         // dd($id);
 
         $general = General_model::find($id);
-        $attendance = Attendance::with(['user'])->orderBy('created_at','desc')->get();
+        $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
         // dd($attendance);
         return view('general.visit', compact('general', 'attendance'));
     }
