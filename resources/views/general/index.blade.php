@@ -99,7 +99,7 @@
                                                 <a href="{{ route('generals.visit', ['id' => $general->id_general])}}" class="btn btn-sm btn-secondary">Visit</a>
                                                 <button class="btn btn-sm btn-danger m-1" onclick="destroyGeneral({{ $general->id_general }})">Hapus</button>
                                             @elseif (Auth::user()->hasRole("Sales") == 1)
-                                                {{-- <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a> --}}
+                                                <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a>
                                                 <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a>
                                                 <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a>
                                                 {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
