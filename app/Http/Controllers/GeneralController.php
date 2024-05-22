@@ -325,7 +325,7 @@ class GeneralController extends Controller
     {
         $general = General_model::join("users", "users.id", "=", "general_informations.ar")
             ->where('general_informations.id', $id)
-            ->get(['*', 'general_informations.id as id_general']);
+            ->get(['*', 'general_informations.id as id_general', 'general_informations.email as emails']);
 
             $checkin = Attendance::where('general_id', $id)
             ->where('status', 'check in')
