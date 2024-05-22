@@ -94,6 +94,7 @@
 
 <script>
     $(document).ready(function(){
+        $('#datatable-home').DataTable();
         $('.detail-visit').on('click', function() {
             console.log('klikl');
             var attendanceId = $(this).data('id');
@@ -121,9 +122,8 @@
         });
     });
     </script>
-@endsection
 
-@section('script')
+
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
