@@ -22,6 +22,7 @@
                     <a href="{{ route('check.checkout', ['id_general' => $general[0]->id_general]) }}"
                         class="btn w-100 fw-bold  @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
                         Check Out <i class="uil uil-left-arrow-from-left"></i></a>
+                </div>
             </div>
         </div>
     </div>

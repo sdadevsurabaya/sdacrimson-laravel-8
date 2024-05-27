@@ -30,6 +30,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <h3 class="card-title text-center">List Check In & Check Out</h3>
                     <div class="table-responsive">
                         <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -64,6 +65,31 @@
                 </div>
             </div>
         </div> <!-- end col -->
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center">List Laporan Kunjungan</h3>
+                    <div class="table-responsive">
+                        <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>AR</th>
+                                    <th>Tanggal</th>
+                                    <th>Note</th>
+                                    <th>Status</th>
+                                    <th width="280px">Aksi</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div> <!-- end row -->
 
     <!-- Modal -->
@@ -94,10 +120,10 @@
 
 <script>
 $(document).ready(function(){
-  
+
     $('#datatable-home').DataTable();
 
-   
+
     $(document).on('click', '.detail-visit', function() {
         console.log('klikl');
         var attendanceId = $(this).data('id');
@@ -106,8 +132,8 @@ $(document).ready(function(){
             url: '/api/attendance-id/' + attendanceId,
             type: 'GET',
             success: function(response) {
-                $('#exampleModal .modal-body .fw-bold').text(response.status); 
-                $('#exampleModal .modal-body img').attr('src', response.foto); 
+                $('#exampleModal .modal-body .fw-bold').text(response.status);
+                $('#exampleModal .modal-body img').attr('src', response.foto);
                 var mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
                 $('#exampleModal .modal-body iframe').attr('src', mapUrl);
             },
