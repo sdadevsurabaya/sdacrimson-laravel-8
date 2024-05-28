@@ -54,8 +54,20 @@ class KunjunganController extends Controller
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
-    public function laporan(Request $request){
-        return view('kunjungan.laporan');
+    public function laporan($id){
+        // dd($id);
+        $general = General_model::find($id);
+
+        $checkin = Attendance::where('general_id', $id)
+        ->where('status', 'check in')
+        ->whereDate('created_at', now()->toDateString())
+        ->first();
+
+        $checkout = Attendance::where('general_id', $id)
+                    ->where('status', 'check out')
+                    ->whereDate('created_at', now()->toDateString())
+                    ->first();
+        return view('kunjungan.laporan', compact('general', 'checkin', 'checkout'));
     }
 
 }
