@@ -150,7 +150,10 @@
                         $('#exampleModal .modal-body .fw-bold').text(response.status);
                         $('#exampleModal .modal-body img').attr('src', response.foto);
                         var mapUrl =
-                            `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
+                            `https://maps.google.com/maps?q=${response.latitude},${response.longitude}&z=15&output=embed`;
+
+
+                          
                         $('#exampleModal .modal-body iframe').attr('src', mapUrl);
                     },
                     error: function(xhr) {
