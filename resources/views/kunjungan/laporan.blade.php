@@ -67,7 +67,8 @@
                                         </div>
                                         <div class="col-xl-12 col-md-12">
                                             <div class="mb-3">
-                                                <label class="form-label">Foto</label>
+                                                <label class="form-label">
+                                                    <span style="color: crimson;">*</span> Foto</label>
                                                 <div class="foto col-12 d-flex">
                                                     <div class="col-2 col-md-1 p-1"style="align-self: center;">
                                                         <label for="takefoto" class="btn btn-md btn-secondary"><i
@@ -101,7 +102,8 @@
                                         </div>
                                         <div class="col-xl-5 col-md-6">
                                             <div class="mb-3">
-                                                <label class="form-label" for="formrow-email-input">GPS</label>
+                                                <label class="form-label" for="formrow-email-input">
+                                                    <span style="color: crimson;">*</span> GPS</label>
                                                 <input type="hidden" class="form-control" name="latitude" id="latitude"
                                                     placeholder="Masukan gps">
                                                 <input type="hidden" class="form-control" name="longitude" id="longitude"
@@ -110,17 +112,18 @@
                                                     frameborder="0" style="border:0"></iframe>
                                             </div>
                                         </div>
-
-
-                                        {!! Form::close() !!}
-                                        {{-- </form> --}}
                                     </div>
+                                {!! Form::close() !!}
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary submit-contact">Submit</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     @endsection
     @section('script')
         <script src="{{ URL::asset('/assets/libs/html5-qrcode/html5-qrcode.min.js') }}"></script>
@@ -336,5 +339,4 @@
             }
         </script>
         <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
-
     @endsection
