@@ -152,7 +152,7 @@
         //Kunjungan Sales
         Route::resource('kunjungan', KunjunganController::class);
         Route::get('laporan/{id}', [App\Http\Controllers\KunjunganController::class, 'laporan'])->name('kunjungan.laporan');
-
+        Route::post('/post-laporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan.post');
 
 
     });

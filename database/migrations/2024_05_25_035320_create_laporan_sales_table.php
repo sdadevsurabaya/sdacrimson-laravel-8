@@ -15,9 +15,12 @@ class CreateLaporanSalesTable extends Migration
     {
         Schema::create('laporan_sales', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('general_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('attendance_id');
             $table->string('pesan');
-            $table->string('foto');
-            $table->string('status');
+            $table->string('latitude');
+            $table->string('longitude');
             $table->timestamps();
         });
     }

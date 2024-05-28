@@ -50,18 +50,31 @@
                     <h3 class="card-title">Form Kunjungan</h3>
                     <div class="row">
                         <div class="col-lg-12">
+
+                            @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+
                             <div class="mt-4">
                                 {{-- <form action="{{ route('generals.store') }}" method="POST"> --}}
-                                {{-- {!! Form::open(array('route' => 'generals.store','method'=>'POST')) !!} --}}
-                                <form id="create_general" method="POST" action="javascript:void(0)" accept-charset="utf-8"
-                                    enctype="multipart/form-data">
+                                    {!! Form::open(array('route' => 'laporan.post', 'method' => 'POST', 'files' => true)) !!}
+                                {{-- <form id="create_general" method="POST" action="javascript:void(0)" accept-charset="utf-8"
+                                    enctype="multipart/form-data"> --}}
                                     @csrf
                                     <div class="row">
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="alamat_kantor">
                                                 <span style="color: crimson;">*</span> Laporan</label>
                                             <div class="form-floating">
-                                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
                                                 <label for="floatingTextarea2">Masukan catatan..</label>
                                             </div>
                                         </div>
@@ -109,6 +122,12 @@
                                                 <iframe id="location" src="about:blank" width="100%" height="500"
                                                     frameborder="0" style="border:0"></iframe>
                                             </div>
+                                        </div>
+
+                                        <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
+                                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary btn-block">Save</button>
                                         </div>
 
 
