@@ -13,7 +13,7 @@
             General
         @endslot
         @slot('title')
-            List Kunjungan {{$general->nama_usaha}}
+            List Kunjungan {{ $general->nama_usaha }}
         @endslot
     @endcomponent
 
@@ -30,6 +30,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
+                    <h3 class="card-title text-center">List Check In & Check Out</h3>
                     <div class="table-responsive">
                         <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"
                             style="border-collapse: collapse; border-spacing: 0; width: 100%;">
@@ -45,25 +46,64 @@
                             </thead>
                             <tbody>
                                 @foreach ($attendance as $key => $general)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                    <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                    <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td> {{-- Formatting the date --}}
-                                    <td>{{ $general->description }}</td> {{-- Assuming there's a 'description' field --}}
-                                    <td>{{ $general->status }}</td> {{-- Assuming there's a 'status' field --}}
-                                    <td>
-                                        <a href="#" class="btn btn-sm btn-success m-1 detail-visit" data-id="{{ $general->id }}" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                                            Detail Visit
-                                        </a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                        <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
+                                        {{-- Formatting the date --}}
+                                        <td>{{ $general->description }}</td> {{-- Assuming there's a 'description' field --}}
+                                        <td>{{ $general->status }}</td> {{-- Assuming there's a 'status' field --}}
+                                        <td>
+                                            <a href="#" class="btn btn-sm btn-success m-1 detail-visit"
+                                                data-id="{{ $general->id }}" data-bs-toggle="modal"
+                                                data-bs-target="#exampleModal">
+                                                Detail Visit
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div> <!-- end col -->
+
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center">List Laporan Kunjungan</h3>
+                    <div class="table-responsive">
+                        <table id="datatable-kunjungan" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>AR</th>
+                                    <th>Tanggal</th>
+                                    <th width="280px">Laporan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($laporan as $key => $general)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                        <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
+                                        {{-- Formatting the date --}}
+                                      
+                                        <td>{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
+                                       
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
     </div> <!-- end row -->
 
     <!-- Modal -->
@@ -78,46 +118,50 @@
                     <div class="row mb-2 mb-lg-5">
                         <div class="col col-12 text-center">
                             <p class="fw-bold text-capitalize fs-4">Check In</p>
-                            <img src="" alt="Check-in Image" width="350" height="550"> <!-- Gambar akan diubah melalui AJAX -->
+                            <img src="" alt="Check-in Image" width="350" height="550">
+                            <!-- Gambar akan diubah melalui AJAX -->
                         </div>
                     </div>
                     <div class="col-12 text-center">
-                        <iframe src="" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <iframe src="" width="600" height="450" style="border:0;" allowfullscreen=""
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
 @endsection
 @section('script')
+    <script>
+        $(document).ready(function() {
 
-<script>
-$(document).ready(function(){
-  
-    $('#datatable-home').DataTable();
+            $('#datatable-home').DataTable();
+            $('#datatable-kunjungan').DataTable();
 
-   
-    $(document).on('click', '.detail-visit', function() {
-        console.log('klikl');
-        var attendanceId = $(this).data('id');
 
-        $.ajax({
-            url: '/api/attendance-id/' + attendanceId,
-            type: 'GET',
-            success: function(response) {
-                $('#exampleModal .modal-body .fw-bold').text(response.status); 
-                $('#exampleModal .modal-body img').attr('src', response.foto); 
-                var mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.909822137097!2d${response.longitude}!3d${response.latitude}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7f946c8d959b5%3A0xc2d2e219e8d38e3d!2sSDA%20Fluid%20Power!5e0!3m2!1sid!2sid!4v1716346126503!5m2!1sid!2sid`;
-                $('#exampleModal .modal-body iframe').attr('src', mapUrl);
-            },
-            error: function(xhr) {
-                console.error(xhr.responseText);
-            }
+            $(document).on('click', '.detail-visit', function() {
+                console.log('klikl');
+                var attendanceId = $(this).data('id');
+
+                $.ajax({
+                    url: '/api/attendance-id/' + attendanceId,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#exampleModal .modal-body .fw-bold').text(response.status);
+                        $('#exampleModal .modal-body img').attr('src', response.foto);
+                        var mapUrl =
+                            `https://maps.google.com/maps?q=${response.latitude},${response.longitude}&z=15&output=embed`;
+
+
+                          
+                        $('#exampleModal .modal-body iframe').attr('src', mapUrl);
+                    },
+                    error: function(xhr) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
         });
-    });
-});
-
     </script>
 
 

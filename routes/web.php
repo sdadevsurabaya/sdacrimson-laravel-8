@@ -64,6 +64,9 @@
     //Jadwal Check IN/OUT
     use App\Http\Controllers\CheckController;
 
+    //kunjungan
+    use App\Http\Controllers\KunjunganController;
+
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -145,6 +148,11 @@
 
         // Attachment
         Route::get('admin/attachment/destroy/{id}', [App\Http\Controllers\AttachmentController::class, 'destroy']);
+
+        //Kunjungan Sales
+        Route::resource('kunjungan', KunjunganController::class);
+        Route::get('laporan/{id}', [App\Http\Controllers\KunjunganController::class, 'laporan'])->name('kunjungan.laporan');
+        Route::post('/post-laporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan.post');
 
 
     });

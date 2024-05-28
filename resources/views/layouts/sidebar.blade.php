@@ -3,7 +3,7 @@
 
     <!-- LOGOSS -->
     <div class="navbar-brand-box" style="align-self: center;">
-        <a href="{{url('admin/dashboard')}}" class="logo logo-dark">
+        <a href="{{ url('admin/dashboard') }}" class="logo logo-dark">
             <span class="logo-sm">
                 <img src="{{ URL::asset('/assets/images/ro-logo.png') }}" alt="" height="22">
             </span>
@@ -12,7 +12,7 @@
             </span>
         </a>
 
-        <a href="{{url('admin/dashboard')}}" class="logo logo-light">
+        <a href="{{ url('admin/dashboard') }}" class="logo logo-light">
             <span class="logo-sm">
                 <img src="{{ URL::asset('/assets/images/ro-logo.png') }}" alt="" height="22">
             </span>
@@ -33,12 +33,12 @@
             <!-- Left Menu Start -->
             <ul class="metismenu list-unstyled" id="side-menu">
 
-                @if (Str::ucfirst(Auth::user()->hasRole("Admin")) == 1)
+                @if (Str::ucfirst(Auth::user()->hasRole('Admin')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 
                     <li>
                         {{-- <a href="{{url('index')}}"> --}}
-                        <a href="{{url('admin/dashboard')}}">
+                        <a href="{{ url('admin/dashboard') }}">
                             <i class="uil-home-alt"></i>
                             <span>@lang('translation.Dashboard')</span>
                         </a>
@@ -51,7 +51,7 @@
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
                             @can('menu-permission')
-                            <li><a href={{ route('permissions.index') }}>@lang('Permissions')</a></li>
+                                <li><a href={{ route('permissions.index') }}>@lang('Permissions')</a></li>
                             @endcan
                             <li><a href={{ route('roles.index') }}>@lang('Roles')</a></li>
                             <li><a href={{ route('users.index') }}>@lang('Users')</a></li>
@@ -86,6 +86,14 @@
                         </a>
                     </li>
 
+                    <li class="menu-title">@lang('Sales')</li>
+                        <li>
+                            <a href="{{ route('kunjungan.index') }}">
+                                <i class="uil-home-alt"></i>
+                                <span>@lang('Kunjungan')</span>
+                            </a>
+                        </li>
+
                     <li class="menu-title">@lang('Area Coverage')</li>
 
                     <li>
@@ -114,13 +122,12 @@
                             <li><a href="#">@lang('Sync Orders')</a></li>
                         </ul>
                     </li> --}}
-
-                    @elseif (Str::ucfirst(Auth::user()->hasRole("Sales")) == 1)
+                @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 
                     <li>
                         {{-- <a href="{{url('index')}}"> --}}
-                        <a href="{{url('admin/dashboard')}}">
+                        <a href="{{ url('admin/dashboard') }}">
                             <i class="uil-home-alt"></i>
                             <span>@lang('translation.Dashboard')</span>
                         </a>
@@ -134,12 +141,12 @@
                             <span>@lang('General')</span>
                         </a>
                     </li>
-                @elseif (Str::ucfirst(Auth::user()->hasRole("Verifikator")) == 1)
+                @elseif (Str::ucfirst(Auth::user()->hasRole('Verifikator')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 
                     <li>
                         {{-- <a href="{{url('index')}}"> --}}
-                        <a href="{{url('admin/dashboard')}}">
+                        <a href="{{ url('admin/dashboard') }}">
                             <i class="uil-home-alt"></i>
                             <span>@lang('translation.Dashboard')</span>
                         </a>
@@ -154,15 +161,6 @@
                         </a>
                     </li>
                 @endif
-
-
-
-
-
-
-
-
-
             </ul>
         </div>
         <!-- Sidebar -->

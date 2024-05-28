@@ -98,6 +98,7 @@ Route::get('getjenistoko', [GetJenisTokoController::class, 'index']);
 
 Route::post('/upload-csvs', [App\Http\Controllers\UploadCsvController::class, 'index'])->name('upload.csv');
 Route::post('/attendance', [App\Http\Controllers\AttendanceController::class, 'index'])->name('attendance');
+Route::post('/postLaporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan');
 // routes/web.php
 Route::get('/attendance-id/{id}', [App\Http\Controllers\AttendanceController::class, 'getAttendanceDetails']);
 
