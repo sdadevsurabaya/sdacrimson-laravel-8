@@ -128,18 +128,14 @@
 
                                         <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
                                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                                        <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary btn-block">Save</button>
-                                        </div>
-
-
-                                        {!! Form::close() !!}
+                                     
                                         {{-- </form> --}}
                                     </div>
-                                {!! Form::close() !!}
+                              
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
+                                {!! Form::close() !!}
                             </div>
                         </div>
                     </div>

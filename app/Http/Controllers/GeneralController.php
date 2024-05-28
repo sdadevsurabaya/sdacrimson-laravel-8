@@ -8,22 +8,23 @@ use Validator;
 use App\Models\Attendance;
 use App\Models\Legal_model;
 use App\Models\DrafId_model;
+use App\Models\LaporanSales;
 use App\Models\Outlet_model;
 use Illuminate\Http\Request;
 use App\Exports\OutletExport;
 use App\Models\Account_model;
 use App\Models\General_model;
-use App\Exports\GeneralExport;
 
+use App\Exports\GeneralExport;
 use App\Models\Attachment_model;
 use App\Models\StatusData_model;
 use App\Models\Distributor_model;
-use Illuminate\Support\Facades\DB;
 
+use Illuminate\Support\Facades\DB;
 use App\Models\ContactPerson_model;
 use Illuminate\Support\Facades\App;
-use App\Http\Controllers\Controller;
 
+use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Models\DetailDistributor_model;
 use Illuminate\Support\Facades\Session;
@@ -558,7 +559,8 @@ class GeneralController extends Controller
 
         $general = General_model::find($id);
         $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
+        $laporan = LaporanSales::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
         // dd($attendance);
-        return view('general.visit', compact('general', 'attendance'));
+        return view('general.visit', compact('general', 'attendance', 'laporan'));
     }
 }
