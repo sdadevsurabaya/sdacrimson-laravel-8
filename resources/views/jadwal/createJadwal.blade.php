@@ -1,0 +1,132 @@
+@extends('layouts.master')
+@section('title')
+    @lang('translation.General')
+@endsection
+@section('css')
+    <!-- DataTables -->
+    <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+@endsection
+
+@section('content')
+    @component('common-components.breadcrumb')
+        @slot('pagetitle')
+            Jadwal
+        @endslot
+        @slot('title')
+            Buat Jadwal Kunjungan
+        @endslot
+    @endcomponent
+
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Successfully!</strong> {{ session('success') }}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @include('sweetalert::alert')
+
+    <div class="row">
+        <div class="col-lg-12 margin-tb">
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn btn-info m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Buat
+                        Jadwal</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="datatable-kunjungan" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>AR</th>
+                                    <th>Tanggal</th>
+                                    <th width="280px">Laporan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>tes</td>
+                                    <td>tes</td>
+                                    <td>
+                                        <a href="#"><button type="button" class="btn btn-sm btn-success">Tambah</button></a>
+                                        <button type="button" class="btn btn-sm btn-warning">Edit</button>
+                                        <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end row -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
+                        <div class="">
+                            <select class="form-select " name="type_usaha" id="floatingSelectGrid"
+                                aria-label="Floating label select example">
+                                <option value="">-- Pilih Type Usaha --</option>
+                                <option value="TK">TK</option>
+                                <option value="UD">UD</option>
+                                <option value="CV">CV</option>
+                                <option value="PT">PT</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
+                        <div class="">
+                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
+                                name="active_date" type="date">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="floatingSelectGrid" class="col-form-label">Jam Kunjungan</label>
+                        <div class="">
+                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
+                                name="active_date" type="time">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+
+            $('#datatable-home').DataTable();
+            $('#datatable-kunjungan').DataTable();
+        });
+    </script>
+    <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+@endsection

@@ -35,7 +35,6 @@
 
                 @if (Str::ucfirst(Auth::user()->hasRole('Admin')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
-
                     <li>
                         {{-- <a href="{{url('index')}}"> --}}
                         <a href="{{ url('admin/dashboard') }}">
@@ -60,7 +59,6 @@
                     </li>
 
                     <li class="menu-title">@lang('Master')</li>
-
                     <li>
                         <a href="#" class="has-arrow waves-effect">
                             <i class="uil-database"></i>
@@ -78,7 +76,6 @@
                     </li>
 
                     <li class="menu-title">@lang('General Information')</li>
-
                     <li>
                         <a href="{{ route('generals.index') }}">
                             <i class="uil-home-alt"></i>
@@ -87,12 +84,12 @@
                     </li>
 
                     <li class="menu-title">@lang('Sales')</li>
-                        <li>
-                            <a href="{{ route('kunjungan.index') }}">
-                                <i class="uil-home-alt"></i>
-                                <span>@lang('Kunjungan')</span>
-                            </a>
-                        </li>
+                    <li>
+                        <a href="{{ route('kunjungan.index') }}">
+                            <i class="uil-home-alt"></i>
+                            <span>@lang('Kunjungan')</span>
+                        </a>
+                    </li>
 
                     <li class="menu-title">@lang('Area Coverage')</li>
 
@@ -103,25 +100,20 @@
                         </a>
                     </li>
 
-
-                    {{-- <li class="menu-title">@lang('Setting')</li>
-
+                    <li class="menu-title">@lang('Jadwal')</li>
                     <li>
-                        <a href="{{url('admin/websetup')}}">
-                            <i class="uil-analytics"></i>
-                            <span>@lang('Setup Web')</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="javascript: void(0);" class="has-arrow waves-effect">
+                        <a href="#" class="has-arrow waves-effect">
                             <i class="uil-database"></i>
-                            <span>@lang('Sync Database')</span>
+                            <span>@lang('Jadwal Kunjungan')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href={{ route('sync-product.index') }}>@lang('Sync Products')</a></li>
-                            <li><a href="#">@lang('Sync Orders')</a></li>
+                            <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li>
+                            <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadawal')</a></li>
                         </ul>
-                    </li> --}}
+                    </li>
+
+
+
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 

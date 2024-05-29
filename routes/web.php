@@ -67,6 +67,11 @@
     //kunjungan
     use App\Http\Controllers\KunjunganController;
 
+    //jadwal
+    use App\Http\Controllers\JadwalController;
+
+
+
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -153,6 +158,13 @@
         Route::resource('kunjungan', KunjunganController::class);
         Route::get('laporan/{id}', [App\Http\Controllers\KunjunganController::class, 'laporan'])->name('kunjungan.laporan');
         Route::post('/post-laporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan.post');
+
+        //Penjadwalan Kunjungan
+        Route::resource('jadwal', JadwalController::class);
+        Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
+        Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
+
+
 
 
     });
