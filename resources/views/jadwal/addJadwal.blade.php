@@ -47,7 +47,7 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Form Kunjungan</h3>
+                    <h3 class="card-title">Form Penjadwalan</h3>
                     <div class="row">
                         <div class="col-lg-12">
 
@@ -101,7 +101,7 @@
                                         <div class="form-floating">
                                             <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
                                                 style="height: 100px"></textarea>
-                                            <label for="floatingTextarea2">Masukan catatan..</label>
+                                            <label for="floatingTextarea2">Masukan note..</label>
                                         </div>
                                     </div>
                                     <div class="col-xl-12 col-md-12">
