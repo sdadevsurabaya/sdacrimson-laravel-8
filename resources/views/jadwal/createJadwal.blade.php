@@ -60,9 +60,12 @@
                                     <td>tes</td>
                                     <td>
 
-                                        <button data-bs-toggle="modal" data-bs-target="#Show" type="button" class="btn btn-sm btn-secondary">Show</button>
-                                        <a href="{{ route('jadwal.addJadwal') }}"><button type="button" class="btn btn-sm btn-success">Tambah</button></a>
-                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
+                                        <button data-bs-toggle="modal" data-bs-target="#Show" type="button"
+                                            class="btn btn-sm btn-secondary">Show</button>
+                                        <a href="{{ route('jadwal.addJadwal') }}"><button type="button"
+                                                class="btn btn-sm btn-success">Tambah</button></a>
+                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
+                                            class="btn btn-sm btn-warning">Edit</button>
                                         <button type="button" class="btn btn-sm btn-danger">Hapus</button>
                                     </td>
                                 </tr>
@@ -82,28 +85,29 @@
                     <h5 class="modal-title" id="exampleModalLabel">Add</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                
+
                 <div class="modal-body">
                     @role('Sales')
-                    <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
-                @else
-                <div class="mb-3">
-                    <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
-                    <div class="">
-                        <select class="form-select" name="user_id" id="user_id" id="floatingSelectGrid" aria-label="Floating label select example">
-                            <option value="">-- Pilih User --</option>
-                            @foreach($users as $id => $name)
-                                <option value="{{ $id }}">{{ $name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                @endrole
+                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
+                    @else
+                        <div class="mb-3">
+                            <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
+                            <div class="">
+                                <select class="form-select" name="user_id" id="user_id" id="floatingSelectGrid"
+                                    aria-label="Floating label select example">
+                                    <option value="">-- Pilih User --</option>
+                                    @foreach ($users as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    @endrole
                     <div class="mb-3 row">
                         <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
                         <div class="">
                             <input placeholder="Tanggal Kunjungan" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="date"  id="date" type="date">
+                                name="date" id="date" type="date">
                         </div>
                     </div>
                     {{-- <div class="mb-3">
@@ -121,8 +125,8 @@
         </div>
     </div>
 
-     <!-- Modal -->
-     <div class="modal fade" id="Show" tabindex="-1" aria-labelledby="modalShowLabel" aria-hidden="true">
+    <!-- Modal SHOW -->
+    <div class="modal fade" id="Show" tabindex="-1" aria-labelledby="modalShowLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -130,43 +134,40 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
-                        <div class="">
-                            <select class="form-select " name="type_usaha" id="floatingSelectGrid"
-                                aria-label="Floating label select example">
-                                <option value="">-- Pilih Type Usaha --</option>
-                                <option value="TK">TK</option>
-                                <option value="UD">UD</option>
-                                <option value="CV">CV</option>
-                                <option value="PT">PT</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="mb-3 row">
-                        <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
-                        <div class="">
-                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="active_date" type="date">
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="floatingSelectGrid" class="col-form-label">Jam Kunjungan</label>
-                        <div class="">
-                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="active_date" type="time">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                    <table id="datatable-show" class="table table-striped table-bordered dt-responsive nowrap"
+                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>NO</th>
+                                <th>Customer</th>
+                                <th>Type Aktifitas</th>
+                                <th>Jam Kunjungan</th>
+                                <th>Note</th>
+                                <th width="280px">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>tes</td>
+                                <td>tes</td>
+                                <td>tes</td>
+                                <td>tes</td>
+                                <td>
+                                    <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
+                                        class="btn btn-sm btn-warning">Edit</button>
+                                    <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-     <!-- Modal -->
-     <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
+    <!-- Modal EDIT -->
+    <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -198,31 +199,32 @@
 
             $('#datatable-home').DataTable();
             $('#datatable-kunjungan').DataTable();
+            $('#datatable-show').DataTable();
 
-            $('#saveButton').click(function(){
-            var user_id = $('#user_id').val();
-            var date = $('#date').val();
+            $('#saveButton').click(function() {
+                var user_id = $('#user_id').val();
+                var date = $('#date').val();
 
-            $.ajax({
-                url: "{{ route('save.jadwal') }}",
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    user_id: user_id,
-                    date: date
-                },
-                success: function(response) {
-                    alert(response.message);
-                    $('#exampleModal').modal('hide');
-                },
-                error: function(xhr) {
-                    var errors = xhr.responseJSON.errors;
-                    $.each(errors, function(key, value) {
-                        alert(value[0]);
-                    });
-                }
+                $.ajax({
+                    url: "{{ route('save.jadwal') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        user_id: user_id,
+                        date: date
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        $('#exampleModal').modal('hide');
+                    },
+                    error: function(xhr) {
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            alert(value[0]);
+                        });
+                    }
+                });
             });
-        });
         });
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
