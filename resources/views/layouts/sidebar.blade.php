@@ -107,7 +107,7 @@
                             <span>@lang('Jadwal Kunjungan')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
-                            <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li>
+                            {{-- <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li> --}}
                             <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadawal')</a></li>
                         </ul>
                     </li>

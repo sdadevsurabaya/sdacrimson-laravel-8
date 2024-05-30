@@ -33,4 +33,9 @@ class JadwalController extends Controller
         return view('jadwal.createJadwal');
     }
 
+    public function add(){
+        // dd($id);
+        return view('jadwal.addJadwal');
+    }
+
 }

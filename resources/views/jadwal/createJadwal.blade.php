@@ -59,8 +59,10 @@
                                     <td>tes</td>
                                     <td>tes</td>
                                     <td>
-                                        <a href="#"><button type="button" class="btn btn-sm btn-success">Tambah</button></a>
-                                        <button type="button" class="btn btn-sm btn-warning">Edit</button>
+
+                                        <button data-bs-toggle="modal" data-bs-target="#Show" type="button" class="btn btn-sm btn-secondary">Show</button>
+                                        <a href="{{ route('jadwal.addJadwal') }}"><button type="button" class="btn btn-sm btn-success">Tambah</button></a>
+                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
                                         <button type="button" class="btn btn-sm btn-danger">Hapus</button>
                                     </td>
                                 </tr>
@@ -115,6 +117,76 @@
             </div>
         </div>
     </div>
+
+     <!-- Modal -->
+     <div class="modal fade" id="Show" tabindex="-1" aria-labelledby="modalShowLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalShowLabel">Show</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
+                        <div class="">
+                            <select class="form-select " name="type_usaha" id="floatingSelectGrid"
+                                aria-label="Floating label select example">
+                                <option value="">-- Pilih Type Usaha --</option>
+                                <option value="TK">TK</option>
+                                <option value="UD">UD</option>
+                                <option value="CV">CV</option>
+                                <option value="PT">PT</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
+                        <div class="">
+                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
+                                name="active_date" type="date">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="floatingSelectGrid" class="col-form-label">Jam Kunjungan</label>
+                        <div class="">
+                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
+                                name="active_date" type="time">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     <!-- Modal -->
+     <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditLabel">Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
+                        <div class="">
+                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
+                                name="active_date" type="date">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 @endsection
 @section('script')
