@@ -2,25 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Auth;
-
 use Validator;
-use App\Models\Attendance;
 
-use App\Models\Attachment_model;
-use App\Models\StatusData_model;
-use App\Models\Distributor_model;
-use Illuminate\Support\Facades\DB;
-
-use App\Models\ContactPerson_model;
-use Illuminate\Support\Facades\App;
+use App\Models\User;
+use App\Models\Jadwal;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
-use Maatwebsite\Excel\Facades\Excel;
-use App\Models\DetailDistributor_model;
-use Illuminate\Support\Facades\Session;
-use RealRashid\SweetAlert\Facades\Alert;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class JadwalController extends Controller
 {
@@ -29,8 +19,34 @@ class JadwalController extends Controller
     }
 
     public function create(){
-        // dd($id);
-        return view('jadwal.createJadwal');
+       
+        $users = User::pluck('name', 'id');
+        return view('jadwal.createJadwal', compact('users'));
+    }
+
+
+    public function store(Request $request)
+    {
+        // Validate the incoming request data
+        $validatedData = $request->validate([
+            'user_id' => 'required',
+            'date' => 'required|date',
+        ]);
+
+        $randomString = strtoupper(Str::random(5));
+        // Generate INV (Invoice)
+        $randomInvoice = 'JD-' . now()->format('Y/m/d') . '-' . $randomString;
+        $validatedData['kode'] = $randomInvoice;
+        $validatedData['created_by_id'] = Auth::id();
+     
+        // Create a new Jadwal record
+        $jadwal = Jadwal::create($validatedData);
+
+        // Return a response
+        return response()->json([
+            'message' => 'Jadwal created successfully',
+            'jadwal' => $jadwal,
+        ], 200);
     }
 
     public function add(){

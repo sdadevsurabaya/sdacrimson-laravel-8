@@ -82,36 +82,39 @@
                     <h5 class="modal-title" id="exampleModalLabel">Add</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
-                        <div class="">
-                            <select class="form-select " name="type_usaha" id="floatingSelectGrid"
-                                aria-label="Floating label select example">
-                                <option value="">-- Pilih Type Usaha --</option>
-                                <option value="TK">TK</option>
-                                <option value="UD">UD</option>
-                                <option value="CV">CV</option>
-                                <option value="PT">PT</option>
-                            </select>
-                        </div>
+                    @role('Sales')
+                    <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
+                @else
+                <div class="mb-3">
+                    <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
+                    <div class="">
+                        <select class="form-select" name="user_id" id="user_id" id="floatingSelectGrid" aria-label="Floating label select example">
+                            <option value="">-- Pilih User --</option>
+                            @foreach($users as $id => $name)
+                                <option value="{{ $id }}">{{ $name }}</option>
+                            @endforeach
+                        </select>
                     </div>
+                </div>
+                @endrole
                     <div class="mb-3 row">
                         <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
                         <div class="">
-                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="active_date" type="date">
+                            <input placeholder="Tanggal Kunjungan" class="form-control form-control-solid mb-3 mb-lg-0"
+                                name="date"  id="date" type="date">
                         </div>
                     </div>
-                    <div class="mb-3">
+                    {{-- <div class="mb-3">
                         <label for="floatingSelectGrid" class="col-form-label">Jam Kunjungan</label>
                         <div class="">
                             <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
                                 name="active_date" type="time">
                         </div>
-                    </div>
+                    </div> --}}
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-primary" id="saveButton">Simpan</button>
                     </div>
                 </div>
             </div>
@@ -195,6 +198,31 @@
 
             $('#datatable-home').DataTable();
             $('#datatable-kunjungan').DataTable();
+
+            $('#saveButton').click(function(){
+            var user_id = $('#user_id').val();
+            var date = $('#date').val();
+
+            $.ajax({
+                url: "{{ route('save.jadwal') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_id: user_id,
+                    date: date
+                },
+                success: function(response) {
+                    alert(response.message);
+                    $('#exampleModal').modal('hide');
+                },
+                error: function(xhr) {
+                    var errors = xhr.responseJSON.errors;
+                    $.each(errors, function(key, value) {
+                        alert(value[0]);
+                    });
+                }
+            });
+        });
         });
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
