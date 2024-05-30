@@ -21,7 +21,9 @@ class JadwalController extends Controller
     public function create(){
        
         $users = User::pluck('name', 'id');
-        return view('jadwal.createJadwal', compact('users'));
+
+        $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->get();
+        return view('jadwal.createJadwal', compact('users', 'jadwals'));
     }
 
 

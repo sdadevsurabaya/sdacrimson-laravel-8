@@ -48,24 +48,30 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
+                                    <th>Kode</th>
                                     <th>AR</th>
                                     <th>Tanggal</th>
-                                    <th width="280px">Laporan</th>
+                                    <th width="280px">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>tes</td>
-                                    <td>tes</td>
-                                    <td>
 
-                                        <button data-bs-toggle="modal" data-bs-target="#Show" type="button" class="btn btn-sm btn-secondary">Show</button>
+                                @foreach ($jadwals as $key => $jadwal)
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                    <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                    <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                    <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
+                                    {{-- Formatting the date --}}
+                                  
+                                    <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button" class="btn btn-sm btn-secondary">Show</button>
                                         <a href="{{ route('jadwal.addJadwal') }}"><button type="button" class="btn btn-sm btn-success">Tambah</button></a>
                                         <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
-                                        <button type="button" class="btn btn-sm btn-danger">Hapus</button>
-                                    </td>
+                                        <button type="button" class="btn btn-sm btn-danger">Hapus</button></td> {{-- Assuming there's a 'status' field --}}
+                                   
                                 </tr>
+                            @endforeach
+                                
                             </tbody>
                         </table>
                     </div>
@@ -213,7 +219,7 @@
                 },
                 success: function(response) {
                     alert(response.message);
-                    $('#exampleModal').modal('hide');
+                    window.location.href = '/createJadwal';
                 },
                 error: function(xhr) {
                     var errors = xhr.responseJSON.errors;

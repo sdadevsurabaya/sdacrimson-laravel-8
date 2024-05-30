@@ -15,4 +15,10 @@ class Jadwal extends Model
         'created_by_id',
         'modified_by_id',
     ];
+
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
