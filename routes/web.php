@@ -161,9 +161,12 @@
 
         //Penjadwalan Kunjungan
         Route::resource('jadwal', JadwalController::class);
-        Route::get('detailJadwal', [App\Http\Controllers\JadwalController::class, 'add'])->name('jadwal.addJadwal');
+        Route::get('create-detailJadwal/{id}', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'index'])->name('jadwal.addJadwal');
+        Route::get('edit-detailJadwal/{id}', [App\Http\Controllers\DetailJadwal\EditDetailJadwalController::class, 'index'])->name('jadwal.addJadwal');
+        Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
         Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
         Route::post('save-jadwal', [App\Http\Controllers\JadwalController::class, 'store'])->name('save.jadwal');
+        Route::post('save-detail-jadwal', [App\Http\Controllers\DetailJadwal\StoreDetailJadwalController::class, 'store'])->name('save.detail.jadwal');
 
 
 

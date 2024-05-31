@@ -22,7 +22,14 @@ class JadwalController extends Controller
        
         $users = User::pluck('name', 'id');
 
-        $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->get();
+        $hasRole = auth()->user()->hasRole('Sales');
+        
+        if( $hasRole){
+            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->get();
+        }else {
+            $jadwals = Jadwal::orderBy('created_at','desc')->get();
+        }
+      
         return view('jadwal.createJadwal', compact('users', 'jadwals'));
     }
 
@@ -50,10 +57,5 @@ class JadwalController extends Controller
             'jadwal' => $jadwal,
         ], 200);
     }
-
-    public function add(){
-        // dd($id);
-        return view('jadwal.addJadwal');
-    }
-
+    
 }
