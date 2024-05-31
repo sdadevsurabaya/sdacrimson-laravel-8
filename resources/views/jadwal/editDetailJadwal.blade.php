@@ -63,52 +63,53 @@
                             <div class="mt-4">
                              
                                 {!! Form::open(['route' => 'save.detail.jadwal', 'method' => 'POST', 'files' => true]) !!}
-                               
                                 @csrf
                                 <div class="row">
                                     <div class="col-12 col-md-6 mb-3">
-                                        <label for="floatingSelectGrid" class="col-form-label">Toko / Customer</label>
-                                        <select class="form-select" name="general_id" id="floatingSelectGrid" aria-label="Floating label select example">
+                                        <label for="general_id" class="col-form-label">Toko / Customer</label>
+                                        <select class="form-select" name="general_id" id="general_id" aria-label="Floating label select example">
                                             <option value="">-- Pilih Customer --</option>
                                             @foreach($general as $id => $nama_usaha)
-                                                <option value="{{ $id }}">{{ $nama_usaha }}</option>
+                                                <option value="{{ $id }}" {{ $id == $DetailJadwal->general_id ? 'selected' : '' }}>
+                                                    {{ $nama_usaha }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
                                     
-                                    <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $jadwal_id}}">
+                                    <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $jadwal_id }}">
+                                    
                                     <div class="col-12 col-md-6 mb-3">
-                                        <label for="floatingSelectGrid" class="col-form-label">Type Aktifitas</label>
-                                        <select class="form-select " name="activity_type" id="floatingSelectGrid"
-                                            aria-label="Floating label select example">
+                                        <label for="activity_type" class="col-form-label">Type Aktifitas</label>
+                                        <select class="form-select" name="activity_type" id="activity_type" aria-label="Floating label select example">
                                             <option value="">-- Pilih --</option>
-                                            <option value="Telepon">Telepon</option>
-                                            <option value="Meeting">Meeting</option>
-                                            <option value="Email">Email</option>
-                                            <option value="Visit">Visit</option>
-                                            <option value="Demo">Demo</option>
+                                            <option value="Telepon" {{ $DetailJadwal->activity_type == 'Telepon' ? 'selected' : '' }}>Telepon</option>
+                                            <option value="Meeting" {{ $DetailJadwal->activity_type == 'Meeting' ? 'selected' : '' }}>Meeting</option>
+                                            <option value="Email" {{ $DetailJadwal->activity_type == 'Email' ? 'selected' : '' }}>Email</option>
+                                            <option value="Visit" {{ $DetailJadwal->activity_type == 'Visit' ? 'selected' : '' }}>Visit</option>
+                                            <option value="Demo" {{ $DetailJadwal->activity_type == 'Demo' ? 'selected' : '' }}>Demo</option>
                                         </select>
                                     </div>
+                                    
                                     <div class="col-12 col-md-6 mb-3">
-                                        <label class="form-label" for="alamat_kantor">Jam Kunjungan</label>
-                                        <input type="time" class="form-control" name="plant_date"
-                                            placeholder="Jam Kunjungan">
+                                        <label class="form-label" for="plant_date">Jam Kunjungan</label>
+                                        <input type="time" class="form-control" name="plant_date" id="plant_date" value="{{ $DetailJadwal->plant_date }}" placeholder="Jam Kunjungan">
                                     </div>
+                                    
                                     <div class="col-12 col-md-6 mb-3">
-                                        <label class="form-label" for="alamat_kantor">
-                                            </span>Note</label>
+                                        <label class="form-label" for="note">Note</label>
                                         <div class="form-floating">
-                                            <textarea name="note" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                                style="height: 100px" ></textarea>
-                                            <label for="floatingTextarea2">Masukan note..</label>
+                                            <textarea name="note" class="form-control" placeholder="Leave a comment here" id="note" style="height: 100px">{{ $DetailJadwal->note }}</textarea>
+                                            <label for="note">Masukan note..</label>
                                         </div>
                                     </div>
                                 </div>
-
+                                
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
-                                {!! Form::close() !!}
+                            {!! Form::close() !!}
+                            
                             </div>
                         </div>
                     </div>

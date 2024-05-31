@@ -150,25 +150,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>tes</td>
-                                <td>tes</td>
-                                <td>tes</td>
-                                <td>tes</td>
-                                <td>
-                                    <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
-                                        class="btn btn-sm btn-warning">Edit</button>
-                                    <button type="button" class="btn btn-sm btn-danger">Hapus</button>
-                                </td>
-                            </tr>
+                            <!-- Data akan dirender di sini -->
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
     <!-- Modal EDIT -->
     <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -200,33 +188,32 @@
     <script>
         $(document).ready(function() {
 
-                $('#datatable-home').DataTable();
-                $('#datatable-kunjungan').DataTable();
-                $('#datatable-show').DataTable();
+            $('#datatable-home').DataTable();
+            $('#datatable-kunjungan').DataTable();
+            $('#datatable-show').DataTable();
 
                 $('#saveButton').click(function() {
                     var user_id = $('#user_id').val();
                     var date = $('#date').val();
 
-                $.ajax({
-                    url: "{{ route('save.jadwal') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        user_id: user_id,
-                        date: date
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        window.location.href = '/createJadwal';
-                    },
-                    error: function(xhr) {
-                        var errors = xhr.responseJSON.errors;
-                        $.each(errors, function(key, value) {
-                            alert(value[0]);
-                        });
-                    }
-                });
+            $.ajax({
+                url: "{{ route('save.jadwal') }}",
+                type: "POST",
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    user_id: user_id,
+                    date: date
+                },
+                success: function(response) {
+                    alert(response.message);
+                    window.location.href = '/createJadwal';
+                },
+                error: function(xhr) {
+                    var errors = xhr.responseJSON.errors;
+                    $.each(errors, function(key, value) {
+                        alert(value[0]);
+                    });
+                }
             });
         });
     </script>
