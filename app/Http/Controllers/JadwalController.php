@@ -19,17 +19,17 @@ class JadwalController extends Controller
     }
 
     public function create(){
-       
+
         $users = User::pluck('name', 'id');
 
         $hasRole = auth()->user()->hasRole('Sales');
-        
+
         if( $hasRole){
             $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->get();
         }else {
             $jadwals = Jadwal::orderBy('created_at','desc')->get();
         }
-      
+
         return view('jadwal.createJadwal', compact('users', 'jadwals'));
     }
 
@@ -47,7 +47,7 @@ class JadwalController extends Controller
         $randomInvoice = 'JD-' . now()->format('Y/m/d') . '-' . $randomString;
         $validatedData['kode'] = $randomInvoice;
         $validatedData['created_by_id'] = Auth::id();
-     
+
         // Create a new Jadwal record
         $jadwal = Jadwal::create($validatedData);
 
@@ -57,5 +57,5 @@ class JadwalController extends Controller
             'jadwal' => $jadwal,
         ], 200);
     }
-    
+
 }

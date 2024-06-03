@@ -57,20 +57,24 @@
                             <tbody>
 
                                 @foreach ($jadwals as $key => $jadwal)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                    <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                    <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                    <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
-                                    {{-- Formatting the date --}}
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                        <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
+                                        {{-- Formatting the date --}}
 
-                                    <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button" class="btn btn-sm btn-secondary">Show</button>
-                                        <a href="{{ route('jadwal.addJadwal') }}"><button type="button" class="btn btn-sm btn-success">Tambah</button></a>
-                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
-                                        <button type="button" class="btn btn-sm btn-danger">Hapus</button></td> {{-- Assuming there's a 'status' field --}}
+                                        <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
+                                                class="btn btn-sm btn-secondary">Show</button>
+                                            <a href="{{ route('jadwal.addJadwal') }}"><button type="button"
+                                                    class="btn btn-sm btn-success">Tambah</button></a>
+                                            <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
+                                                class="btn btn-sm btn-warning">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                                        </td> {{-- Assuming there's a 'status' field --}}
 
-                                </tr>
-                            @endforeach
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -192,28 +196,29 @@
             $('#datatable-kunjungan').DataTable();
             $('#datatable-show').DataTable();
 
-                $('#saveButton').click(function() {
-                    var user_id = $('#user_id').val();
-                    var date = $('#date').val();
+            $('#saveButton').click(function() {
+                var user_id = $('#user_id').val();
+                var date = $('#date').val();
 
-            $.ajax({
-                url: "{{ route('save.jadwal') }}",
-                type: "POST",
-                data: {
-                    _token: "{{ csrf_token() }}",
-                    user_id: user_id,
-                    date: date
-                },
-                success: function(response) {
-                    alert(response.message);
-                    window.location.href = '/createJadwal';
-                },
-                error: function(xhr) {
-                    var errors = xhr.responseJSON.errors;
-                    $.each(errors, function(key, value) {
-                        alert(value[0]);
-                    });
-                }
+                $.ajax({
+                    url: "{{ route('save.jadwal') }}",
+                    type: "POST",
+                    data: {
+                        _token: "{{ csrf_token() }}",
+                        user_id: user_id,
+                        date: date
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.href = '/createJadwal';
+                    },
+                    error: function(xhr) {
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            alert(value[0]);
+                        });
+                    }
+                });
             });
         });
     </script>
