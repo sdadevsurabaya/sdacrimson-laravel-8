@@ -57,24 +57,23 @@
                             <tbody>
 
                                 @foreach ($jadwals as $key => $jadwal)
-                                    <tr>
-                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                        <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                        <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                        <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
-                                        {{-- Formatting the date --}}
+                                <tr>
+                                    <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                    <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                    <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                    <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
+                                    {{-- Formatting the date --}}
 
-                                        <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
-                                                class="btn btn-sm btn-secondary">Show</button>
-                                            <a href="{{ route('jadwal.addJadwal') }}"><button type="button"
-                                                    class="btn btn-sm btn-success">Tambah</button></a>
-                                            <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
-                                                class="btn btn-sm btn-warning">Edit</button>
-                                            <button type="button" class="btn btn-sm btn-danger">Hapus</button>
-                                        </td> {{-- Assuming there's a 'status' field --}}
+                                    <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button" data-id="{{$jadwal->id}}" class="btn btn-sm btn-secondary">Show</button>
+                                        <a href="{{ route('jadwal.addJadwal', ['id' => $jadwal->id]) }}">
+                                            <button type="button" class="btn btn-sm btn-success">Tambah</button>
+                                        </a>
 
-                                    </tr>
-                                @endforeach
+                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
+                                        <button type="button" class="btn btn-sm btn-danger">Hapus</button></td> {{-- Assuming there's a 'status' field --}}
+
+                                </tr>
+                            @endforeach
 
                             </tbody>
                         </table>
@@ -194,7 +193,55 @@
 
             $('#datatable-home').DataTable();
             $('#datatable-kunjungan').DataTable();
-            $('#datatable-show').DataTable();
+
+
+
+            $('[data-bs-toggle="modal"][data-bs-target="#Show"]').on('click', function() {
+                $('#datatable-show tbody').empty();
+
+        // Ambil ID dari atribut data-id
+        var id = $(this).data('id');
+        loadModalData(id);
+    });
+
+    function loadModalData(id) {
+        $.ajax({
+            url: '/getByidDetailJadwal', // Ganti dengan endpoint Anda
+            method: 'GET',
+            data: { id: id },
+            dataType: 'json',
+            success: function(response) {
+                // Kosongkan tabel terlebih dahulu
+
+                // Loop melalui data yang diterima dari server
+                response.forEach(function(item, index) {
+                    var editUrl = `/edit-detailJadwal/${item.id}`; // URL untuk edit
+
+                    var row = `<tr>
+                        <td>${index + 1}</td>
+                        <td>${item.general_id}</td>
+                        <td>${item.activity_type}</td>
+                        <td>${item.plant_date}</td>
+                        <td>${item.note}</td>
+                        <td>
+                            <a href="${editUrl}" class="btn btn-sm btn-warning">Edit</a>
+                            <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                        </td>
+                    </tr>`;
+                    $('#datatable-show tbody').append(rows);
+                });
+
+                // Tampilkan modal
+                $('#Show').modal('show');
+                $('#datatable-show').DataTable();
+            },
+            error: function(xhr, status, error) {
+                console.error("Terjadi kesalahan: ", status, error);
+            }
+        });
+    }
+
+
 
             $('#saveButton').click(function() {
                 var user_id = $('#user_id').val();

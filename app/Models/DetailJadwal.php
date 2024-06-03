@@ -9,4 +9,9 @@ class DetailJadwal extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
+
+    public function customer()
+    {
+        return $this->belongsTo(General_model::class, 'general_id' ,'id');
+    }
 }

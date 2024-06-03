@@ -20,6 +20,7 @@ class CreateJadwalsTable extends Migration
             $table->date('date'); 
             $table->integer('created_by_id'); 
             $table->integer('modified_by_id')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

@@ -25,9 +25,10 @@ class JadwalController extends Controller
         $hasRole = auth()->user()->hasRole('Sales');
 
         if( $hasRole){
-            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->get();
+            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->withTrashed()->whereNull('deleted_at')->get();
         }else {
-            $jadwals = Jadwal::orderBy('created_at','desc')->get();
+            $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+
         }
 
         return view('jadwal.createJadwal', compact('users', 'jadwals'));
