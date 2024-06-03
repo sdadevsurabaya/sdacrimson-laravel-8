@@ -31,6 +31,8 @@ class CreateDetailJadwalsTable extends Migration
             $table->integer('modified_by_id')->nullable(); // Modified by ID
             $table->boolean('approve')->default(false);
             $table->integer('approve_by_id')->nullable(); // Modified by ID
+
+            $table->softDeletes();
             $table->timestamps(); // Laravel's created_at & updated_at
         });
     }

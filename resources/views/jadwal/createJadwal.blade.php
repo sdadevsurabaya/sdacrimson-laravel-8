@@ -70,7 +70,7 @@
                                         </a>
                                         
                                         <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
-                                        <button type="button" class="btn btn-sm btn-danger">Hapus</button></td> {{-- Assuming there's a 'status' field --}}
+                                        <button type="button" class="btn btn-sm btn-danger">Batal</button></td> 
                                    
                                 </tr>
                             @endforeach
@@ -219,7 +219,7 @@
 
                     var row = `<tr>
                         <td>${index + 1}</td>
-                        <td>${item.general_id}</td>
+                        <td>${item.customer.nama_usaha}</td>
                         <td>${item.activity_type}</td>
                         <td>${item.plant_date}</td>
                         <td>${item.note}</td>
@@ -228,7 +228,7 @@
                             <button type="button" class="btn btn-sm btn-danger">Hapus</button>
                         </td>
                     </tr>`;
-                    $('#datatable-show tbody').append(rows);
+                    $('#datatable-show tbody').append(row);
                 });
 
                 // Tampilkan modal
