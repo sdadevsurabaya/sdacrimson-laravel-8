@@ -69,8 +69,9 @@
                                             <button type="button" class="btn btn-sm btn-success">Tambah</button>
                                         </a>
                                         
-                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning">Edit</button>
-                                        <button type="button" class="btn btn-sm btn-danger">Batal</button></td> 
+                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning edit-jadwal" data-id="{{$jadwal->id}}" >Edit</button>
+                                        <button type="button" class="btn btn-sm btn-danger btn-cancel" data-id="{{$jadwal->id}}">Batal</button>
+                                    </td> 
                                    
                                 </tr>
                             @endforeach
@@ -173,11 +174,11 @@
                         <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
                         <div class="">
                             <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="active_date" type="date">
+                                name="date_edit" id="date_edit" type="date">
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary">Simpan</button>
+                        <button type="button" class="btn btn-primary update-jadwal">Simpan</button>
                     </div>
                 </div>
             </div>
@@ -195,27 +196,106 @@
             $('#datatable-kunjungan').DataTable();
            
 
+            $(document).on('click', '.edit-jadwal', function() {
+        var id = $(this).data('id');
+        
+       
+        $.ajax({
+            url: '/jadwal/' + id + '/edit',
+            method: 'GET',
+            success: function(response) {
+              
+                $('#date_edit').val(response.date);
+                $('#Edit').data('id', id); 
+            },
+            error: function(xhr) {
+                console.error('Error fetching data:', xhr);
+            }
+        });
+    });
+
+    $('#Edit .update-jadwal').click(function() {
+        var id = $('#Edit').data('id');
+        var date = $('#date_edit').val();
+        console.log(id);
+        
+     
+        $.ajax({
+            url: '/jadwal/' + id,
+            method: 'PUT',
+            data: {
+                _token: '{{ csrf_token() }}',
+                date: date
+            },
+            success: function(response) {
+             
+                if(response.success){
+                    alert('Data berhasil diupdate');
+                $('#Edit').modal('hide');
+                location.reload(); 
+                }else{
+                    alert(response.message);
+                }
+               
+            },
+            error: function(xhr) {
+                console.error('Error updating data:', xhr);
+                alert('Terjadi kesalahan saat mengupdate data');
+            }
+        });
+    });
+
+    $(document).on('click', '.btn-cancel', function() {
+        var id = $(this).data('id');
+        
+        if (confirm('Apakah Anda yakin ingin membatalkan jadwal ini?')) {
+          
+            $.ajax({
+                url: '/jadwal/' + id,
+                method: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload(); 
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Error deleting data:', xhr);
+                    alert('Terjadi kesalahan saat membatalkan jadwal');
+                }
+            });
+        }
+    });
+
 
             $('[data-bs-toggle="modal"][data-bs-target="#Show"]').on('click', function() {
                 $('#datatable-show tbody').empty();
 
-        // Ambil ID dari atribut data-id
+       
         var id = $(this).data('id');
         loadModalData(id);
+
+
+
+        
     });
 
     function loadModalData(id) {
         $.ajax({
-            url: '/getByidDetailJadwal', // Ganti dengan endpoint Anda
+            url: '/getByidDetailJadwal', 
             method: 'GET',
             data: { id: id },
             dataType: 'json',
             success: function(response) {
-                // Kosongkan tabel terlebih dahulu
+               
               
-                // Loop melalui data yang diterima dari server
                 response.forEach(function(item, index) {
-                    var editUrl = `/edit-detailJadwal/${item.id}`; // URL untuk edit
+                    var editUrl = `/edit-detailJadwal/${item.id}`; 
 
                     var row = `<tr>
                         <td>${index + 1}</td>
@@ -225,13 +305,13 @@
                         <td>${item.note}</td>
                         <td>
                             <a href="${editUrl}" class="btn btn-sm btn-warning">Edit</a>
-                            <button type="button" class="btn btn-sm btn-danger">Hapus</button>
+                            <button type="button" class="btn btn-sm btn-danger btn-cancel-detail" data-id="${item.id}">Batal</button>
                         </td>
                     </tr>`;
                     $('#datatable-show tbody').append(row);
                 });
 
-                // Tampilkan modal
+              
                 $('#Show').modal('show');
                 $('#datatable-show').DataTable();
             },
@@ -240,6 +320,34 @@
             }
         });
     }
+
+
+    $(document).on('click', '.btn-cancel-detail', function() {
+        var id = $(this).data('id');
+    
+        if (confirm('Apakah Anda yakin ingin membatalkan Detail jadwal ini?')) {
+            // Kirim permintaan soft delete menggunakan AJAX
+            $.ajax({
+                url: '/jadwal-detail/' + id,
+                method: 'DELETE',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    if (response.success) {
+                        alert(response.message);
+                        location.reload(); // Reload halaman untuk melihat perubahan
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function(xhr) {
+                    console.error('Error deleting data:', xhr);
+                    alert('Terjadi kesalahan saat membatalkan jadwal');
+                }
+            });
+        }
+    });
 
 
 
