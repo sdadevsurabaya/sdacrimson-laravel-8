@@ -5,6 +5,8 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 @endsection
 
 @section('content')
@@ -33,13 +35,21 @@
                     <div class="gap-3 d-flex justify-content-center">
                         <div class="col col-auto" id="checkin">
                             <a href="{{ route('check.checkin', ['id_general' => $general->id]) }}"
-                                class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
-                                In <i class="uil uil-arrow-from-right"></i></a>
+                                class="btn @if ($checkin) btn-success disabled @else btn-outline-success @endif w-100 fw-bold">
+                                Check In <i class="uil uil-arrow-from-right"></i>
+                            </a>
                         </div>
                         <div class="col col-auto" id="checkout">
-                            <a href="{{ route('check.checkout', ['id_general' => $general->id]) }}"
-                                class="btn w-100 fw-bold  @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
-                                Check Out <i class="uil uil-left-arrow-from-left"></i></a>
+                            @if ($checkin)
+                                <a href="{{ route('check.checkout', ['id_general' => $general->id]) }}"
+                                    class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
+                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
+                                </a>
+                            @else
+                                <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
+                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
+                                </button>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -154,6 +164,8 @@
 
             });
 
+
+
             $("body").on("click", ".btn-danger", function() {
                 $(this).parents(".hdtuto").remove();
 
@@ -174,6 +186,19 @@
             handlePermission(this);
 
         });
+
+        // function checkOutWarning() {
+        //     alert('Anda harus melakukan check-in terlebih dahulu!');
+        // }
+
+        function checkOutWarning() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Anda harus melakukan check-in terlebih dahulu!',
+                confirmButtonText: 'OK'
+            });
+        }
 
         // dinamis tambah foto
         var i = 0;
