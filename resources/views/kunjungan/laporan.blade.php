@@ -61,8 +61,6 @@
                                 </div>
                             @endif
 
-
-
                             <div class="mt-4">
                                 {{-- <form action="{{ route('generals.store') }}" method="POST"> --}}
                                 {!! Form::open(['route' => 'laporan.post', 'method' => 'POST', 'files' => true]) !!}

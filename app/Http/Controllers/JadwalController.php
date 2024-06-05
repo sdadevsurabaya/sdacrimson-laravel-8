@@ -59,8 +59,6 @@ class JadwalController extends Controller
         ], 200);
     }
 
-<<<<<<< HEAD
-=======
     public function edit($id)
 {
     $jadwal = Jadwal::find($id);
@@ -80,7 +78,7 @@ public function update(Request $request, $id)
 
     // Cek apakah tanggal baru sudah ada di database
     // $existingJadwal = Jadwal::where('date', $newDate)->where('id', '!=', $id)->first();
-    
+
     // if ($existingJadwal) {
     //     return response()->json(['success' => false, 'message' => 'Tanggal sudah ada di Buat Schedule']);
     // }
@@ -103,6 +101,5 @@ public function destroy($id)
         }
     }
 
-    
->>>>>>> origin/eko
+
 }

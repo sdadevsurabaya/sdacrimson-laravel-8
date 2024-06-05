@@ -57,24 +57,28 @@
                             <tbody>
 
                                 @foreach ($jadwals as $key => $jadwal)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                    <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                    <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                    <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
-                                    {{-- Formatting the date --}}
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                        <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
+                                        {{-- Formatting the date --}}
 
-                                    <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button" data-id="{{$jadwal->id}}" class="btn btn-sm btn-secondary">Show</button>
-                                        <a href="{{ route('jadwal.addJadwal', ['id' => $jadwal->id]) }}">
-                                            <button type="button" class="btn btn-sm btn-success">Tambah</button>
-                                        </a>
+                                        <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
+                                                data-id="{{ $jadwal->id }}" class="btn btn-sm btn-secondary">Show</button>
+                                            <a href="{{ route('jadwal.addJadwal', ['id' => $jadwal->id]) }}">
+                                                <button type="button" class="btn btn-sm btn-success">Tambah</button>
+                                            </a>
 
-                                        <button data-bs-toggle="modal" data-bs-target="#Edit" type="button" class="btn btn-sm btn-warning edit-jadwal" data-id="{{$jadwal->id}}" >Edit</button>
-                                        <button type="button" class="btn btn-sm btn-danger btn-cancel" data-id="{{$jadwal->id}}">Batal</button>
-                                    </td>
+                                            <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
+                                                class="btn btn-sm btn-warning edit-jadwal"
+                                                data-id="{{ $jadwal->id }}">Edit</button>
+                                            <button type="button" class="btn btn-sm btn-danger btn-cancel"
+                                                data-id="{{ $jadwal->id }}">Batal</button>
+                                        </td>
 
-                                </tr>
-                            @endforeach
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
@@ -141,22 +145,24 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table id="datatable-show" class="table table-striped table-bordered dt-responsive nowrap"
-                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
-                        <thead>
-                            <tr>
-                                <th>NO</th>
-                                <th>Customer</th>
-                                <th>Type Aktifitas</th>
-                                <th>Jam Kunjungan</th>
-                                <th>Note</th>
-                                <th width="280px">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- Data akan dirender di sini -->
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="datatable-show" class="table table-striped table-bordered dt-responsive nowrap"
+                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>NO</th>
+                                    <th>Customer</th>
+                                    <th>Type Aktifitas</th>
+                                    <th>Jam Kunjungan</th>
+                                    <th>Note</th>
+                                    <th width="280px">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <!-- Data akan dirender di sini -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -197,157 +203,159 @@
 
 
             $(document).on('click', '.edit-jadwal', function() {
-        var id = $(this).data('id');
+                var id = $(this).data('id');
 
 
-        $.ajax({
-            url: '/jadwal/' + id + '/edit',
-            method: 'GET',
-            success: function(response) {
+                $.ajax({
+                    url: '/jadwal/' + id + '/edit',
+                    method: 'GET',
+                    success: function(response) {
 
-                $('#date_edit').val(response.date);
-                $('#Edit').data('id', id);
-            },
-            error: function(xhr) {
-                console.error('Error fetching data:', xhr);
-            }
-        });
-    });
-
-    $('#Edit .update-jadwal').click(function() {
-        var id = $('#Edit').data('id');
-        var date = $('#date_edit').val();
-        console.log(id);
-
-
-        $.ajax({
-            url: '/jadwal/' + id,
-            method: 'PUT',
-            data: {
-                _token: '{{ csrf_token() }}',
-                date: date
-            },
-            success: function(response) {
-
-                if(response.success){
-                    alert('Data berhasil diupdate');
-                $('#Edit').modal('hide');
-                location.reload();
-                }else{
-                    alert(response.message);
-                }
-
-            },
-            error: function(xhr) {
-                console.error('Error updating data:', xhr);
-                alert('Terjadi kesalahan saat mengupdate data');
-            }
-        });
-    });
-
-    $(document).on('click', '.btn-cancel', function() {
-        var id = $(this).data('id');
-
-        if (confirm('Apakah Anda yakin ingin membatalkan jadwal ini?')) {
-
-            $.ajax({
-                url: '/jadwal/' + id,
-                method: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        location.reload();
-                    } else {
-                        alert(response.message);
+                        $('#date_edit').val(response.date);
+                        $('#Edit').data('id', id);
+                    },
+                    error: function(xhr) {
+                        console.error('Error fetching data:', xhr);
                     }
-                },
-                error: function(xhr) {
-                    console.error('Error deleting data:', xhr);
-                    alert('Terjadi kesalahan saat membatalkan jadwal');
+                });
+            });
+
+            $('#Edit .update-jadwal').click(function() {
+                var id = $('#Edit').data('id');
+                var date = $('#date_edit').val();
+                console.log(id);
+
+
+                $.ajax({
+                    url: '/jadwal/' + id,
+                    method: 'PUT',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        date: date
+                    },
+                    success: function(response) {
+
+                        if (response.success) {
+                            alert('Data berhasil diupdate');
+                            $('#Edit').modal('hide');
+                            location.reload();
+                        } else {
+                            alert(response.message);
+                        }
+
+                    },
+                    error: function(xhr) {
+                        console.error('Error updating data:', xhr);
+                        alert('Terjadi kesalahan saat mengupdate data');
+                    }
+                });
+            });
+
+            $(document).on('click', '.btn-cancel', function() {
+                var id = $(this).data('id');
+
+                if (confirm('Apakah Anda yakin ingin membatalkan jadwal ini?')) {
+
+                    $.ajax({
+                        url: '/jadwal/' + id,
+                        method: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                                location.reload();
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error('Error deleting data:', xhr);
+                            alert('Terjadi kesalahan saat membatalkan jadwal');
+                        }
+                    });
                 }
             });
-        }
-    });
 
 
             $('[data-bs-toggle="modal"][data-bs-target="#Show"]').on('click', function() {
                 $('#datatable-show tbody').empty();
 
 
-        var id = $(this).data('id');
-        loadModalData(id);
+                var id = $(this).data('id');
+                loadModalData(id);
 
 
 
 
-    });
+            });
 
-    function loadModalData(id) {
-        $.ajax({
-            url: '/getByidDetailJadwal',
-            method: 'GET',
-            data: { id: id },
-            dataType: 'json',
-            success: function(response) {
-
-
-                response.forEach(function(item, index) {
-                    var editUrl = `/edit-detailJadwal/${item.id}`;
-
-                    var row = `<tr>
-                        <td>${index + 1}</td>
-                        <td>${item.general_id}</td>
-                        <td>${item.activity_type}</td>
-                        <td>${item.plant_date}</td>
-                        <td>${item.note}</td>
-                        <td>
-                            <a href="${editUrl}" class="btn btn-sm btn-warning">Edit</a>
-                            <button type="button" class="btn btn-sm btn-danger btn-cancel-detail" data-id="${item.id}">Batal</button>
-                        </td>
-                    </tr>`;
-                    $('#datatable-show tbody').append(rows);
-                });
+            function loadModalData(id) {
+                $.ajax({
+                    url: '/getByidDetailJadwal',
+                    method: 'GET',
+                    data: {
+                        id: id
+                    },
+                    dataType: 'json',
+                    success: function(response) {
 
 
-                $('#Show').modal('show');
-                $('#datatable-show').DataTable();
-            },
-            error: function(xhr, status, error) {
-                console.error("Terjadi kesalahan: ", status, error);
-            }
-        });
-    }
+                        response.forEach(function(item, index) {
+                            var editUrl = `/edit-detailJadwal/${item.id}`;
+
+                            var row = `<tr>
+                            <td>${index + 1}</td>
+                            <td>${item.customer.nama_usaha}</td>
+                            <td>${item.activity_type}</td>
+                            <td>${item.plant_date}</td>
+                            <td>${item.note}</td>
+                            <td>
+                                <a href="${editUrl}" class="btn btn-sm btn-warning">Edit</a>
+                                <button type="button" class="btn btn-sm btn-danger btn-cancel-detail" data-id="${item.id}">Batal</button>
+                            </td>
+                        </tr>`;
+                            $('#datatable-show tbody').append(row);
+                        });
 
 
-    $(document).on('click', '.btn-cancel-detail', function() {
-        var id = $(this).data('id');
-
-        if (confirm('Apakah Anda yakin ingin membatalkan Detail jadwal ini?')) {
-            // Kirim permintaan soft delete menggunakan AJAX
-            $.ajax({
-                url: '/jadwal-detail/' + id,
-                method: 'DELETE',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    if (response.success) {
-                        alert(response.message);
-                        location.reload(); // Reload halaman untuk melihat perubahan
-                    } else {
-                        alert(response.message);
+                        $('#Show').modal('show');
+                        $('#datatable-show').DataTable();
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Terjadi kesalahan: ", status, error);
                     }
-                },
-                error: function(xhr) {
-                    console.error('Error deleting data:', xhr);
-                    alert('Terjadi kesalahan saat membatalkan jadwal');
+                });
+            }
+
+
+            $(document).on('click', '.btn-cancel-detail', function() {
+                var id = $(this).data('id');
+
+                if (confirm('Apakah Anda yakin ingin membatalkan Detail jadwal ini?')) {
+                    // Kirim permintaan soft delete menggunakan AJAX
+                    $.ajax({
+                        url: '/jadwal-detail/' + id,
+                        method: 'DELETE',
+                        data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                        success: function(response) {
+                            if (response.success) {
+                                alert(response.message);
+                                location.reload(); // Reload halaman untuk melihat perubahan
+                            } else {
+                                alert(response.message);
+                            }
+                        },
+                        error: function(xhr) {
+                            console.error('Error deleting data:', xhr);
+                            alert('Terjadi kesalahan saat membatalkan jadwal');
+                        }
+                    });
                 }
             });
-        }
-    });
 
 
 
