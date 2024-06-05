@@ -40,7 +40,7 @@
                         </div>
                         <div class="col col-auto" id="checkout">
                             @if ($checkin)
-                                <a href="{{ route('check.checkout', ['id_general' => $general->id]) }}"
+                                <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id')]) }}"
                                     class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
                                 </a>

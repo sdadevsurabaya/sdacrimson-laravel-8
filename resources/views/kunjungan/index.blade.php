@@ -62,10 +62,9 @@
                                     <th>NO</th>
                                     <th>ID Customer</th>
                                     <th>Nama Usaha</th>
-                                    <th>Type Usaha</th>
                                     <th>Nama Pemilik</th>
                                     <th>Alamat</th>
-                                    <th>Jumlah Outlet</th>
+                                    <th>Tanggal</th>
                                     <th>AR</th>
                                     <th width="280px">Aksi</th>
 
@@ -78,17 +77,12 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $general->id_customer }}</td>
                                         <td>{{ $general->nama_usaha }}</td>
-                                        <td>{{ $general->type_usaha }}</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
                             
-                                        @php
-                                            $get_outlet = DB::table('outlet')
-                                                            ->where('id_customer', $general->id_customer)
-                                                            ->count();
-                                        @endphp
+                                     
                             
-                                        <td>{{ $get_outlet }}</td>
+                                        <td>{{ $jadwal->date }}</td>
                             
                                         <td>{{ $jadwal->user->name }}</td>
                             
