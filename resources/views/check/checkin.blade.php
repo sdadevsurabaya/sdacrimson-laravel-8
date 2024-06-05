@@ -361,6 +361,11 @@
 
             var imageBlob = dataURItoBlob(datauri);
 
+            const urlParams = new URLSearchParams(window.location.search);
+
+            // Ambil nilai parameter
+            const idGeneral = urlParams.get('id_general');
+            const idJadwal = urlParams.get('id_jadwal');
 
             var bodyFormData = new FormData();
             bodyFormData.append('iduser', $('#iduser').val());
@@ -369,10 +374,13 @@
             bodyFormData.append('status', 'check in');
             bodyFormData.append('latitude', Latitude); // Pastikan Latitude didefinisikan sebelumnya
             bodyFormData.append('longitude', Longitude); // Pastikan Longitude didefinisikan sebelumnya
+            bodyFormData.append('id_jadwal', idJadwal); // Pastikan Longitude didefinisikan sebelumnya
             bodyFormData.append('foto', imageBlob, 'photo.jpg');
 
             var url = "{{ url('/') }}";
             var urlPost = url + '/api/attendance';
+         
+           
             $.ajax({
                 type: 'POST',
                 url: urlPost,
@@ -381,7 +389,7 @@
                 contentType: false, // Jangan set tipe konten
                 success: function(response) {
                     // console.log(response);
-                    window.location.href = "{{ 'admin/generals' }}";
+                    window.location.href = "{{ 'laporan/' }}" + idGeneral + '/' + idJadwal ;
                 },
                 error: function(xhr, status, error) {
                     console.error('Error: ' + error);

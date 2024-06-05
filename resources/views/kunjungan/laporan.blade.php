@@ -34,10 +34,9 @@
                 <div class="card-body">
                     <div class="gap-3 d-flex justify-content-center">
                         <div class="col col-auto" id="checkin">
-                            <a href="{{ route('check.checkin', ['id_general' => $general->id]) }}"
-                                class="btn @if ($checkin) btn-success disabled @else btn-outline-success @endif w-100 fw-bold">
-                                Check In <i class="uil uil-arrow-from-right"></i>
-                            </a>
+                            <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id')]) }}"
+                                class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
+                                In <i class="uil uil-arrow-from-right"></i></a>
                         </div>
                         <div class="col col-auto" id="checkout">
                             @if ($checkin)

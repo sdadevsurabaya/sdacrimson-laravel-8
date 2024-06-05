@@ -59,7 +59,7 @@ class KunjunganController extends Controller
 
         $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today) {
             $query->where('user_id', $userId)
-                  ->whereDate('date', $today);
+            ->whereDate('date', '<=', $today); 
         })->with(['jadwals' => function ($query) {
             $query->select('jadwals.*');
         }, 'jadwals.user' => function ($query) {
