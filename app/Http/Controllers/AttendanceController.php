@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\DetailJadwal;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -41,6 +42,7 @@ class AttendanceController extends Controller
             'note' => 'nullable|string',
             'status' => 'required|string',
             'iduser' => 'required|string',
+            'id_jadwal' => 'required|string',
         ]);
 
         if ($validator->fails()) {
@@ -78,6 +80,18 @@ class AttendanceController extends Controller
                 $constraint->aspectRatio();
             })->save($path);
         }
+
+        $updateJadwal = DetailJadwal::where('jadwal_id', $request->input('id_jadwal'))->where('general_id', $request->input('general_id'))->first();
+
+        if($request->status == 'check in'){
+            $updateJadwal->checkin = now(); 
+            $updateJadwal->save(); 
+        }else{
+            $updateJadwal->checkout = now(); 
+            $updateJadwal->save(); 
+        }
+     
+
 
         $attendance = Attendance::create([
             'user_id' => $request->input('iduser'),
