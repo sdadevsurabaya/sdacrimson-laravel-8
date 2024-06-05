@@ -59,4 +59,50 @@ class JadwalController extends Controller
         ], 200);
     }
 
+<<<<<<< HEAD
+=======
+    public function edit($id)
+{
+    $jadwal = Jadwal::find($id);
+    return response()->json($jadwal);
+}
+
+
+public function update(Request $request, $id)
+{
+    $jadwal = Jadwal::find($id);
+    $newDate = $request->input('date');
+
+    if (strtotime($newDate) < strtotime(date('Y-m-d'))) {
+        return response()->json(['success' => false, 'message' => 'Tanggal tidak boleh mundur dari tanggal sekarang']);
+    }
+
+
+    // Cek apakah tanggal baru sudah ada di database
+    // $existingJadwal = Jadwal::where('date', $newDate)->where('id', '!=', $id)->first();
+    
+    // if ($existingJadwal) {
+    //     return response()->json(['success' => false, 'message' => 'Tanggal sudah ada di Buat Schedule']);
+    // }
+
+    // Jika tidak ada, update tanggal
+    $jadwal->date = $newDate;
+    $jadwal->save();
+
+    return response()->json(['success' => true, 'message' => 'Data berhasil diupdate']);
+}
+
+public function destroy($id)
+    {
+        $jadwal = Jadwal::find($id);
+        if ($jadwal) {
+            $jadwal->delete(); // Ini akan melakukan soft delete jika model Anda menggunakan soft deletes
+            return response()->json(['success' => true, 'message' => 'Jadwal berhasil dibatalkan']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Jadwal tidak ditemukan']);
+        }
+    }
+
+    
+>>>>>>> origin/eko
 }

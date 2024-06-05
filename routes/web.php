@@ -168,9 +168,12 @@
 
         Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
         Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
+        Route::get('jadwal/{id}/edit', [App\Http\Controllers\JadwalController::class, 'edit'])->name('edit.jadwal');
+        Route::put('jadwal/{id}', [App\Http\Controllers\JadwalController::class, 'update'])->name('update.jadwal');
         Route::post('save-jadwal', [App\Http\Controllers\JadwalController::class, 'store'])->name('save.jadwal');
         Route::post('save-detail-jadwal', [App\Http\Controllers\DetailJadwal\StoreDetailJadwalController::class, 'store'])->name('save.detail.jadwal');
 
+        Route::delete('jadwal-detail/{id}', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'destroy'])->name('delete.detail.jadwal');
 
 
 

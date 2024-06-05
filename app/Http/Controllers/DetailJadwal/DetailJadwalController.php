@@ -29,6 +29,19 @@ class DetailJadwalController extends Controller
         return response()->json($data);
     }
 
+    public function destroy($id)
+    {
+        
+        $jadwal = DetailJadwal::find($id);
+
+        if ($jadwal) {
+            $jadwal->delete(); // Ini akan melakukan soft delete jika model Anda menggunakan soft deletes
+            return response()->json(['success' => true, 'message' => 'Detail Jadwal berhasil dibatalkan']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Detail Jadwal tidak ditemukan']);
+        }
+    }
+
 
     
 
