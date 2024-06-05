@@ -34,4 +34,17 @@ class General_model extends Model
         'update_time',
         'update_by',
     ];
+
+
+    // Tambahan di Model GeneralInformation
+public function detailJadwals()
+{
+    return $this->hasMany(DetailJadwal::class, 'general_id', 'id');
+}
+
+public function jadwals()
+{
+    return $this->hasManyThrough(Jadwal::class, DetailJadwal::class, 'general_id', 'id', 'id', 'jadwal_id')
+                ->select('jadwals.id as jadwal_id', 'jadwals.user_id', 'jadwals.date', 'jadwals.created_by_id');
+}
 }

@@ -73,6 +73,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($data as $key => $general)
+                                @foreach($general->jadwals as $jadwal)
                                     <tr>
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $general->id_customer }}</td>
@@ -80,22 +81,24 @@
                                         <td>{{ $general->type_usaha }}</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
-
+                            
                                         @php
                                             $get_outlet = DB::table('outlet')
                                                             ->where('id_customer', $general->id_customer)
-                                                            ->get();
-                                            $jumlah_outlet = $get_outlet->count();
+                                                            ->count();
                                         @endphp
-
-                                        <td>{{ $jumlah_outlet }}</td>
-                                        <td>{{ $general->name }}</td>
-
+                            
+                                        <td>{{ $get_outlet }}</td>
+                            
+                                        <td>{{ $jadwal->user->name }}</td>
+                            
                                         <td>
-                                            <a href="{{ route('kunjungan.laporan',$general->id_general) }}" class="btn btn-sm  btn-success m-1">Kunjungi</a>
+                                            <a href="{{ route('kunjungan.laporan', ['general_id' => $general->id, 'jadwal_id' => $jadwal->id]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
                                         </td>
                                     </tr>
                                 @endforeach
+                            @endforeach
+                            
                             </tbody>
                         </table>
                     </div>
