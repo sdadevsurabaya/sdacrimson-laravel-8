@@ -13,7 +13,7 @@
             Jadwal
         @endslot
         @slot('title')
-            Edit Detail Jadwal Untuk Sales {{ $jadwal->user->name}} 
+            Edit Detail Jadwal Untuk Sales {{ $jadwal->user->name}}
         @endslot
     @endcomponent
 
@@ -61,7 +61,7 @@
                                 </div>
                             @endif
                             <div class="mt-4">
-                             
+
                                 {!! Form::open(['route' => 'update.detail.jadwal', 'method' => 'POST', 'files' => true]) !!}
                                 @csrf
                                 <div class="row">
@@ -76,9 +76,9 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    
+
                                     <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $DetailJadwal->id }}">
-                                    
+
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="activity_type" class="col-form-label">Type Aktifitas</label>
                                         <select class="form-select" name="activity_type" id="activity_type" aria-label="Floating label select example " disabled="true">
@@ -90,10 +90,10 @@
                                             <option value="Demo" {{ $DetailJadwal->activity_type == 'Demo' ? 'selected' : '' }}>Demo</option>
                                         </select>
                                     </div>
-                                    
-                                   
 
-                                    
+
+
+
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="status" class="col-form-label">Status</label>
                                         <select class="form-select" name="status_jadwal" id="status_jadwal" aria-label="Floating label select example " >
@@ -104,17 +104,17 @@
                                         </select>
                                     </div>
 
-                                    
+
                                     <div class="col-12 col-md-6 mb-3">
                                         <label class="form-label" for="plant_date">Jam Kunjungan</label>
                                         <input type="time" class="form-control" name="plant_date" id="plant_date" value="{{ $DetailJadwal->plant_date }}" placeholder="Jam Kunjungan" readonly>
                                     </div>
-                                    
+
                                     <div class="col-12 col-md-6 mb-3">
                                         <label class="form-label" for="plant_date">Jam Kunjungan Aktual</label>
                                         <input type="time" class="form-control" name="actual_date" id="actual_date"  placeholder="Jam Kunjungan" >
                                     </div>
-                                    
+
                                     <div class="col-12 col-md-6 mb-3">
                                         <label class="form-label" for="note">Note</label>
                                         <div class="form-floating">
@@ -123,14 +123,14 @@
                                         </div>
                                     </div>
 
-                                 
+
                                 </div>
-                                
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
                             {!! Form::close() !!}
-                            
+
                             </div>
                         </div>
                     </div>
