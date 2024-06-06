@@ -79,20 +79,15 @@
                                         <td>{{ $general->nama_usaha }}</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
-                            
-                                     
-                            
                                         <td>{{ $jadwal->date }}</td>
-                            
                                         <td>{{ $jadwal->user->name }}</td>
-                            
                                         <td>
                                             <a href="{{ route('kunjungan.laporan', ['general_id' => $general->id, 'jadwal_id' => $jadwal->id]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
                                         </td>
                                     </tr>
                                 @endforeach
                             @endforeach
-                            
+
                             </tbody>
                         </table>
                     </div>

@@ -225,7 +225,6 @@
                 var date = $('#date_edit').val();
                 console.log(id);
 
-
                 $.ajax({
                     url: '/jadwal/' + id,
                     method: 'PUT',
@@ -234,19 +233,33 @@
                         date: date
                     },
                     success: function(response) {
-
                         if (response.success) {
-                            alert('Data berhasil diupdate');
-                            $('#Edit').modal('hide');
-                            location.reload();
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Berhasil',
+                                text: 'Data berhasil diupdate',
+                                confirmButtonText: 'OK'
+                            }).then(() => {
+                                $('#Edit').modal('hide');
+                                location.reload();
+                            });
                         } else {
-                            alert(response.message);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Gagal',
+                                text: response.message,
+                                confirmButtonText: 'OK'
+                            });
                         }
-
                     },
                     error: function(xhr) {
                         console.error('Error updating data:', xhr);
-                        alert('Terjadi kesalahan saat mengupdate data');
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Gagal',
+                            text: 'Terjadi kesalahan saat mengupdate data',
+                            confirmButtonText: 'OK'
+                        });
                     }
                 });
             });
@@ -254,30 +267,52 @@
             $(document).on('click', '.btn-cancel', function() {
                 var id = $(this).data('id');
 
-                if (confirm('Apakah Anda yakin ingin membatalkan jadwal ini?')) {
-
-                    $.ajax({
-                        url: '/jadwal/' + id,
-                        method: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                alert(response.message);
-                                location.reload();
-                            } else {
-                                alert(response.message);
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Apakah Anda yakin ingin membatalkan jadwal ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/jadwal/' + id,
+                            method: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire(
+                                        'Dibatalkan!',
+                                        response.message,
+                                        'success'
+                                    ).then(() => {
+                                        location.reload();
+                                    });
+                                } else {
+                                    Swal.fire(
+                                        'Gagal!',
+                                        response.message,
+                                        'error'
+                                    );
+                                }
+                            },
+                            error: function(xhr) {
+                                console.error('Error deleting data:', xhr);
+                                Swal.fire(
+                                    'Gagal!',
+                                    'Terjadi kesalahan saat membatalkan jadwal',
+                                    'error'
+                                );
                             }
-                        },
-                        error: function(xhr) {
-                            console.error('Error deleting data:', xhr);
-                            alert('Terjadi kesalahan saat membatalkan jadwal');
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
-
 
             $('[data-bs-toggle="modal"][data-bs-target="#Show"]').on('click', function() {
                 $('#datatable-show tbody').empty();
@@ -285,9 +320,6 @@
 
                 var id = $(this).data('id');
                 loadModalData(id);
-
-
-
 
             });
 
@@ -333,28 +365,56 @@
             $(document).on('click', '.btn-cancel-detail', function() {
                 var id = $(this).data('id');
 
-                if (confirm('Apakah Anda yakin ingin membatalkan Detail jadwal ini?')) {
-                    // Kirim permintaan soft delete menggunakan AJAX
-                    $.ajax({
-                        url: '/jadwal-detail/' + id,
-                        method: 'DELETE',
-                        data: {
-                            _token: '{{ csrf_token() }}'
-                        },
-                        success: function(response) {
-                            if (response.success) {
-                                alert(response.message);
-                                location.reload(); // Reload halaman untuk melihat perubahan
-                            } else {
-                                alert(response.message);
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: 'Apakah Anda yakin ingin membatalkan Detail jadwal ini?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, batalkan!',
+                    cancelButtonText: 'Tidak'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Kirim permintaan soft delete menggunakan AJAX
+                        $.ajax({
+                            url: '/jadwal-detail/' + id,
+                            method: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function(response) {
+                                if (response.success) {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Berhasil',
+                                        text: response.message,
+                                        confirmButtonText: 'OK'
+                                    }).then(() => {
+                                        location
+                                    .reload(); // Reload halaman untuk melihat perubahan
+                                    });
+                                } else {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Gagal',
+                                        text: response.message,
+                                        confirmButtonText: 'OK'
+                                    });
+                                }
+                            },
+                            error: function(xhr) {
+                                console.error('Error deleting data:', xhr);
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Gagal',
+                                    text: 'Terjadi kesalahan saat membatalkan jadwal',
+                                    confirmButtonText: 'OK'
+                                });
                             }
-                        },
-                        error: function(xhr) {
-                            console.error('Error deleting data:', xhr);
-                            alert('Terjadi kesalahan saat membatalkan jadwal');
-                        }
-                    });
-                }
+                        });
+                    }
+                });
             });
 
 
@@ -372,13 +432,24 @@
                         date: date
                     },
                     success: function(response) {
-                        alert(response.message);
-                        window.location.href = '/createJadwal';
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Berhasil',
+                            text: response.message,
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            window.location.href = '/createJadwal';
+                        });
                     },
                     error: function(xhr) {
                         var errors = xhr.responseJSON.errors;
                         $.each(errors, function(key, value) {
-                            alert(value[0]);
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: value[0],
+                                confirmButtonText: 'OK'
+                            });
                         });
                     }
                 });
