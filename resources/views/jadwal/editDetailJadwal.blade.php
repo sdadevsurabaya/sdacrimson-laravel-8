@@ -67,7 +67,7 @@
                                 <div class="row">
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="general_id" class="col-form-label">Toko / Customer</label>
-                                        <select class="form-select" name="general_id" id="general_id" aria-label="Floating label select example" disabled="true">
+                                        <select class="form-select" name="general_id" id="general_id" aria-label="Floating label select example" disabled>
                                             <option value="">-- Pilih Customer --</option>
                                             @foreach($general as $id => $nama_usaha)
                                                 <option value="{{ $id }}" {{ $id == $DetailJadwal->general_id ? 'selected' : '' }}>
@@ -75,6 +75,7 @@
                                                 </option>
                                             @endforeach
                                         </select>
+
                                     </div>
 
                                     <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $DetailJadwal->id }}">
