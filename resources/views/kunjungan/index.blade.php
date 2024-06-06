@@ -88,9 +88,9 @@
                             
                                         <td>
 
-                                            @if ($jadwal->date == \Carbon\Carbon::now()->toDateString())
+                                           
                                             <a href="{{ route('kunjungan.laporan', ['general_id' => $general->id, 'jadwal_id' => $jadwal->id, 'tanggal' => $jadwal->date]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
-                                            @endif
+                                          
                                            
                                         </td>
                                     </tr>
