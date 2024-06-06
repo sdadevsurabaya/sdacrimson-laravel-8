@@ -69,7 +69,91 @@
                             @endif
 
                             <div class="mt-4">
-                                {{-- <form action="{{ route('generals.store') }}" method="POST"> --}}
+                                @if($laporan)
+
+                                {!! Form::model($laporan, ['route' => ['laporan.update', $laporan->id], 'method' => 'PUT', 'files' => true]) !!}
+{{-- <form id="edit_general" method="POST" action="javascript:void(0)" accept-charset="utf-8" enctype="multipart/form-data"> --}}
+                                                        @csrf
+                                                    <div class="row">
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label" for="alamat_kantor">
+                                                                <span style="color: crimson;">*</span> Laporan</label>
+                                                            <div class="form-floating">
+                                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                                                    style="height: 100px">{{ $laporan->pesan }}</textarea>
+                                                                <label for="floatingTextarea2">Masukan catatan..</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xl-12 col-md-12">
+                                                            <div class="mb-3">
+                                                                <label class="form-label">
+                                                                    <span style="color: crimson;">*</span> Foto</label>
+                                                                <div class="foto col-12 d-flex">
+                                                                   
+
+                                                                    @isset($laporan->gambar)
+                                                                    @foreach($laporan->gambar as $index => $gambar)
+                                                                        <div class="col-4 col-md-3 p-1">
+                                                                            <img src="{{ URL::asset('laporan/' . $gambar->foto) }}"
+                                                                                class="img-thumbnail mb-4 output_member_img" id="output_member{{ $index }}">
+                                                                        </div>
+                                                                        <div class="col-1 col-md-1 p-1 btn btn-danger btn-block btn-delete-gambar-edit"
+    id="remove-member-fieldss" style="align-self:center;"
+    data-gambar-id="{{ $gambar->id }}">
+    <i class="uil-trash"></i>
+</div>
+
+                                                                    @endforeach
+                                                                @else
+                                                                <div class="col-2 col-md-1 p-1" style="align-self: center;">
+                                                                    <label for="takefoto" class="btn btn-md btn-secondary"><i
+                                                                            class="uil-camera-plus"></i>
+                                                                    </label>
+                                                                    <input id="takefoto" type="file" name="member_image[]"
+                                                                        onchange="preview_member(event, 0)"
+                                                                        style="visibility:hidden; width:0;"
+                                                                        class="output_member member_image">
+                                                                </div>
+                                                                    <div class="col-4 col-md-3 p-1">
+                                                                        <img src="{{ URL::asset('/assets/images/no-image.jpg') }}"
+                                                                            class="img-thumbnail mb-4 output_member_img" id="output_member0">
+                                                                    </div>
+                                                                    <div class="col-5 col-md-3 p-1" style="align-self: center">
+                                                                        <input type="text" class="form-control namafoto" name="namafoto[]"
+                                                                            id="namafoto" placeholder="Nama foto"">
+                                                                    </div>
+                                                                    <div class="col-1 col-md-1 p-1 btn btn-danger btn-block"
+                                                                        id="remove-member-fieldss" style="align-self:center; opacity:0;">
+                                                                        <i class="uil-trash"></i>
+                                                                    </div>
+                                                                @endisset
+                                                                    
+                                                                </div>
+                                                                <div id="team-member-fields"></div>
+                                                                <button type="button" class="btn btn-dark btn-block mb-3"
+                                                                    id="add-member-fields">
+                                                                    <i class="uil-plus-circle"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        {{-- </form> --}}
+                                                    </div>
+                                                    <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
+                                                    <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
+                              
+                                    <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
+                                                    <div class="text-center">
+                                                        <button type="submit" class="btn btn-primary submit-contact">Update Laporan</button>
+                                                    </div>
+                                                
+
+                                                    {!! Form::close() !!}
+
+
+
+
+                                @else
+
                                 {!! Form::open(['route' => 'laporan.post', 'method' => 'POST', 'files' => true]) !!}
                                 {{-- <form id="create_general" method="POST" action="javascript:void(0)" accept-charset="utf-8"
                                     enctype="multipart/form-data"> --}}
@@ -133,14 +217,29 @@
 
                                     <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
                                     <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                    <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
 
                                     {{-- </form> --}}
                                 </div>
 
+                                @if($laporan)
+                                <a onclick="submitNotif()" class="btn btn-outline-danger fw-bold">
+                                    Sudah Isi Laporan
+                                  </a>
+                                @else
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
+                                @endif
+                             
+
+
+                               
                                 {!! Form::close() !!}
+
+                                @endif
+                              
+                           
                             </div>
                         </div>
                     </div>
@@ -160,6 +259,33 @@
                 $(".increment").after(lsthmtl);
 
             });
+
+            $(document).on('click', '.btn-delete-gambar-edit', function() {
+        var gambarId = $(this).data('gambar-id');
+        
+        // Tampilkan dialog konfirmasi sebelum menghapus gambar
+        if (confirm('Apakah Anda yakin ingin menghapus gambar ini?')) {
+            $.ajax({
+                url: '/delete-gambar/' + gambarId,
+                type: 'DELETE',
+                data: {
+                            _token: '{{ csrf_token() }}'
+                        },
+                success: function(response) {
+                    // location.reload();
+                    // Tampilkan pesan sukses atau lakukan operasi lain yang diperlukan
+                    console.log(response.message);
+
+                    // Hapus elemen gambar dari DOM
+                    $('#gambar-' + gambarId).remove();
+                },
+                error: function(xhr, status, error) {
+                    // Tampilkan pesan kesalahan jika terjadi
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
 
 
 
@@ -193,6 +319,14 @@
                 icon: 'warning',
                 title: 'Perhatian',
                 text: 'Anda harus melakukan check-in terlebih dahulu!',
+                confirmButtonText: 'OK'
+            });
+        }
+        function submitNotif() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Anda Sudah Mengisi Laporan',
                 confirmButtonText: 'OK'
             });
         }

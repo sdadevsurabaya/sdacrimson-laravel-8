@@ -158,6 +158,9 @@
         Route::resource('kunjungan', KunjunganController::class);
         Route::get('laporan/{general_id}/{jadwal_id}', [App\Http\Controllers\KunjunganController::class, 'laporan'])->name('kunjungan.laporan');
         Route::post('/post-laporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan.post');
+        Route::put('/update-laporan', [App\Http\Controllers\LaporanSalesController::class, 'update'])->name('laporan.update');
+        Route::delete('/delete-gambar/{gambar}', [App\Http\Controllers\LaporanSalesController::class, 'deleteGambar'])->name('delete-gambar');
+
 
         //Penjadwalan Kunjungan
         Route::resource('jadwal', JadwalController::class);
