@@ -17,8 +17,9 @@ class CreateAttendancesTable extends Migration
             $table->id();
             $table->unsignedBigInteger('general_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('jadwal_id')->nullable();
             $table->string('foto');
-            $table->string('note');
+            $table->string('note')->nullable();
             $table->enum('status', ['check in', 'check out']);
             $table->string('latitude');
             $table->string('longitude');

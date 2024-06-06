@@ -32,16 +32,39 @@
                 <div class="card-body">
                     <div class="gap-3 d-flex justify-content-center">
                         <div class="col col-auto" id="checkin">
+
+                            @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
+                            <button onclick="checkinOver()" class="btn btn-outline-success  w-100 fw-bold">
+                                Check
+                                In <i class="uil uil-arrow-from-right"></i>
+                            </button>
+
+                            @else
                             <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id')]) }}"
                                 class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
                                 In <i class="uil uil-arrow-from-right"></i></a>
+                        @endif
+                        
+                           
                         </div>
                         <div class="col col-auto" id="checkout">
                             @if ($checkin)
+
+                           
+
+                            @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
+                            <button onclick="checkOutOver()" class="btn btn-outline-danger  w-100 fw-bold">
+                                Check Out <i class="uil uil-left-arrow-from-left"></i>
+                            </button>
+                            @else
+
+
                                 <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id')]) }}"
                                     class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
                                 </a>
+
+                                @endif
                             @else
                                 <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
@@ -222,9 +245,9 @@
                                     {{-- </form> --}}
                                 </div>
 
-                                @if($laporan)
-                                <a onclick="submitNotif()" class="btn btn-outline-danger fw-bold">
-                                    Sudah Isi Laporan
+                                @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
+                                <a onclick="submitNotif()" class="btn btn-primary fw-bold">
+                                    Submit
                                   </a>
                                 @else
                                 <div class="text-center">
@@ -326,7 +349,23 @@
             Swal.fire({
                 icon: 'warning',
                 title: 'Perhatian',
-                text: 'Anda Sudah Mengisi Laporan',
+                text: 'Jadwal Sudah Melewati Batas Tidak Bisa Isi Laporan',
+                confirmButtonText: 'OK'
+            });
+        }
+        function checkinOver() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Jadwal Sudah Melewati Batas Tidak Bisa Check In',
+                confirmButtonText: 'OK'
+            });
+        }
+        function checkOutOver() {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Perhatian',
+                text: 'Jadwal Sudah Melewati Batas Tidak Bisa Check Out',
                 confirmButtonText: 'OK'
             });
         }

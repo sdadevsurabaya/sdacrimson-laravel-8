@@ -18,6 +18,7 @@ class CreateLaporanSalesTable extends Migration
             $table->unsignedBigInteger('general_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('attendance_id');
+            $table->unsignedBigInteger('jadwal_id');
             $table->string('pesan');
             $table->string('latitude');
             $table->string('longitude');
