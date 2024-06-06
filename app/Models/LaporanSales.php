@@ -14,4 +14,8 @@ class LaporanSales extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function gambar()
+    {
+        return $this->hasMany(LaporanFoto::class);
+    }
 }
