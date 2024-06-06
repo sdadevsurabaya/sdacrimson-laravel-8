@@ -79,13 +79,8 @@
                                         <td>{{ $general->nama_usaha }}</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
-                            
-                                     
-                            
                                         <td>{{ $jadwal->date }}</td>
-                            
                                         <td>{{ $jadwal->user->name }}</td>
-                            
                                         <td>
 
                                            
@@ -96,7 +91,7 @@
                                     </tr>
                                 @endforeach
                             @endforeach
-                            
+
                             </tbody>
                         </table>
                     </div>

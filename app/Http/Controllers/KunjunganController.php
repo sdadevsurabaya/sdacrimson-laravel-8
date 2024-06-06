@@ -52,7 +52,7 @@ class KunjunganController extends Controller
         $today = Carbon::today();
 
         $userId = auth()->user()->id; // atau sesuaikan dengan metode mendapatkan user_id
-        
+
         // $generalInformations = General_model::whereHas('jadwal', function ($query) use ($userId, $today) {
         //     $query->where('user_id', $userId)
         //           ->whereDate('date', $today);
@@ -60,17 +60,17 @@ class KunjunganController extends Controller
 
         $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today) {
             $query->where('user_id', $userId)
-            ->whereDate('date', '<=', $today); 
+            ->whereDate('date', '<=', $today);
         })->with(['jadwals' => function ($query) {
             $query->select('jadwals.*');
         }, 'jadwals.user' => function ($query) {
             $query->select('id', 'name');
         }])->get();
 
-       
-       
+
+
         // dd($data);
-     
+
         return view('kunjungan.index', compact('data'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
