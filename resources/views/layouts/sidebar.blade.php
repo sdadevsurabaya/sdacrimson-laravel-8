@@ -92,6 +92,7 @@
                         <ul class="sub-menu" aria-expanded="true">
                             {{-- <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li> --}}
                             <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadwal')</a></li>
+                            <li><a href="{{ route('jadwal.exportJadwal') }}">@lang('Export Jadwal')</a></li>
                         </ul>
                     </li>
                     <li>
@@ -142,6 +143,7 @@
                         <ul class="sub-menu" aria-expanded="true">
                             {{-- <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li> --}}
                             <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadwal')</a></li>
+
                         </ul>
                     </li>
                     <li>
