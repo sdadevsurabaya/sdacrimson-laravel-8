@@ -33,7 +33,7 @@
                     <div class="gap-3 d-flex justify-content-center">
                         <div class="col col-auto" id="checkin">
 
-                            @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
+                            {{-- @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
                             <button onclick="checkinOver()" class="btn btn-outline-success  w-100 fw-bold">
                                 Check
                                 In <i class="uil uil-arrow-from-right"></i>
@@ -43,7 +43,11 @@
                             <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
                                 class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
                                 In <i class="uil uil-arrow-from-right"></i></a>
-                        @endif
+                        @endif --}}
+
+                        <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
+                            class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
+                            In <i class="uil uil-arrow-from-right"></i></a>
                         
                            
                         </div>
@@ -51,7 +55,7 @@
                             @if ($checkin)
 
                            
-
+{{-- 
                             @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
                             <button onclick="checkOutOver()" class="btn btn-outline-danger  w-100 fw-bold">
                                 Check Out <i class="uil uil-left-arrow-from-left"></i>
@@ -69,7 +73,26 @@
                                 <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
                                 </button>
+                            @endif --}}
+
+                            
+                         
+                         
+
+
+                                <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id'),  'tanggal' => request('tanggal')]) }}"
+                                    class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
+                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
+                                </a>
+
+                              
+                            @else
+                                <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
+                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
+                                </button>
                             @endif
+
+
                         </div>
                     </div>
                 </div>
@@ -246,7 +269,7 @@
                                     {{-- </form> --}}
                                 </div>
 
-                                @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
+                                {{-- @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
                                 <a onclick="submitNotif()" class="btn btn-primary fw-bold">
                                     Submit
                                   </a>
@@ -254,8 +277,11 @@
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
-                                @endif
+                                @endif --}}
                              
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary submit-contact">Submit</button>
+                                </div>
 
 
                                
