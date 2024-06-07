@@ -365,6 +365,7 @@
             // Ambil nilai parameter
             const idGeneral = urlParams.get('id_general');
             const idJadwal = urlParams.get('id_jadwal');
+            const tanggalParam = urlParams.get('tanggal');
 
             var bodyFormData = new FormData();
             bodyFormData.append('iduser', $('#iduser').val());
@@ -386,7 +387,7 @@
                 contentType: false, // Jangan set tipe konten
                 success: function(response) {
                     // console.log(response);
-                    window.location.href = "{{ 'laporan/' }}" + idGeneral + '/' + idJadwal ;
+                    window.location.href = "{{ 'laporan/' }}" + idGeneral + '/' + idJadwal + '?' + 'tanggal=' + tanggalParam ;
                 },
                 error: function(xhr, status, error) {
                     console.error('Error: ' + error);
