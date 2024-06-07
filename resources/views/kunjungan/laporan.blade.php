@@ -298,10 +298,7 @@
                 success: function(response) {
                     // location.reload();
                     // Tampilkan pesan sukses atau lakukan operasi lain yang diperlukan
-                    console.log(response.message);
-
-                    // Hapus elemen gambar dari DOM
-                    $('#gambar-' + gambarId).remove();
+                    location.reload();
                 },
                 error: function(xhr, status, error) {
                     // Tampilkan pesan kesalahan jika terjadi
