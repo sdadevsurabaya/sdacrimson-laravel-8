@@ -85,31 +85,29 @@
 
                     <li class="menu-title">@lang('Sales')</li>
                     <li>
-                        <a href="{{ route('kunjungan.index') }}">
-                            <i class="uil-home-alt"></i>
-                            <span>@lang('Kunjungan')</span>
-                        </a>
-                    </li>
-
-                    <li class="menu-title">@lang('Area Coverage')</li>
-
-                    <li>
-                        <a href="{{ route('maps.index') }}">
-                            <i class="uil-map-marker-alt"></i>
-                            <span>@lang('Maps')</span>
-                        </a>
-                    </li>
-
-                    <li class="menu-title">@lang('Jadwal')</li>
-                    <li>
                         <a href="#" class="has-arrow waves-effect">
                             <i class="uil-database"></i>
                             <span>@lang('Jadwal Kunjungan')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
                             {{-- <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li> --}}
-                            <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadawal')</a></li>
+                            <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadwal')</a></li>
                         </ul>
+                    </li>
+                    <li>
+                        <a href="{{ route('kunjungan.index') }}">
+                            <i class="uil-home-alt"></i>
+                            <span>@lang('Kunjungan')</span>
+                        </a>
+                    </li>
+
+
+                    <li class="menu-title">@lang('Area Coverage')</li>
+                    <li>
+                        <a href="{{ route('maps.index') }}">
+                            <i class="uil-map-marker-alt"></i>
+                            <span>@lang('Maps')</span>
+                        </a>
                     </li>
 
 
