@@ -65,7 +65,7 @@
                                         {{-- Formatting the date --}}
 
                                         <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
-                                                data-id="{{ $jadwal->id }}" class="btn btn-sm btn-secondary">Show</button>
+                                                data-id="{{ $jadwal->id }}" class="btn btn-sm btn-secondary show-jadwal">Show</button>
                                             <a href="{{ route('jadwal.addJadwal', ['id' => $jadwal->id]) }}">
                                                 <button type="button" class="btn btn-sm btn-success">Tambah</button>
                                             </a>
@@ -314,7 +314,7 @@
                 });
             });
 
-            $('[data-bs-toggle="modal"][data-bs-target="#Show"]').on('click', function() {
+            $(document).on('click', '.show-jadwal', function() {
                 $('#datatable-show tbody').empty();
 
 
