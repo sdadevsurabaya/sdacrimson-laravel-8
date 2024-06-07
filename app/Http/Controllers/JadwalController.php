@@ -84,6 +84,7 @@ public function update(Request $request, $id)
     // }
 
     // Jika tidak ada, update tanggal
+    $jadwal->modified_by_id =  Auth::id();
     $jadwal->date = $newDate;
     $jadwal->save();
 
