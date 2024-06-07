@@ -23,6 +23,7 @@ class LaporanSalesController extends Controller
         'user_id' => 'required|string',
         'general_id' => 'required|string',
         'jadwal_id' => 'required|string',
+        'tanggal_jadwal' => 'required|string',
         'latitude' => 'nullable|numeric',
         'longitude' => 'nullable|numeric',
     ]);
@@ -65,7 +66,7 @@ class LaporanSalesController extends Controller
         }
     }
 
-    return redirect('/laporan' . '/'  . $validatedLaporan['general_id'] . '/' .  $validatedLaporan['jadwal_id'] )->with('success', 'Data berhasil disimpan');
+    return redirect('/laporan' . '/'  . $validatedLaporan['general_id'] . '/' .  $validatedLaporan['jadwal_id'] . '?tanggal=' .  $validatedLaporan['tanggal_jadwal'] )->with('success', 'Data berhasil disimpan');
 } catch (\Illuminate\Validation\ValidationException $e) {
     return redirect()->back()->withErrors($e->validator->errors())->withInput();
 } catch (\Exception $e) {
@@ -108,6 +109,7 @@ class LaporanSalesController extends Controller
             'laporan_id' => 'required|string',
             'general_id' => 'required|string',
             'jadwal_id' => 'required|string',
+            'tanggal_jadwal' => 'required|string',
         ]);
         $idLaporan =$validatedLaporan['laporan_id'];
         // Dapatkan laporan yang ingin diperbarui
@@ -146,7 +148,7 @@ class LaporanSalesController extends Controller
         }
     }
 
-    return redirect('/laporan' . '/'  . $validatedLaporan['general_id'] . '/' .  $validatedLaporan['jadwal_id'] )->with('success', 'Data berhasil disimpan');
+    return redirect('/laporan' . '/'  . $validatedLaporan['general_id'] . '/' .  $validatedLaporan['jadwal_id'] . '?tanggal=' .  $validatedLaporan['tanggal_jadwal'] )->with('success', 'Data berhasil disimpan');
 } catch (\Illuminate\Validation\ValidationException $e) {
     return redirect()->back()->withErrors($e->validator->errors())->withInput();
 } catch (\Exception $e) {

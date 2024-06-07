@@ -40,7 +40,7 @@
                             </button>
 
                             @else
-                            <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id')]) }}"
+                            <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
                                 class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
                                 In <i class="uil uil-arrow-from-right"></i></a>
                         @endif
@@ -59,7 +59,7 @@
                             @else
 
 
-                                <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id')]) }}"
+                                <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id'),  'tanggal' => request('tanggal')]) }}"
                                     class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
                                 </a>
@@ -164,7 +164,8 @@
                                                     <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
                                                     <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
                               
-                                    <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
+                                                    <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
+                                                    <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
                                                     <div class="text-center">
                                                         <button type="submit" class="btn btn-primary submit-contact">Update Laporan</button>
                                                     </div>
@@ -241,7 +242,7 @@
                                     <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
                                     <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                                     <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
-
+                                    <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
                                     {{-- </form> --}}
                                 </div>
 
@@ -297,10 +298,7 @@
                 success: function(response) {
                     // location.reload();
                     // Tampilkan pesan sukses atau lakukan operasi lain yang diperlukan
-                    console.log(response.message);
-
-                    // Hapus elemen gambar dari DOM
-                    $('#gambar-' + gambarId).remove();
+                    location.reload();
                 },
                 error: function(xhr, status, error) {
                     // Tampilkan pesan kesalahan jika terjadi
