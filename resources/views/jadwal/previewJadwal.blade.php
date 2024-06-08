@@ -48,8 +48,6 @@
                         <th rowspan="2"></th>
                         <th rowspan="2"></th>
                         <th rowspan="2"></th>
-                        <th rowspan="2"></th>
-                        <th rowspan="2"></th>
                         <th rowspan="2">Week</th>
                         <th rowspan="2">Uraian</th>
                         <th rowspan="2">Jumlah</th>
@@ -59,271 +57,34 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>PT.HAP</td>
-                        <td>PT.GOLDEN</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.SURYA PER</td>
-                        <td>PT.HOKKAN</td>
-                        <td>PT.LANGGEN</td>
-                        <td></td>
-                        <td rowspan="6" class="highlight"></td>
-                        <td rowspan="6" class="highlight"></td>
-                        <td rowspan="6" class="highlight"></td>
-                        <td rowspan="6" class="highlight"></td>
-                        <td rowspan="6" class="highlight"></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>PT.SINARMAS</td>
-                        <td>PT.MEGA SUR</td>
-                        <td>PT.MIKATASA</td>
-                        <td>PT.OTA</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.ELODA</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>PT.SINARMAS</td>
-                        <td>PT.MEGA SUR</td>
-                        <td>PT.MIKATASA</td>
-                        <td>PT.OTA</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.ELODA</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>PT.AKTIF</td>
-                        <td>PT.STT</td>
-                        <td>PT.CAMPINA</td>
-                        <td>PT.GRAND P</td>
-                        <td>PT.CARBON</td>
-                        <td>PT.INTIMAS</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>PT.BINA</td>
-                        <td>PT.FILTRONA</td>
-                        <td>PT.ATLANTIC</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.BERCA</td>
-                        <td>PT.UMBRA</td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>9</td>
-                        <td>PT.CAHAYA L</td>
-                        <td>PT.HASIL</td>
-                        <td>PT.PRIMA</td>
-                        <td>PT.ULP</td>
-                        <td>PT.UNILVR</td>
-                        <td>PT.UNION</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>PT.CHAROEN</td>
-                        <td>PT.MASINDO</td>
-                        <td>PT.KOSMO</td>
-                        <td>PT.JUL</td>
-                        <td>PT.SONHINT</td>
-                        <td>PT.WARNA</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.ISAT</td>
-                        <td>PT.GTP</td>
-                        <td>PT.JUL</td>
-                        <td>PT.SONHINT</td>
-                        <td>PT.SAKAE</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td>PT.WARNA A</td>
-                        <td>PT.DELTAPAK</td>
-                        <td>PT.ATLAS</td>
-                        <td>PT.JUL</td>
-                        <td>PT.PAMAPRO</td>
-                        <td>PT.PAMAPRO</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>16</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.MIKATASA</td>
-                        <td>PT.MIRFA</td>
-                        <td>PT.UNION</td>
-                        <td>PT.MIRFA</td>
-                        <td>PT.JMP</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>17</td>
-                        <td>PT.OTA</td>
-                        <td>PT.OTA</td>
-                        <td>PT.OTIS</td>
-                        <td>PT.UNION</td>
-                        <td>PT.JMP</td>
-                        <td>PT.SHOES</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="holiday">18</td>
-                        <td class="holiday" colspan="6">Hari Raya Idul Adha 1445 H</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td class="holiday">19</td>
-                        <td class="holiday" colspan="6">Hari Raya Idul Adha 1445 H</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>20</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.MIKATASA</td>
-                        <td>PT.MIRFA</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.JMP</td>
-                        <td>PT.SHOES</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>23</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.MIRFA</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.SHOES</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>24</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.SHOES</td>
-                        <td>PT.CARINDO</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>25</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.SHOES</td>
-                        <td>PT.CARINDO</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>26</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.SHOES</td>
-                        <td>PT.CARINDO</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>27</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.SHOES</td>
-                        <td>PT.CARINDO</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>30</td>
-                        <td>PT.ARUKI</td>
-                        <td>PT.PRIMA BET</td>
-                        <td>PT.TOAH</td>
-                        <td>PT.INTI DUTA</td>
-                        <td>PT.SHOES</td>
-                        <td>PT.CARINDO</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>
+                    @php
+                        $maxBusinesses = 0;
+                        // Menghitung jumlah bisnis terbanyak dari semua baris
+                        foreach($result as $value) {
+                            if(isset($value['businesses']) && is_array($value['businesses'])) {
+                                $maxBusinesses = max($maxBusinesses, count($value['businesses']));
+                            }
+                        }
+                    @endphp
+                    @foreach($result as $key => $value)
+                        <tr>
+                            <td>{{ $key }}</td> <!-- Ini adalah tanggal -->
+                            @if(isset($value['businesses']) && is_array($value['businesses']) && count($value['businesses']) > 0)
+                                <!-- Ambil nama-nama perusahaan dari array "businesses" -->
+                                @foreach($value['businesses'] as $company)
+                                    <td>{{ $company }}</td>
+                                @endforeach
+                            @endif
+                            <!-- Tambahkan kolom kosong jika jumlah bisnis kurang dari $maxBusinesses -->
+                            @for($i = count($value['businesses'] ?? []); $i < $maxBusinesses; $i++)
+                                <td></td>
+                            @endfor
+                        </tr>
+                    @endforeach
+                    </tbody>
+                    
+                    
+                    
             </table>
             <div class="ttd pt-3">
                 <div class="row">

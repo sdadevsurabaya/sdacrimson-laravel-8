@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Jadwal;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,11 +36,54 @@ class JadwalController extends Controller
     }
 
     public function exportJadwal(){
-        return view('jadwal.exportJadwal');
+
+        $users = User::pluck('name', 'id');
+        return view('jadwal.exportJadwal', compact('users'));
     }
 
-    public function previewJadwal(){
-        return view('jadwal.previewJadwal');
+    public function previewJadwal(Request $request){
+        $year =  Carbon::now()->year;
+        $month = $request->month;
+        $user = $request->user_id;
+    
+     
+            $jadwals = Jadwal::whereYear('date', $year)
+                                 ->whereMonth('date',  $month)
+                                 ->where('user_id', $user)
+                                 ->with(['detailJadwals.generalInformation'])
+                                 ->get();
+                                
+        
+                                 $result = [];
+        
+                    // Buat daftar semua tanggal dalam bulan yang diberikan
+                $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+                for ($day = 1; $day <= $daysInMonth; $day++) {
+                    $date = Carbon::create($year, $month, $day);
+                    $formattedDate = $date->format('d');
+                    $dayOfWeek = $date->format('l');
+                    $result[$formattedDate] = [
+                        'day' => $dayOfWeek,
+                        'businesses' => []
+                    ];
+                }
+        
+                // Loop melalui setiap jadwal
+                foreach ($jadwals as $jadwal) {
+                    $date = Carbon::parse($jadwal->date);
+                    $formattedDate = $date->format('d');
+        
+                    // Loop melalui setiap detail jadwal
+                    foreach ($jadwal->detailJadwals as $detailJadwal) {
+                        if ($detailJadwal->generalInformation) {
+                            $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
+                        }
+                    }
+                }
+    
+              
+                // dd($result);
+        return view('jadwal.previewJadwal', compact('result'));
     }
 
     public function store(Request $request)
@@ -111,6 +155,47 @@ class JadwalController extends Controller
             return response()->json(['success' => false, 'message' => 'Jadwal tidak ditemukan']);
         }
     }
+
+    public function getGeneralInformationsByMonth()
+    {
+    
+    $year = 2024;
+    $month = 6;
+        $jadwals = Jadwal::whereYear('date', 2024)
+                             ->whereMonth('date', 6)
+                             ->with(['detailJadwals.generalInformation'])
+                             ->get();
+    
+                             $result = [];
+    
+                // Buat daftar semua tanggal dalam bulan yang diberikan
+            $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $date = Carbon::create($year, $month, $day);
+                $formattedDate = $date->format('Y-m-d');
+                $dayOfWeek = $date->format('l');
+                $result[$formattedDate] = [
+                    'day' => $dayOfWeek,
+                    'businesses' => []
+                ];
+            }
+    
+            // Loop melalui setiap jadwal
+            foreach ($jadwals as $jadwal) {
+                $date = Carbon::parse($jadwal->date);
+                $formattedDate = $date->format('Y-m-d');
+    
+                // Loop melalui setiap detail jadwal
+                foreach ($jadwal->detailJadwals as $detailJadwal) {
+                    if ($detailJadwal->generalInformation) {
+                        $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
+                    }
+                }
+            }
+    
+            return $result;
+                             
+                            }
 
 
 }

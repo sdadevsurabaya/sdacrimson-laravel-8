@@ -179,7 +179,7 @@
         Route::post('save-detail-jadwal', [App\Http\Controllers\DetailJadwal\StoreDetailJadwalController::class, 'store'])->name('save.detail.jadwal');
 
         Route::delete('jadwal-detail/{id}', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'destroy'])->name('delete.detail.jadwal');
-
+        Route::get('reports', [App\Http\Controllers\JadwalController::class, 'getGeneralInformationsByMonth']);
 
 
     });

@@ -22,4 +22,9 @@ class Jadwal extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function detailJadwals()
+    {
+        return $this->hasMany(DetailJadwal::class);
+    }
 }
