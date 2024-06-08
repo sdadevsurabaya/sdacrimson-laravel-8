@@ -34,6 +34,13 @@ class JadwalController extends Controller
         return view('jadwal.createJadwal', compact('users', 'jadwals'));
     }
 
+    public function exportJadwal(){
+        return view('jadwal.exportJadwal');
+    }
+
+    public function previewJadwal(){
+        return view('jadwal.previewJadwal');
+    }
 
     public function store(Request $request)
     {
@@ -60,38 +67,41 @@ class JadwalController extends Controller
     }
 
     public function edit($id)
-{
-    $jadwal = Jadwal::find($id);
-    return response()->json($jadwal);
-}
-
-
-public function update(Request $request, $id)
-{
-    $jadwal = Jadwal::find($id);
-    $newDate = $request->input('date');
-
-    if (strtotime($newDate) < strtotime(date('Y-m-d'))) {
-        return response()->json(['success' => false, 'message' => 'Tanggal tidak boleh mundur dari tanggal sekarang']);
+    {
+        $jadwal = Jadwal::find($id);
+        return response()->json($jadwal);
     }
 
 
-    // Cek apakah tanggal baru sudah ada di database
-    // $existingJadwal = Jadwal::where('date', $newDate)->where('id', '!=', $id)->first();
+    public function update(Request $request, $id)
+    {
+        $jadwal = Jadwal::find($id);
+        $newDate = $request->input('date');
 
-    // if ($existingJadwal) {
-    //     return response()->json(['success' => false, 'message' => 'Tanggal sudah ada di Buat Schedule']);
-    // }
+        if (strtotime($newDate) < strtotime(date('Y-m-d'))) {
+            return response()->json(['success' => false, 'message' => 'Tanggal tidak boleh mundur dari tanggal sekarang']);
+        }
 
-    // Jika tidak ada, update tanggal
-    $jadwal->modified_by_id =  Auth::id();
-    $jadwal->date = $newDate;
-    $jadwal->save();
+        // Jika tidak ada, update tanggal
+        $jadwal->modified_by_id =  Auth::id();
+        $jadwal->date = $newDate;
+        $jadwal->save();
 
-    return response()->json(['success' => true, 'message' => 'Data berhasil diupdate']);
-}
+        // Cek apakah tanggal baru sudah ada di database
+        // $existingJadwal = Jadwal::where('date', $newDate)->where('id', '!=', $id)->first();
 
-public function destroy($id)
+        // if ($existingJadwal) {
+        //     return response()->json(['success' => false, 'message' => 'Tanggal sudah ada di Buat Schedule']);
+        // }
+
+        // Jika tidak ada, update tanggal
+        // $jadwal->date = $newDate;
+        // $jadwal->save();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil diupdate']);
+    }
+
+    public function destroy($id)
     {
         $jadwal = Jadwal::find($id);
         if ($jadwal) {
