@@ -38,6 +38,9 @@ class JadwalController extends Controller
         return view('jadwal.exportJadwal');
     }
 
+    public function previewJadwal(){
+        return view('jadwal.previewJadwal');
+    }
 
     public function store(Request $request)
     {

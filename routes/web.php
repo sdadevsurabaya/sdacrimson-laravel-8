@@ -172,6 +172,7 @@
         Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
         Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
         Route::get('exportJadwal', [App\Http\Controllers\JadwalController::class, 'exportJadwal'])->name('jadwal.exportJadwal');
+        Route::get('previewJadwal', [App\Http\Controllers\JadwalController::class, 'previewJadwal'])->name('jadwal.previewJadwal');
         Route::get('jadwal/{id}/edit', [App\Http\Controllers\JadwalController::class, 'edit'])->name('edit.jadwal');
         Route::put('jadwal/{id}', [App\Http\Controllers\JadwalController::class, 'update'])->name('update.jadwal');
         Route::post('save-jadwal', [App\Http\Controllers\JadwalController::class, 'store'])->name('save.jadwal');
