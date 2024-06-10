@@ -60,7 +60,7 @@ class JadwalController extends Controller
                 $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
                 for ($day = 1; $day <= $daysInMonth; $day++) {
                     $date = Carbon::create($year, $month, $day);
-                    $formattedDate = $date->format('d');
+                    $formattedDate = $date->format('d-m-Y');
                     $dayOfWeek = $date->format('l');
                     $result[$formattedDate] = [
                         'day' => $dayOfWeek,
@@ -71,7 +71,7 @@ class JadwalController extends Controller
                 // Loop melalui setiap jadwal
                 foreach ($jadwals as $jadwal) {
                     $date = Carbon::parse($jadwal->date);
-                    $formattedDate = $date->format('d');
+                    $formattedDate = $date->format('d-m-Y');
         
                     // Loop melalui setiap detail jadwal
                     foreach ($jadwal->detailJadwals as $detailJadwal) {
