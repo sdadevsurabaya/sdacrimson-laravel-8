@@ -30,51 +30,53 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <div class="row">
-                        <form action="{{ route('jadwal.previewJadwal') }}" method="GET">
-                        <div class="mb-3 col-6">
-                            <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
-                            <div class="">
-                                <select class="form-select" name="user_id" id="user_id" aria-label="Floating label select example">
-                                    <option value="">-- Pilih User --</option>
-                                    @foreach($users as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                    @endforeach
-                                </select>
-                                
-                                
+
+                    <form action="{{ route('jadwal.previewJadwal') }}" method="GET">
+                        <div class="row">
+                            <div class="mb-3 col-6">
+                                <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
+                                <div class="">
+                                    <select class="form-select" name="user_id" id="user_id"
+                                        aria-label="Floating label select example">
+                                        <option value="">-- Pilih User --</option>
+                                        @foreach ($users as $id => $name)
+                                            <option value="{{ $id }}">{{ $name }}</option>
+                                        @endforeach
+                                    </select>
+
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="mb-3 col-6">
-                            <label for="floatingSelectGrid" class="col-form-label">Bulan</label>
-                            <div class="">
-                                <select class="form-select" name="month" id="month"
-                                    aria-label="Floating label select example">
-                                    <option value="">-- Pilih Bulan --</option>
-                                    <option value="1">Januari</option>
-                                    <option value="2">Februari</option>
-                                    <option value="3">Maret</option>
-                                    <option value="4">April</option>
-                                    <option value="5">Mei</option>
-                                    <option value="6">Juni</option>
-                                    <option value="7">Juli</option>
-                                    <option value="8">Agustus</option>
-                                    <option value="9">September</option>
-                                    <option value="10">Oktober</option>
-                                    <option value="11">November</option>
-                                    <option value="12">Desember</option>
-                                </select>
+                            <div class="mb-3 col-6">
+                                <label for="floatingSelectGrid" class="col-form-label">Bulan</label>
+                                <div class="">
+                                    <select class="form-select" name="month" id="month"
+                                        aria-label="Floating label select example">
+                                        <option value="">-- Pilih Bulan --</option>
+                                        <option value="1">Januari</option>
+                                        <option value="2">Februari</option>
+                                        <option value="3">Maret</option>
+                                        <option value="4">April</option>
+                                        <option value="5">Mei</option>
+                                        <option value="6">Juni</option>
+                                        <option value="7">Juli</option>
+                                        <option value="8">Agustus</option>
+                                        <option value="9">September</option>
+                                        <option value="10">Oktober</option>
+                                        <option value="11">November</option>
+                                        <option value="12">Desember</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        {{-- <div class="text-center">
+                            {{-- <div class="text-center">
                             <a href="{{ route('jadwal.previewJadwal') }}" class="btn btn-success">Preview</a>
                         </div> --}}
 
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-success">Preview</button>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-success">Preview</button>
+                            </div>
                         </div>
                     </form>
-                    </div>
                 </div>
             </div>
         </div> <!-- end col -->

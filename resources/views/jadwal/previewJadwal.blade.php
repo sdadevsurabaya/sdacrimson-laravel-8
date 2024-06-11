@@ -40,6 +40,11 @@
             <div class="mb-3 text-end">
                 <button class="btn btn-dark" onclick="printContent()">Print</button>
             </div>
+            <h3 class="text-center mb-3">Work Plan Sales</h3>
+            <div class="ket fw-bold">
+                <p>Sales : Rizki Nanda </p>
+                <p>Periode : Juni 2024 </p>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -82,9 +87,9 @@
                         </tr>
                     @endforeach
                     </tbody>
-                    
-                    
-                    
+
+
+
             </table>
             <div class="ttd pt-3">
                 <div class="row">
@@ -94,14 +99,17 @@
                     </div>
                     <div class="col-4">
                         <p class="text-center">Menyetujui,</p><br><br><br><br>
-                        <div class="d-flex justify-content-between">
+                        <div class="d-flex justify-content-around">
                             <p><strong>Ibu Linda</strong></p>
                             <p><strong>Ibu Sanny</strong></p>
                         </div>
                     </div>
                     <div class="col-4 text-center">
                         <p>Menyetujui,</p><br><br><br><br>
-                        <p><strong>Bpk. Haryadi Tikoro Djanto</strong><br>CEO</p>
+                        <div class="d-flex justify-content-around">
+                            <p><strong>Bpk. Agus Sudiyanto</strong><br>Direktur</p>
+                            <p><strong>Bpk. Haryadi Tjokro Djanto</strong><br>CEO</p>
+                        </div>
                     </div>
                 </div>
             </div>
