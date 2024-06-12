@@ -81,7 +81,8 @@
                                     <th>NO</th>
                                     <th>AR</th>
                                     <th>Tanggal</th>
-                                    <th width="280px">Laporan</th>
+                                    <th >Laporan</th>
+                                    <th>Lampiran Foto</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -91,9 +92,24 @@
                                         <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
                                         <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
                                         {{-- Formatting the date --}}
-                                      
-                                        <td>{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
-                                       
+                                        <td width="280px">{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
+                                        <td width="280px">
+                                            <a class="image-popup-no-margins"
+                                                href="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg">
+                                                <img src="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg"
+                                                    width="107" height="75">
+                                            </a>
+                                            <a class="image-popup-no-margins"
+                                                href="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg">
+                                                <img src="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg"
+                                                    width="107" height="75">
+                                            </a>
+                                            <a class="image-popup-no-margins"
+                                                href="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg">
+                                                <img src="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg"
+                                                    width="107" height="75">
+                                            </a>
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -153,7 +169,7 @@
                             `https://maps.google.com/maps?q=${response.latitude},${response.longitude}&z=15&output=embed`;
 
 
-                          
+
                         $('#exampleModal .modal-body iframe').attr('src', mapUrl);
                     },
                     error: function(xhr) {
@@ -161,6 +177,22 @@
                     }
                 });
             });
+
+            $('.image-popup-no-margins').magnificPopup({
+                type: 'image',
+                closeOnContentClick: true,
+                closeBtnInside: false,
+                fixedContentPos: true,
+                mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+                image: {
+                    verticalFit: true
+                },
+                zoom: {
+                    enabled: true,
+                    duration: 300 // don't foget to change the duration also in CSS
+                }
+            });
+
         });
     </script>
 
