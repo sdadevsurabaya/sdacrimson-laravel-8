@@ -94,21 +94,11 @@
                                         {{-- Formatting the date --}}
                                         <td width="280px">{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
                                         <td width="280px">
-                                            <a class="image-popup-no-margins"
-                                                href="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg">
-                                                <img src="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg"
-                                                    width="107" height="75">
+                                            @foreach ($general->gambar as $gambar)
+                                            <a class="image-popup-no-margins" href="{{ url('laporan/' . $gambar->foto) }}">
+                                                <img src="{{ url('laporan/' . $gambar->foto) }}" width="107" height="75">
                                             </a>
-                                            <a class="image-popup-no-margins"
-                                                href="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg">
-                                                <img src="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg"
-                                                    width="107" height="75">
-                                            </a>
-                                            <a class="image-popup-no-margins"
-                                                href="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg">
-                                                <img src="http://farm4.staticflickr.com/3721/9207329484_ba28755ec4_o.jpg"
-                                                    width="107" height="75">
-                                            </a>
+                                        @endforeach
                                         </td>
                                     </tr>
                                 @endforeach
