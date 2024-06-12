@@ -28,7 +28,7 @@ class EditDetailJadwalController extends Controller
         $validated = $request->validate([
             'jadwal_id' => 'required|integer',
             'status_jadwal' => 'required|string',
-            'actual_date' => 'required|date_format:H:i',
+            'actual_date' => 'nullable|date_format:H:i',
             'note' => 'required|string',
         ]);
 
@@ -38,15 +38,15 @@ class EditDetailJadwalController extends Controller
         // Cari detail jadwal berdasarkan jadwal_id
         $detailJadwal = DetailJadwal::find($validated['jadwal_id']);
 
-              // Cek apakah checkin null
-              if (is_null($detailJadwal->checkin)) {
-                return redirect()->back()->withErrors(['checkin' => 'Anda belum melakukan checkin.']);
-            }
+            //   // Cek apakah checkin null
+            //   if (is_null($detailJadwal->checkin)) {
+            //     return redirect()->back()->withErrors(['checkin' => 'Anda belum melakukan checkin.']);
+            // }
     
-            // Cek apakah checkin ada tetapi checkout null
-            if (!is_null($detailJadwal->checkin) && is_null($detailJadwal->checkout)) {
-                return redirect()->back()->withErrors(['checkout' => 'Anda belum melakukan checkout.']);
-            }
+            // // Cek apakah checkin ada tetapi checkout null
+            // if (!is_null($detailJadwal->checkin) && is_null($detailJadwal->checkout)) {
+            //     return redirect()->back()->withErrors(['checkout' => 'Anda belum melakukan checkout.']);
+            // }
 
         // dd($validated['status_jadwal']);
         // Update data
