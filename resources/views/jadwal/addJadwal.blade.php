@@ -5,6 +5,7 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css">
 @endsection
 
 @section('content')
@@ -61,21 +62,24 @@
                                 </div>
                             @endif
                             <div class="mt-4">
-                             
+
                                 {!! Form::open(['route' => 'save.detail.jadwal', 'method' => 'POST', 'files' => true]) !!}
-                               
+
                                 @csrf
                                 <div class="row">
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="floatingSelectGrid" class="col-form-label">Toko / Customer</label>
-                                        <select class="form-select" name="general_id" id="floatingSelectGrid" aria-label="Floating label select example">
+                                        {{-- <select class="form-select" name="general_id" id="floatingSelectGrid" aria-label="Floating label select example">
+
+                                        </select> --}}
+                                        <select class="js-select2"  name="general_id" style="width: 100%">
                                             <option value="">-- Pilih Customer --</option>
                                             @foreach($general as $id => $nama_usaha)
                                                 <option value="{{ $id }}">{{ $nama_usaha }}</option>
                                             @endforeach
                                         </select>
                                     </div>
-                                    
+
                                     <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $jadwal_id}}">
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="floatingSelectGrid" class="col-form-label">Type Aktifitas</label>
@@ -118,36 +122,10 @@
     </div>
 @endsection
 @section('script')
-    <script src="{{ URL::asset('/assets/libs/html5-qrcode/html5-qrcode.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-
-            $(".btn-success").click(function() {
-                var lsthmtl = $(".clone").html();
-                // console.log(lsthmtl);
-                $(".increment").after(lsthmtl);
-
-            });
-
-            $("body").on("click", ".btn-danger", function() {
-                $(this).parents(".hdtuto").remove();
-
-            });
-
-            $('select').prop('selectedIndex', 0);
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // $(".js-select2-multi").select2();
-
             $(".js-select2-multi").select2();
-
-            handlePermission(this);
-
+            $(".js-select2").select2();
         });
 
         // dinamis tambah foto
