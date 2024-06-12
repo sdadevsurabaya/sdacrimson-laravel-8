@@ -18,4 +18,7 @@
 <!-- App js -->
 <script src="{{ URL::asset('/assets/js/app.min.js') }}"></script>
 
+{{-- popup js --}}
+<script src="{{ URL::asset('/popup/jquery.magnific-popup.js')}}"></script>
+
 @yield('script-bottom')
