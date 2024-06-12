@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Jadwal;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,6 +35,56 @@ class JadwalController extends Controller
         return view('jadwal.createJadwal', compact('users', 'jadwals'));
     }
 
+    public function exportJadwal(){
+
+        $users = User::pluck('name', 'id');
+        return view('jadwal.exportJadwal', compact('users'));
+    }
+
+    public function previewJadwal(Request $request){
+        $year =  Carbon::now()->year;
+        $month = $request->month;
+        $user = $request->user_id;
+    
+     
+            $jadwals = Jadwal::whereYear('date', $year)
+                                 ->whereMonth('date',  $month)
+                                 ->where('user_id', $user)
+                                 ->with(['detailJadwals.generalInformation'])
+                                 ->get();
+                                
+        
+                                 $result = [];
+        
+                    // Buat daftar semua tanggal dalam bulan yang diberikan
+                $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+                for ($day = 1; $day <= $daysInMonth; $day++) {
+                    $date = Carbon::create($year, $month, $day);
+                    $formattedDate = $date->format('d-m-Y');
+                    $dayOfWeek = $date->format('l');
+                    $result[$formattedDate] = [
+                        'day' => $dayOfWeek,
+                        'businesses' => []
+                    ];
+                }
+        
+                // Loop melalui setiap jadwal
+                foreach ($jadwals as $jadwal) {
+                    $date = Carbon::parse($jadwal->date);
+                    $formattedDate = $date->format('d-m-Y');
+        
+                    // Loop melalui setiap detail jadwal
+                    foreach ($jadwal->detailJadwals as $detailJadwal) {
+                        if ($detailJadwal->generalInformation) {
+                            $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
+                        }
+                    }
+                }
+    
+              
+                // dd($result);
+        return view('jadwal.previewJadwal', compact('result'));
+    }
 
     public function store(Request $request)
     {
@@ -60,38 +111,41 @@ class JadwalController extends Controller
     }
 
     public function edit($id)
-{
-    $jadwal = Jadwal::find($id);
-    return response()->json($jadwal);
-}
-
-
-public function update(Request $request, $id)
-{
-    $jadwal = Jadwal::find($id);
-    $newDate = $request->input('date');
-
-    if (strtotime($newDate) < strtotime(date('Y-m-d'))) {
-        return response()->json(['success' => false, 'message' => 'Tanggal tidak boleh mundur dari tanggal sekarang']);
+    {
+        $jadwal = Jadwal::find($id);
+        return response()->json($jadwal);
     }
 
 
-    // Cek apakah tanggal baru sudah ada di database
-    // $existingJadwal = Jadwal::where('date', $newDate)->where('id', '!=', $id)->first();
+    public function update(Request $request, $id)
+    {
+        $jadwal = Jadwal::find($id);
+        $newDate = $request->input('date');
 
-    // if ($existingJadwal) {
-    //     return response()->json(['success' => false, 'message' => 'Tanggal sudah ada di Buat Schedule']);
-    // }
+        if (strtotime($newDate) < strtotime(date('Y-m-d'))) {
+            return response()->json(['success' => false, 'message' => 'Tanggal tidak boleh mundur dari tanggal sekarang']);
+        }
 
-    // Jika tidak ada, update tanggal
-    $jadwal->modified_by_id =  Auth::id();
-    $jadwal->date = $newDate;
-    $jadwal->save();
+        // Jika tidak ada, update tanggal
+        $jadwal->modified_by_id =  Auth::id();
+        $jadwal->date = $newDate;
+        $jadwal->save();
 
-    return response()->json(['success' => true, 'message' => 'Data berhasil diupdate']);
-}
+        // Cek apakah tanggal baru sudah ada di database
+        // $existingJadwal = Jadwal::where('date', $newDate)->where('id', '!=', $id)->first();
 
-public function destroy($id)
+        // if ($existingJadwal) {
+        //     return response()->json(['success' => false, 'message' => 'Tanggal sudah ada di Buat Schedule']);
+        // }
+
+        // Jika tidak ada, update tanggal
+        // $jadwal->date = $newDate;
+        // $jadwal->save();
+
+        return response()->json(['success' => true, 'message' => 'Data berhasil diupdate']);
+    }
+
+    public function destroy($id)
     {
         $jadwal = Jadwal::find($id);
         if ($jadwal) {
@@ -101,6 +155,47 @@ public function destroy($id)
             return response()->json(['success' => false, 'message' => 'Jadwal tidak ditemukan']);
         }
     }
+
+    public function getGeneralInformationsByMonth()
+    {
+    
+    $year = 2024;
+    $month = 6;
+        $jadwals = Jadwal::whereYear('date', 2024)
+                             ->whereMonth('date', 6)
+                             ->with(['detailJadwals.generalInformation'])
+                             ->get();
+    
+                             $result = [];
+    
+                // Buat daftar semua tanggal dalam bulan yang diberikan
+            $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $date = Carbon::create($year, $month, $day);
+                $formattedDate = $date->format('Y-m-d');
+                $dayOfWeek = $date->format('l');
+                $result[$formattedDate] = [
+                    'day' => $dayOfWeek,
+                    'businesses' => []
+                ];
+            }
+    
+            // Loop melalui setiap jadwal
+            foreach ($jadwals as $jadwal) {
+                $date = Carbon::parse($jadwal->date);
+                $formattedDate = $date->format('Y-m-d');
+    
+                // Loop melalui setiap detail jadwal
+                foreach ($jadwal->detailJadwals as $detailJadwal) {
+                    if ($detailJadwal->generalInformation) {
+                        $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
+                    }
+                }
+            }
+    
+            return $result;
+                             
+                            }
 
 
 }

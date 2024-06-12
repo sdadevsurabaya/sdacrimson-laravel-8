@@ -15,4 +15,14 @@ class DetailJadwal extends Model
     {
         return $this->belongsTo(General_model::class, 'general_id' ,'id');
     }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class);
+    }
+
+    public function generalInformation()
+    {
+        return $this->belongsTo(General_model::class, 'general_id');
+    }
 }
