@@ -161,6 +161,7 @@
         Route::put('/update-laporan', [App\Http\Controllers\LaporanSalesController::class, 'update'])->name('laporan.update');
         Route::delete('/delete-gambar/{gambar}', [App\Http\Controllers\LaporanSalesController::class, 'deleteGambar'])->name('delete-gambar');
 
+        Route::post('/leads/store', [App\Http\Controllers\Lead\LeadController::class, 'store'])->name('leads.store');
 
         //Penjadwalan Kunjungan
         Route::resource('jadwal', JadwalController::class);
