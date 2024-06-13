@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Lead;
 
-use App\Http\Controllers\Controller;
-use App\Models\General_model;
 use Illuminate\Http\Request;
+use App\Models\General_model;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LeadController extends Controller
 {
@@ -37,6 +38,7 @@ class LeadController extends Controller
         $lead->nama_usaha = $covert_huruf_besar;
         $lead->id_customer = $id_customer; // Gunakan strtoupper untuk memastikan huruf kapital
         $lead->status = 'Lead'; // Gunakan strtoupper untuk memastikan huruf kapital
+        $lead->ar = Auth::id(); // Gunakan strtoupper untuk memastikan huruf kapital
         $lead->save();
 
         // Kirim respons ke JavaScript (opsional)
