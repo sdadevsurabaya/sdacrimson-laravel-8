@@ -5,6 +5,7 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 @endsection
 
 @section('content')
@@ -32,6 +33,7 @@
                 <div class="card-body">
                     <button class="btn btn-info m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Buat
                         Jadwal</button>
+                    <input type="text" name="daterange" value="01/01/2018 - 01/15/2018" />
                 </div>
             </div>
         </div>
@@ -114,6 +116,7 @@
     </div>
 @endsection
 @section('script')
+    <script type="text/javascript"></script>
     <script>
         $(document).ready(function() {
 
@@ -256,10 +259,32 @@
                     }
                 });
             });
+
+
+            $('input[name="dates"]').daterangepicker();
+
+            // $('input[name="datefilter"]').daterangepicker({
+            //     autoUpdateInput: false,
+            //     locale: {
+            //         cancelLabel: 'Clear'
+            //     }
+            // });
+
+            // $('input[name="datefilter"]').on('apply.daterangepicker', function(ev, picker) {
+            //     $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate
+            //         .format('MM/DD/YYYY'));
+            // });
+
+            // $('input[name="datefilter"]').on('cancel.daterangepicker', function(ev, picker) {
+            //     $(this).val('');
+            // });
+
         });
     </script>
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 @endsection
