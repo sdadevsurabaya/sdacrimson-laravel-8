@@ -137,17 +137,17 @@
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Customer</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control " name=""  placeholder="PT ABS" >
+                            <input type="text" class="form-control" id="nama_customer" placeholder="PT ABS">
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success">Simpan</button>
+                    <button type="button" class="btn btn-success" id="btnSimpan">Simpan</button>
                 </div>
             </div>
         </div>
     </div>
-
+    
 
 @endsection
 @section('script')
@@ -155,6 +155,53 @@
         $(document).ready(function() {
             $(".js-select2-multi").select2();
             $(".js-select2").select2();
+
+
+
+
+
+            $('#btnSimpan').click(function() {
+                console.log('eko');
+            var nama_customer = $('#nama_customer').val();
+
+                        $.ajax({
+                type: 'POST',
+                url: '{{ route("leads.store") }}', // Ganti route ini dengan route yang sesuai di Laravel Anda
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    nama_customer: nama_customer
+                },
+                success: function(response) {
+                    // Tampilkan SweetAlert berhasil
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Sukses!',
+                        text: 'Data berhasil disimpan.',
+                        showConfirmButton: false,
+                        timer: 1500 // Menutup SweetAlert setelah 1.5 detik
+                    });
+
+                    console.log(response);
+                    $('#exampleModal').modal('hide'); // Tutup modal setelah berhasil menyimpan
+
+                    // Set timeout untuk memastikan SweetAlert tertutup sebelum halaman dimuat ulang
+                    setTimeout(function() {
+                        window.location.reload(); // Reload halaman setelah berhasil menyimpan
+                    }, 2000); // Set waktu timeout sesuai kebutuhan
+                },
+                error: function(xhr) {
+                    // Tampilkan SweetAlert error (jika diperlukan)
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Terjadi kesalahan.',
+                    });
+
+                    console.log(xhr.responseText);
+                }
+            });
+
+        });
         });
 
         // dinamis tambah foto
