@@ -14,7 +14,7 @@
             Jadwal
         @endslot
         @slot('title')
-            Buat Jadwal Untuk Sales {{ $jadwal->user->name}}
+            Buat Jadwal Untuk Sales {{ $jadwal->user->name }}
         @endslot
     @endcomponent
 
@@ -48,7 +48,11 @@
 
             <div class="card">
                 <div class="card-body">
-                    <h3 class="card-title">Form Penjadwalan</h3>
+                    <div class="d-flex justify-content-between">
+                        <h3 class="card-title">Form Penjadwalan</h3>
+                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">Customer Baru</button>
+                    </div>
                     <div class="row">
                         <div class="col-lg-12">
 
@@ -72,15 +76,15 @@
                                         {{-- <select class="form-select" name="general_id" id="floatingSelectGrid" aria-label="Floating label select example">
 
                                         </select> --}}
-                                        <select class="js-select2"  name="general_id" style="width: 100%">
+                                        <select class="js-select2" name="general_id" style="width: 100%">
                                             <option value="">-- Pilih Customer --</option>
-                                            @foreach($general as $id => $nama_usaha)
+                                            @foreach ($general as $id => $nama_usaha)
                                                 <option value="{{ $id }}">{{ $nama_usaha }}</option>
                                             @endforeach
                                         </select>
                                     </div>
 
-                                    <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $jadwal_id}}">
+                                    <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $jadwal_id }}">
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="floatingSelectGrid" class="col-form-label">Type Aktifitas</label>
                                         <select class="form-select " name="activity_type" id="floatingSelectGrid"
@@ -103,7 +107,7 @@
                                             </span>Note</label>
                                         <div class="form-floating">
                                             <textarea name="note" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                                style="height: 100px" ></textarea>
+                                                style="height: 100px"></textarea>
                                             <label for="floatingTextarea2">Masukan note..</label>
                                         </div>
                                     </div>
@@ -120,6 +124,31 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Leads</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3 row">
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Customer</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control " name=""  placeholder="PT ABS" >
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success">Simpan</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 @endsection
 @section('script')
     <script type="text/javascript">
