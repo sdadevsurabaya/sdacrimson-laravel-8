@@ -10,10 +10,10 @@
 @section('content')
     @component('common-components.breadcrumb')
         @slot('pagetitle')
-            General
+            Kunjungan
         @endslot
         @slot('title')
-            Laporan
+            Laporan {{ $general->nama_usaha }}
         @endslot
     @endcomponent
 
@@ -121,6 +121,30 @@
 {{-- <form id="edit_general" method="POST" action="javascript:void(0)" accept-charset="utf-8" enctype="multipart/form-data"> --}}
                                                         @csrf
                                                     <div class="row">
+
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label" for="contactPerson">
+                                                                <span style="color: crimson;">*</span> Contact Person
+                                                            </label>
+                                                            <div class="form-floating">
+                                                                <input type="text" name="contact_person" id="contactPerson" value="{{ $laporan->contact_person }}" class="form-control" placeholder="Contact Person">
+                                                                <label for="contactPerson">Contact Person</label>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <div class="col-md-12 mb-3">
+                                                            <label class="form-label" for="noHp">
+                                                                <span style="color: crimson;">*</span> No HP
+                                                            </label>
+                                                            <div class="form-floating">
+                                                                <input type="number" name="no_hp" id="noHp" class="form-control" value="{{ $laporan->no_hp }}" placeholder="No HP">
+                                                                <label for="noHp">No HP</label>
+                                                            </div>
+                                                        </div>
+
+                                                        
+
+
                                                         <div class="col-md-12 mb-3">
                                                             <label class="form-label" for="alamat_kantor">
                                                                 <span style="color: crimson;">*</span> Laporan</label>
@@ -206,15 +230,40 @@
                                     enctype="multipart/form-data"> --}}
                                 @csrf
                                 <div class="row">
+
+
                                     <div class="col-md-12 mb-3">
-                                        <label class="form-label" for="alamat_kantor">
-                                            <span style="color: crimson;">*</span> Laporan</label>
+                                        <label class="form-label" for="contactPerson">
+                                            <span style="color: crimson;">*</span> Contact Person
+                                        </label>
                                         <div class="form-floating">
-                                            <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                                style="height: 100px"></textarea>
+                                            <input type="text" name="contact_person" id="contactPerson" value="{{$general->nama_lengkap}}" class="form-control" placeholder="Contact Person">
+                                            <label for="contactPerson">Contact Person</label>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="noHp">
+                                            <span style="color: crimson;">*</span> No HP
+                                        </label>
+                                        <div class="form-floating">
+                                            <input type="text" name="no_hp" id="noHp" class="form-control"  value="{{ str_replace(' ', '', $general->mobile_phone) }}" placeholder="No HP">
+                                            <label for="noHp">No HP</label>
+                                        </div>
+                                    </div>
+                                    
+
+
+                                    <div class="col-md-12 mb-3">
+                                        <label class="form-label" for="laporan">
+                                            <span style="color: crimson;">*</span> Laporan
+                                        </label>
+                                        <div class="form-floating">
+                                            <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px">{{ old('laporan') }}</textarea>
                                             <label for="floatingTextarea2">Masukan catatan..</label>
                                         </div>
                                     </div>
+                                    
                                     <div class="col-xl-12 col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">

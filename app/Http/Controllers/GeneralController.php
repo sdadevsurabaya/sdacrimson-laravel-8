@@ -553,14 +553,25 @@ class GeneralController extends Controller
         }
     }
 
-    public function visit($id)
+    public function visit(Request $request, $id)
     {
         // dd($id);
-
         $general = General_model::find($id);
-        $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
-        $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->orderBy('created_at','desc')->get();
+
+        $jadwal = $request->jadwal_id;
+        if( $jadwal){
+          
+            $attendance = Attendance::with(['user'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at','desc')->get();
+            $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at','desc')->get();
+        } else {
+            $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
+            $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->orderBy('created_at','desc')->get();
+        }
+      
+       
         // dd($laporan);
+
+
         return view('general.visit', compact('general', 'attendance', 'laporan'));
     }
 }
