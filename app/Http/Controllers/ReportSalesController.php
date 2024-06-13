@@ -26,13 +26,27 @@ class ReportSalesController extends Controller
         $hasRole = auth()->user()->hasRole('Sales');
 
         if( $hasRole){
-            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->whereBetween('date', [$startDate, $endDate])->withTrashed()->whereNull('deleted_at')->get();
+
+            if( $startDate &&   $endDate){
+                $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->whereBetween('date', [$startDate, $endDate])->withTrashed()->whereNull('deleted_at')->get();
+            }else{
+                $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->withTrashed()->whereNull('deleted_at')->get();
+            }
+          
         }else {
-            $jadwals = Jadwal::orderBy('created_at', 'desc')
-            ->withTrashed()
-            ->whereNull('deleted_at')
-            ->whereBetween('date', [$startDate, $endDate])
-            ->get();
+            if( $startDate &&   $endDate){
+                $jadwals = Jadwal::orderBy('created_at', 'desc')
+                ->withTrashed()
+                ->whereNull('deleted_at')
+                ->whereBetween('date', [$startDate, $endDate])
+                ->get();
+            }else{
+                $jadwals = Jadwal::orderBy('created_at', 'desc')
+                ->withTrashed()
+                ->whereNull('deleted_at')
+                ->get();
+            }
+       
 
         }
         return view('reportsales.index', compact('users', 'jadwals'));

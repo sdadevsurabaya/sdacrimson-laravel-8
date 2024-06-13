@@ -196,27 +196,7 @@
         $(document).ready(function() {
 
          
-                $(document).on('click', '.applyBtn', function() {
-            // Ambil nilai dari input daterange
-            var daterangeValue = $('[name="daterange"]').val();
-
-            
-        console.log(daterangeValue);
-            // Kirim nilai menggunakan AJAX
-            // $.ajax({
-            //     url: 'proses.php',  // Ganti dengan URL endpoint Anda
-            //     method: 'POST',     // Metode HTTP yang digunakan (POST / GET)
-            //     data: { daterange: daterangeValue },  // Data yang akan dikirim
-            //     success: function(response) {
-            //         // Tanggapan dari server (jika diperlukan)
-            //         console.log('Nilai daterange berhasil dikirim: ' + daterangeValue);
-            //     },
-            //     error: function(xhr, status, error) {
-            //         // Penanganan kesalahan jika ada
-            //         console.error('Terjadi kesalahan: ' + error);
-            //     }
-            // });
-        });
+         
 
             $('#datatable-home').DataTable();
             $('#datatable-kunjungan').DataTable();
@@ -269,96 +249,7 @@
                 });
             }
 
-            $(document).on('click', '.btn-cancel-detail', function() {
-                var id = $(this).data('id');
-
-                Swal.fire({
-                    title: 'Apakah Anda yakin?',
-                    text: 'Apakah Anda yakin ingin membatalkan Detail jadwal ini?',
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, batalkan!',
-                    cancelButtonText: 'Tidak'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // Kirim permintaan soft delete menggunakan AJAX
-                        $.ajax({
-                            url: '/jadwal-detail/' + id,
-                            method: 'DELETE',
-                            data: {
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function(response) {
-                                if (response.success) {
-                                    Swal.fire({
-                                        icon: 'success',
-                                        title: 'Berhasil',
-                                        text: response.message,
-                                        confirmButtonText: 'OK'
-                                    }).then(() => {
-                                        location
-                                            .reload(); // Reload halaman untuk melihat perubahan
-                                    });
-                                } else {
-                                    Swal.fire({
-                                        icon: 'error',
-                                        title: 'Gagal',
-                                        text: response.message,
-                                        confirmButtonText: 'OK'
-                                    });
-                                }
-                            },
-                            error: function(xhr) {
-                                console.error('Error deleting data:', xhr);
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Gagal',
-                                    text: 'Terjadi kesalahan saat membatalkan jadwal',
-                                    confirmButtonText: 'OK'
-                                });
-                            }
-                        });
-                    }
-                });
-            });
-
-            $('#saveButton').click(function() {
-                var user_id = $('#user_id').val();
-                var date = $('#date').val();
-
-                $.ajax({
-                    url: "{{ route('save.jadwal') }}",
-                    type: "POST",
-                    data: {
-                        _token: "{{ csrf_token() }}",
-                        user_id: user_id,
-                        date: date
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Berhasil',
-                            text: response.message,
-                            confirmButtonText: 'OK'
-                        }).then(() => {
-                            window.location.href = '/createJadwal';
-                        });
-                    },
-                    error: function(xhr) {
-                        var errors = xhr.responseJSON.errors;
-                        $.each(errors, function(key, value) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: value[0],
-                                confirmButtonText: 'OK'
-                            });
-                        });
-                    }
-                });
-            });
+      
 
 
 
