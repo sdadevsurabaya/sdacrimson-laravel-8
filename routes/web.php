@@ -169,6 +169,11 @@
 
         Route::post('/update-detail-jadwal', [App\Http\Controllers\DetailJadwal\EditDetailJadwalController::class, 'store'])->name('update.detail.jadwal');
 
+        //Repor Sales
+        Route::get('report-sales', [App\Http\Controllers\ReportSalesController::class, 'index'])->name('reportsales.index');
+
+
+
         Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
         Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
         Route::get('exportJadwal', [App\Http\Controllers\JadwalController::class, 'exportJadwal'])->name('jadwal.exportJadwal');

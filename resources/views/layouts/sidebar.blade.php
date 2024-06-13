@@ -102,6 +102,13 @@
                         </a>
                     </li>
 
+                    <li>
+                        <a href="{{ route('reportsales.index') }}">
+                            <i class="uil-home-alt"></i>
+                            <span>@lang('Report')</span>
+                        </a>
+                    </li>
+
 
                     <li class="menu-title">@lang('Area Coverage')</li>
                     <li>
