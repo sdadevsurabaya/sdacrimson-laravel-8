@@ -23,6 +23,8 @@ class LaporanSalesController extends Controller
         'user_id' => 'required|string',
         'general_id' => 'required|string',
         'jadwal_id' => 'required|string',
+        'contact_person' => 'required|string',
+        'no_hp' => 'required|numeric',
         'tanggal_jadwal' => 'required|string',
         'latitude' => 'nullable|numeric',
         'longitude' => 'nullable|numeric',
@@ -36,6 +38,8 @@ class LaporanSalesController extends Controller
     $laporanSales->latitude = $validatedLaporan['latitude'];
     $laporanSales->longitude = $validatedLaporan['longitude'];
     $laporanSales->jadwal_id = $validatedLaporan['jadwal_id'];
+    $laporanSales->contact_person = $validatedLaporan['contact_person'];
+    $laporanSales->no_hp = $validatedLaporan['no_hp'];
     $laporanSales->save();
 
  
@@ -110,6 +114,8 @@ class LaporanSalesController extends Controller
             'general_id' => 'required|string',
             'jadwal_id' => 'required|string',
             'tanggal_jadwal' => 'required|string',
+            'contact_person' => 'required|string',
+            'no_hp' => 'required|numeric',
         ]);
         $idLaporan =$validatedLaporan['laporan_id'];
         // Dapatkan laporan yang ingin diperbarui
@@ -119,6 +125,8 @@ class LaporanSalesController extends Controller
         
         // Update pesan dengan data yang divalidasi
         $laporanSales->pesan = $validatedLaporan['laporan'];
+        $laporanSales->contact_person = $validatedLaporan['contact_person'];
+        $laporanSales->no_hp = $validatedLaporan['no_hp'];
         $laporanSales->save();
  
     $validatedFoto = $request->validate([
