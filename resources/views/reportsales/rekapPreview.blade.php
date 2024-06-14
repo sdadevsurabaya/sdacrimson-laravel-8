@@ -33,16 +33,34 @@
                 background-color: pink;
             }
         </style>
+
+
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+<script>
+  function exportToExcel() {
+    // Ambil data dari tabel
+    var table = document.getElementById('data-excel');
+
+    // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
+    var wb = XLSX.utils.table_to_book(table, {sheet:"Sheet JS"});
+
+    // Tulis data ke file Excel
+    XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
+  }
+</script>
     </head>
 
     <body>
         <div class="container-fluid" style="padding-top: 2rem;">
             <div class="mb-3 text-end">
                 <button class="btn btn-dark" onclick="printContent()">Print</button>
+                <button onclick="exportToExcel()" class="btn btn-success">Export ke Excel</button>
             </div>
-            <h5 class="text-start mb-3">Rekap Visit Tony</h5>
-            <table>
+            {{-- <h5 class="text-start mb-3"></h5> --}}
+            <table id="data-excel">
+            
                 <thead>
+                    <tr><th>Rekap Visit {{ $userJadwal->user->name}}</th></tr>
                     <tr>
                         <th>Tanggal</th>
                         <th>Nama Customer</th>
@@ -55,16 +73,18 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach($laporan as $item)
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->general->nama_usaha }}</td>
+                        <td>{{ $item->general->alamat_kantor }}</td>
+                        <td>{{ $item->general->area }}</td>
+                        <td>{{ $item->contact_person }}</td>
+                        <td>{{ $item->no_hp }}</td>
+                        <td>{{ $item->pesan }}</td>
+                        <td>{{ $item->general->email }}</td>
                     </tr>
+                    @endforeach
                 </tbody>
             </table>
         </div>

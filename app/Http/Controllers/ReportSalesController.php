@@ -11,6 +11,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\LaporanSales;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -57,8 +58,13 @@ class ReportSalesController extends Controller
         return view('reportsales.rekapvisit', compact('users'));
     }
 
-    public function previewrekapvisit(){
-        return view('reportsales.rekapPreview');
+    public function previewrekapvisit($id){
+      
+        $laporan = LaporanSales::with(['general', 'user'])->where('jadwal_id', $id)->get();
+
+        $userJadwal = Jadwal::with(['user'])->find($id);
+       
+        return view('reportsales.rekapPreview', compact('laporan', 'userJadwal'));
     }
 
 
