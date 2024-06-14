@@ -72,7 +72,7 @@
 
                                         <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
                                                 data-id="{{ $jadwal->id }}" class="btn btn-sm btn-secondary show-jadwal">Show</button>
-                                            
+
                                         </td>
 
                                     </tr>
@@ -195,8 +195,8 @@
     <script>
         $(document).ready(function() {
 
-         
-         
+
+
 
             $('#datatable-home').DataTable();
             $('#datatable-kunjungan').DataTable();
@@ -233,7 +233,7 @@
                             <td>${item.plant_date}</td>
                             <td>${item.note}</td>
                             <td>
-                                <a href="${editUrl}" class="btn btn-sm btn-warning">Visit</a>
+                                <a href="${editUrl}" class="btn btn-sm btn-warning">Detail</a>
                             </td>
                         </tr>`;
                             $('#datatable-show tbody').append(row);
@@ -249,7 +249,7 @@
                 });
             }
 
-      
+
 
 
 
