@@ -78,7 +78,7 @@
                     <li class="menu-title">@lang('General Information')</li>
                     <li>
                         <a href="{{ route('generals.index') }}">
-                            <i class="uil-home-alt"></i>
+                            <i class="uil-dashboard"></i>
                             <span>@lang('General')</span>
                         </a>
                     </li>
@@ -86,7 +86,7 @@
                     <li class="menu-title">@lang('Sales')</li>
                     <li>
                         <a href="#" class="has-arrow waves-effect">
-                            <i class="uil-database"></i>
+                            <i class="uil-presentation-check"></i>
                             <span>@lang('Jadwal Kunjungan')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
@@ -97,14 +97,14 @@
                     </li>
                     <li>
                         <a href="{{ route('kunjungan.index') }}">
-                            <i class="uil-home-alt"></i>
+                            <i class="uil-car"></i>
                             <span>@lang('Kunjungan')</span>
                         </a>
                     </li>
 
                     <li>
                         <a href="#" class="has-arrow waves-effect">
-                            <i class="uil-home-alt"></i>
+                            <i class="uil-swatchbook"></i>
                             <span>@lang('Report')</span>
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
