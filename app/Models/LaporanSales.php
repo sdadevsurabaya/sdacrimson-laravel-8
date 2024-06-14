@@ -18,4 +18,13 @@ class LaporanSales extends Model
     {
         return $this->hasMany(LaporanFoto::class);
     }
+
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');
+    }
+    public function general()
+    {
+        return $this->belongsTo(General_model::class, 'general_id', 'id');
+    }
 }
