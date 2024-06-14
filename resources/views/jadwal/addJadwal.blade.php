@@ -137,7 +137,7 @@
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Customer</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" id="nama_customer" placeholder="PT ABS">
+                            <input type="text" class="form-control" id="nama_customer" placeholder="ABCD PT">
                         </div>
                     </div>
                 </div>
@@ -147,7 +147,7 @@
             </div>
         </div>
     </div>
-    
+
 
 @endsection
 @section('script')
