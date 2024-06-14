@@ -35,7 +35,7 @@
                         {{-- <button class="btn btn-info m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Buat
                             Jadwal</button> --}}
                         <div class="col-md-2 mt-1">
-                            <input class="form-control" name="daterange" value=""/>
+                            <input class="form-control" name="daterange" value="" />
                         </div>
                     </div>
                 </div>
@@ -70,9 +70,14 @@
                                         <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
                                         {{-- Formatting the date --}}
 
-                                        <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
-                                                data-id="{{ $jadwal->id }}" class="btn btn-sm btn-secondary show-jadwal">Show</button>
-
+                                        <td>
+                                            <button data-bs-toggle="modal" data-bs-target="#Show" type="button"
+                                                data-id="{{ $jadwal->id }}"
+                                                class="btn btn-sm btn-secondary show-jadwal">Show
+                                            </button>
+                                            <a href="{{ route('reportsales.rekapPreview') }}" class="btn btn-sm btn-warning">
+                                                Rekap Visit
+                                            </a>
                                         </td>
 
                                     </tr>
@@ -85,54 +90,6 @@
             </div>
         </div>
     </div> <!-- end row -->
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    @role('Sales')
-                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
-                    @else
-                        <div class="mb-3">
-                            <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
-                            <div class="">
-                                <select class="form-select" name="user_id" id="user_id" id="floatingSelectGrid"
-                                    aria-label="Floating label select example">
-                                    <option value="">-- Pilih User --</option>
-                                    @foreach ($users as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    @endrole
-                    <div class="mb-3 row">
-                        <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
-                        <div class="">
-                            <input placeholder="Tanggal Kunjungan" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="date" id="date" type="date">
-                        </div>
-                    </div>
-                    {{-- <div class="mb-3">
-                        <label for="floatingSelectGrid" class="col-form-label">Jam Kunjungan</label>
-                        <div class="">
-                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="active_date" type="time">
-                        </div>
-                    </div> --}}
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="saveButton">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Modal SHOW -->
     <div class="modal fade" id="Show" tabindex="-1" aria-labelledby="modalShowLabel" aria-hidden="true">
@@ -165,30 +122,6 @@
             </div>
         </div>
     </div>
-    <!-- Modal EDIT -->
-    <div class="modal fade" id="Edit" tabindex="-1" aria-labelledby="modalEditLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalEditLabel">Edit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3 row">
-                        <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
-                        <div class="">
-                            <input placeholder="active date" class="form-control form-control-solid mb-3 mb-lg-0"
-                                name="date_edit" id="date_edit" type="date">
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary update-jadwal">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
 @endsection
 @section('script')
     <script type="text/javascript"></script>
@@ -223,7 +156,8 @@
 
 
                         response.forEach(function(item, index) {
-                            var editUrl = `/admin/general/visit/${item.general_id}?jadwal_id=${item.jadwal_id}`;
+                            var editUrl =
+                                `/admin/general/visit/${item.general_id}?jadwal_id=${item.jadwal_id}`;
 
 
                             var row = `<tr>
@@ -234,6 +168,7 @@
                             <td>${item.note}</td>
                             <td>
                                 <a href="${editUrl}" class="btn btn-sm btn-warning">Detail</a>
+
                             </td>
                         </tr>`;
                             $('#datatable-show tbody').append(row);
@@ -256,22 +191,21 @@
         });
     </script>
     <script>
-       $(function() {
-    $('input[name="daterange"]').daterangepicker({
-        opens: 'left'
-    }, function(start, end, label) {
-        // Callback saat rentang tanggal dipilih
-        var startDate = start.format('YYYY-MM-DD');
-        var endDate = end.format('YYYY-MM-DD');
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'left'
+            }, function(start, end, label) {
+                // Callback saat rentang tanggal dipilih
+                var startDate = start.format('YYYY-MM-DD');
+                var endDate = end.format('YYYY-MM-DD');
 
-        // Buat URL dengan parameter start dan end
-        var url = 'report-sales?start=' + startDate + '&end=' + endDate;
+                // Buat URL dengan parameter start dan end
+                var url = 'report-sales?start=' + startDate + '&end=' + endDate;
 
-        // Redirect ke halaman report-sales dengan parameter
-        window.location.href = url;
-    });
-});
-
+                // Redirect ke halaman report-sales dengan parameter
+                window.location.href = url;
+            });
+        });
     </script>
 
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

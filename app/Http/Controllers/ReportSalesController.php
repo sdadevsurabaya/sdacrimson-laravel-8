@@ -20,7 +20,7 @@ class ReportSalesController extends Controller
 
         $startDate = $request->start;
         $endDate = $request->end;
-      
+
         $users = User::pluck('name', 'id');
 
         $hasRole = auth()->user()->hasRole('Sales');
@@ -32,7 +32,7 @@ class ReportSalesController extends Controller
             }else{
                 $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->withTrashed()->whereNull('deleted_at')->get();
             }
-          
+
         }else {
             if( $startDate &&   $endDate){
                 $jadwals = Jadwal::orderBy('created_at', 'desc')
@@ -46,10 +46,20 @@ class ReportSalesController extends Controller
                 ->whereNull('deleted_at')
                 ->get();
             }
-       
+
 
         }
         return view('reportsales.index', compact('users', 'jadwals'));
     }
+
+    public function exportrekapvisit(){
+        $users = User::pluck('name', 'id');
+        return view('reportsales.rekapvisit', compact('users'));
+    }
+
+    public function previewrekapvisit(){
+        return view('reportsales.rekapPreview');
+    }
+
 
 }

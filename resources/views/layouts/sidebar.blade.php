@@ -103,10 +103,13 @@
                     </li>
 
                     <li>
-                        <a href="{{ route('reportsales.index') }}">
+                        <a href="#" class="has-arrow waves-effect">
                             <i class="uil-home-alt"></i>
                             <span>@lang('Report')</span>
                         </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
+                        </ul>
                     </li>
 
 

@@ -70,6 +70,10 @@
     //jadwal
     use App\Http\Controllers\JadwalController;
 
+    //Report
+    use App\Http\Controllers\ReportSalesController;
+
+
 
 
 
@@ -170,8 +174,11 @@
 
         Route::post('/update-detail-jadwal', [App\Http\Controllers\DetailJadwal\EditDetailJadwalController::class, 'store'])->name('update.detail.jadwal');
 
-        //Repor Sales
+        //Report Sales
         Route::get('report-sales', [App\Http\Controllers\ReportSalesController::class, 'index'])->name('reportsales.index');
+        // Route::get('Export-Report-Visit', [App\Http\Controllers\ReportSalesController::class, 'exportrekapvisit'])->name('reportsales.rekapvisit');
+        Route::get('PreviewRekapVisit', [App\Http\Controllers\ReportSalesController::class, 'previewrekapvisit'])->name('reportsales.rekapPreview');
+
 
 
 
