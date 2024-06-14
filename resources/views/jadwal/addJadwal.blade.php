@@ -135,9 +135,21 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Customer</label>
-                        <div class="col-md-10">
-                            <input type="text" class="form-control" id="nama_customer" placeholder="ABCD PT">
+                        <label for="formrow-nama-input" class="col-form-label">Nama Customer</label>
+                        <div class="">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="ABCD PT">
+                        </div>
+                    </div>
+                    <div class="mb-3 row d-none">
+                        <label for="formrow-nama-input" class="col-form-label">Email</label>
+                        <div class="">
+                            <input type="email" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="abcda@gmail.com">
+                        </div>
+                    </div>
+                    <div class="mb-3 row d-none">
+                        <label for="formrow-nama-input" class="col-form-label">No HP</label>
+                        <div class="">
+                            <input type="number" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="ABCD PT">
                         </div>
                     </div>
                 </div>
