@@ -58,9 +58,10 @@
             </div>
             {{-- <h5 class="text-start mb-3"></h5> --}}
             <table id="data-excel">
-            
                 <thead>
-                    <tr><th>Rekap Visit {{ $userJadwal->user->name}}</th></tr>
+                    <tr>
+                        <th colspan="8" style="border: none;">Rekap Visit {{ $userJadwal->user->name}}</th>
+                    </tr>
                     <tr>
                         <th>Tanggal</th>
                         <th>Nama Customer</th>
