@@ -55,8 +55,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"
-                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable-home" class="table table-striped table-bordered nowrap"
+                        style="border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -74,10 +74,10 @@
                                 @foreach ($data as $key => $general)
                                 @foreach($general->jadwals as $jadwal)
                                     <tr>
-                                        <td>@if($general->laporanSales->isNotEmpty())
+                                        <td>{{ ++$i }} </td>
+                                        <td>{{ $general->nama_usaha }} @if($general->laporanSales->isNotEmpty())
                                             ✅
-                                        @endif{{ ++$i }} </td>
-                                        <td>{{ $general->nama_usaha }}</td>
+                                        @endif</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
                                         <td>{{ $jadwal->date }}</td>
