@@ -83,11 +83,7 @@
                                         <td>{{ $jadwal->date }}</td>
                                         <td>{{ $jadwal->user->name }}</td>
                                         <td>
-
-
                                             <a href="{{ route('kunjungan.laporan', ['general_id' => $general->id, 'jadwal_id' => $jadwal->id, 'tanggal' => $jadwal->date]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
-
-
                                         </td>
                                     </tr>
                              @endforeach

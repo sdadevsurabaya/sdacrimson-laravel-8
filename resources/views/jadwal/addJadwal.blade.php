@@ -140,6 +140,12 @@
                             <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="ABCD PT">
                         </div>
                     </div>
+                    <div class="mb-3 row">
+                        <label for="formrow-nama-input" class="col-form-label">Alamat</label>
+                        <div class="">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="alamat" placeholder="Jl. Balongsari Indah No. 22">
+                        </div>
+                    </div>
                     <div class="mb-3 row d-none">
                         <label for="formrow-nama-input" class="col-form-label">Email</label>
                         <div class="">
@@ -175,13 +181,15 @@
             $('#btnSimpan').click(function() {
                 console.log('eko');
             var nama_customer = $('#nama_customer').val();
+            var alamat = $('#alamat').val();
 
                         $.ajax({
                 type: 'POST',
                 url: '{{ route("leads.store") }}', // Ganti route ini dengan route yang sesuai di Laravel Anda
                 data: {
                     _token: '{{ csrf_token() }}',
-                    nama_customer: nama_customer
+                    nama_customer: nama_customer,
+                    alamat: alamat
                 },
                 success: function(response) {
                     // Tampilkan SweetAlert berhasil
