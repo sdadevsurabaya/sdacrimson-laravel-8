@@ -48,14 +48,14 @@
                         <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
                             class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
                             In <i class="uil uil-arrow-from-right"></i></a>
-                        
-                           
+
+
                         </div>
                         <div class="col col-auto" id="checkout">
                             @if ($checkin)
 
-                           
-{{-- 
+
+{{--
                             @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
                             <button onclick="checkOutOver()" class="btn btn-outline-danger  w-100 fw-bold">
                                 Check Out <i class="uil uil-left-arrow-from-left"></i>
@@ -75,9 +75,9 @@
                                 </button>
                             @endif --}}
 
-                            
-                         
-                         
+
+
+
 
 
                                 <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id'),  'tanggal' => request('tanggal')]) }}"
@@ -85,7 +85,7 @@
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
                                 </a>
 
-                              
+
                             @else
                                 <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
                                     Check Out <i class="uil uil-left-arrow-from-left"></i>
@@ -131,7 +131,7 @@
                                                                 <label for="contactPerson">Contact Person</label>
                                                             </div>
                                                         </div>
-                                                        
+
                                                         <div class="col-md-12 mb-3">
                                                             <label class="form-label" for="noHp">
                                                                 <span style="color: crimson;">*</span> No HP
@@ -142,7 +142,7 @@
                                                             </div>
                                                         </div>
 
-                                                        
+
 
 
                                                         <div class="col-md-12 mb-3">
@@ -159,7 +159,7 @@
                                                                 <label class="form-label">
                                                                     <span style="color: crimson;">*</span> Foto</label>
                                                                 <div class="foto col-12 d-flex">
-                                                                   
+
 
                                                                     @isset($laporan->gambar)
                                                                     @foreach($laporan->gambar as $index => $gambar)
@@ -197,7 +197,7 @@
                                                                         <i class="uil-trash"></i>
                                                                     </div>
                                                                 @endisset
-                                                                    
+
                                                                 </div>
                                                                 <div id="team-member-fields"></div>
                                                                 <button type="button" class="btn btn-dark btn-block mb-3"
@@ -210,13 +210,13 @@
                                                     </div>
                                                     <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
                                                     <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
-                              
+
                                                     <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
                                                     <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
                                                     <div class="text-center">
                                                         <button type="submit" class="btn btn-primary submit-contact">Update Laporan</button>
                                                     </div>
-                                                
+
 
                                                     {!! Form::close() !!}
 
@@ -241,7 +241,7 @@
                                             <label for="contactPerson">Contact Person</label>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label" for="noHp">
                                             <span style="color: crimson;">*</span> No HP
@@ -251,7 +251,7 @@
                                             <label for="noHp">No HP</label>
                                         </div>
                                     </div>
-                                    
+
 
 
                                     <div class="col-md-12 mb-3">
@@ -263,7 +263,7 @@
                                             <label for="floatingTextarea2">Masukan catatan..</label>
                                         </div>
                                     </div>
-                                    
+
                                     <div class="col-xl-12 col-md-12">
                                         <div class="mb-3">
                                             <label class="form-label">
@@ -327,18 +327,18 @@
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
                                 @endif --}}
-                             
+
                                 <div class="text-center">
                                     <button type="submit" class="btn btn-primary submit-contact">Submit</button>
                                 </div>
 
 
-                               
+
                                 {!! Form::close() !!}
 
                                 @endif
-                              
-                           
+
+
                             </div>
                         </div>
                     </div>
@@ -361,7 +361,7 @@
 
             $(document).on('click', '.btn-delete-gambar-edit', function() {
         var gambarId = $(this).data('gambar-id');
-        
+
         // Tampilkan dialog konfirmasi sebelum menghapus gambar
         if (confirm('Apakah Anda yakin ingin menghapus gambar ini?')) {
             $.ajax({

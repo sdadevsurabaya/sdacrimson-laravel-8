@@ -60,7 +60,7 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
-                                   
+
                                     <th>Nama Usaha</th>
                                     <th>Nama Pemilik</th>
                                     <th>Alamat</th>
@@ -74,11 +74,10 @@
                                 @foreach ($data as $key => $general)
                                 @foreach($general->jadwals as $jadwal)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
-                                      
-                                        <td>{{ $general->nama_usaha }} @if($general->laporanSales->isNotEmpty())
+                                        <td>@if($general->laporanSales->isNotEmpty())
                                             ✅
-                                        @endif</td>
+                                        @endif{{ ++$i }} </td>
+                                        <td>{{ $general->nama_usaha }}</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
                                         <td>{{ $jadwal->date }}</td>
