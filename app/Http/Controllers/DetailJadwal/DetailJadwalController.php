@@ -24,7 +24,11 @@ class DetailJadwalController extends Controller
     {
         $id = $request->get('id');
         // Ambil data berdasarkan ID
-        $data = DetailJadwal::with(['customer'])->where('jadwal_id', $id)->get();
+        // $data = DetailJadwal::with(['customer', 'laporanSales'])->where('jadwal_id', $id)->get();
+
+        $data = DetailJadwal::with(['customer', 'laporanSales' => function($query) use ($id) {
+            $query->where('jadwal_id', $id);
+        }])->where('jadwal_id', $id)->get();
 
         return response()->json($data);
     }

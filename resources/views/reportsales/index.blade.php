@@ -159,10 +159,18 @@
                             var editUrl =
                                 `/admin/general/visit/${item.general_id}?jadwal_id=${item.jadwal_id}`;
 
+                        // Pengecekan apakah laporanSales tidak kosong
+                        var hasLaporanSales = item.laporan_sales && item.laporan_sales.length > 0;
+                                var customerCell = `${item.customer.nama_usaha}`;
+                                
+                                if (hasLaporanSales) {
+                                    customerCell += ' ✅';
+                                }
+
 
                             var row = `<tr>
                             <td>${index + 1}</td>
-                            <td>${item.customer.nama_usaha}</td>
+                            <td>${customerCell}</td>
                             <td>${item.activity_type}</td>
                             <td>${item.plant_date}</td>
                             <td>${item.note}</td>

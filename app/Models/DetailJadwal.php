@@ -25,4 +25,9 @@ class DetailJadwal extends Model
     {
         return $this->belongsTo(General_model::class, 'general_id');
     }
+
+    public function laporanSales()
+    {
+        return $this->hasMany(LaporanSales::class, 'general_id', 'general_id');
+    }
 }
