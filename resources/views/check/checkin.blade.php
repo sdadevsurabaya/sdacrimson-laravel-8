@@ -247,7 +247,7 @@
                 navigator.geolocation.getCurrentPosition(showPosition);
                 // console.log("Geolocation is not supported by this browser.");
             } else {
-                console.log("Geolocation is not supported by this browser.");
+                alert('Geolocation tidak didukung oleh browser ini. Silakan gunakan browser yang mendukung geolocation. Aktifkan Lokasi Anda');
             }
         }
 
@@ -394,7 +394,24 @@
                 },
                 error: function(xhr, status, error) {
                     console.error('Error: ' + error);
-                    alert("Lokasi Anda Tidak Ditemukan, Silahkan Lakukan Kembali");
+                    console.log(xhr.responseText);
+
+                    // Ambil pesan error dari response JSON
+                    var response = JSON.parse(xhr.responseText);
+                    var errorMessage = "Error occurred:";
+                    
+                    // Uraikan objek pesan error dan gabungkan menjadi satu string
+                    for (var key in response.message) {
+                        if (response.message.hasOwnProperty(key)) {
+                            response.message[key].forEach(function(msg) {
+                                errorMessage += "\n" + msg;
+                            });
+                        }
+                    }
+                    
+                    // Tampilkan pesan error dalam alert
+                    alert(errorMessage);
+
                     // Bisa tambahkan untuk menampilkan kembali tombol send dan menyembunyikan loader jika diperlukan
                     $("#sendbut").show();
                     $(".loader").hide();
