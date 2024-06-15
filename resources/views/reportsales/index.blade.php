@@ -75,7 +75,7 @@
                                                 data-id="{{ $jadwal->id }}"
                                                 class="btn btn-sm btn-secondary show-jadwal">Show
                                             </button>
-                                            <a href="{{ route('reportsales.rekapPreview') }}" class="btn btn-sm btn-warning">
+                                            <a href="{{ route('reportsales.rekapPreview', $jadwal->id) }}" class="btn btn-sm btn-warning">
                                                 Rekap Visit
                                             </a>
                                         </td>

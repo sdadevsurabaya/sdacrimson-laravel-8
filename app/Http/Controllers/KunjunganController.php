@@ -58,14 +58,30 @@ class KunjunganController extends Controller
         //           ->whereDate('date', $today);
         // })->get();
 
+        // $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today) {
+        //     $query->where('user_id', $userId)
+        //     ->whereDate('date', '<=', $today);
+        // })->with(['jadwals' => function ($query) {
+        //     $query->select('jadwals.*');
+        // }, 'jadwals.user' => function ($query) {
+        //     $query->select('id', 'name');
+        // }])->get();
+
         $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today) {
             $query->where('user_id', $userId)
-            ->whereDate('date', '<=', $today);
-        })->with(['jadwals' => function ($query) {
-            $query->select('jadwals.*');
-        }, 'jadwals.user' => function ($query) {
-            $query->select('id', 'name');
-        }])->get();
+                  ->whereDate('date', '<=', $today);
+        })->with([
+            'jadwals' => function ($query) {
+                $query->select('jadwals.*');
+            },
+            'jadwals.user' => function ($query) {
+                $query->select('id', 'name');
+            },
+            'laporanSales' => function ($query) {
+                $query->select('laporan_sales.*');
+            }
+        ])->get();
+        
 
 
 
