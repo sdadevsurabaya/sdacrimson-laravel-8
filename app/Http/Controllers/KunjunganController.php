@@ -71,23 +71,45 @@ class KunjunganController extends Controller
             $query->where('user_id', $userId)
                   ->whereDate('date', '<=', $today);
         })->with([
-            'jadwals' => function ($query) {
-                $query->select('jadwals.*');
+            'jadwals' => function ($query) use ($userId) {
+                $query->where('user_id', $userId)
+                      ->select('jadwals.*');
             },
             'jadwals.user' => function ($query) {
                 $query->select('id', 'name');
             },
             'laporanSales' => function ($query) {
                 $query->select('laporan_sales.*');
+            },
+            'detailJadwals' => function ($query) use ($userId) {
+                $query->select('detail_jadwals.*')
+                      ->whereHas('jadwal', function ($query) use ($userId) {
+                          $query->where('user_id', $userId);
+                      });
             }
         ])->get();
         
-
-
-
         // dd($data);
+        // Manipulasi data untuk menyatukan informasi yang diperlukan
+        $formattedData = $data->flatMap(function ($item) {
+            return $item->jadwals->map(function ($jadwal) use ($item) {
+                $detailJadwal = $jadwal->detailJadwals->first();
+        
+                return [
+                    'general' => $item,
+                    'jadwal' => $jadwal,
+                    'activityType' => $detailJadwal ? $detailJadwal->activity_type : null,
+                ];
+            });
+        });
+        
+        // Urutkan $formattedData berdasarkan jadwal date secara descending
+        $formattedData = $formattedData->sortByDesc(function ($item) {
+            return $item['jadwal']->date;
+        })->values();
+        
 
-        return view('kunjungan.index', compact('data'))
+        return view('kunjungan.index', compact('formattedData'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
@@ -95,6 +117,7 @@ class KunjunganController extends Controller
      
 
         $laporan = LaporanSales::with(['gambar'])->where('general_id', $id)->where('jadwal_id', $jadwal)->where('user_id', Auth::id())->first();
+        $detailJadwal = DetailJadwal::where('general_id', $id)->where('jadwal_id', $jadwal)->first();
         $general = General_model::find($id);
       
         $checkin = Attendance::where('general_id', $id)
@@ -106,7 +129,7 @@ class KunjunganController extends Controller
                     ->where('status', 'check out')
                     ->where('jadwal_id', $jadwal)
                     ->first();
-        return view('kunjungan.laporan', compact('general', 'checkin', 'checkout', 'laporan'));
+        return view('kunjungan.laporan', compact('general', 'checkin', 'checkout', 'laporan', 'detailJadwal'));
     }
 
 }
