@@ -30,6 +30,12 @@
         <div class="col-lg-12 margin-tb">
             <div class="card">
                 <div class="card-body">
+
+                 <h5> Type Aktifitas:   {{$detailJadwal->activity_type}}</h5>
+
+                    @if($detailJadwal->activity_type == 'Email' || $detailJadwal->activity_type == 'Telepon')
+                       
+                    @else
                     <div class="gap-3 d-flex justify-content-center">
                         <div class="col col-auto" id="checkin">
 
@@ -95,6 +101,10 @@
 
                         </div>
                     </div>
+                    @endif
+
+
+                   
                 </div>
             </div>
 
