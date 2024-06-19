@@ -142,62 +142,7 @@
 @endsection
 @section('script')
     <script src="{{ URL::asset('/assets/libs/html5-qrcode/html5-qrcode.min.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-
-            $(".btn-success").click(function() {
-                var lsthmtl = $(".clone").html();
-                // console.log(lsthmtl);
-                $(".increment").after(lsthmtl);
-
-            });
-
-            $("body").on("click", ".btn-danger", function() {
-                $(this).parents(".hdtuto").remove();
-
-            });
-
-            $('select').prop('selectedIndex', 0);
-
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // $(".js-select2-multi").select2();
-
-            $(".js-select2-multi").select2();
-
-            handlePermission(this);
-
-        });
-
-        // dinamis tambah foto
-        var i = 0;
-
-        function preview_member(event, inp) {
-            var reader = new FileReader();
-            // console.log("tambah "+inp);
-            reader.onload = function() {
-                var output = document.getElementById("output_member" + inp);
-                output.src = reader.result;
-            };
-
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        function preview_member_edit_outlet(event, inp) {
-            var reader = new FileReader();
-            console.log("tambah edit " + inp);
-            reader.onload = function() {
-                var output = document.getElementById("output_member_edit_outlet" + inp);
-                output.src = reader.result;
-            };
-
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
+    {{-- <script type="text/javascript">
         // show div on error validation
         function printErrorMsg(msg) {
             $(".print-error-msg").find("ul").html('');
@@ -206,6 +151,6 @@
                 $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
             });
         }
-    </script>
+    </script> --}}
     <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
 @endsection
