@@ -23,6 +23,15 @@ class LaporanSales extends Model
     {
         return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');
     }
+    public function detailJadwal()
+    {
+        return $this->hasMany(DetailJadwal::class, 'jadwal_id', 'jadwal_id');
+    }
+    
+    
+
+
+
     public function general()
     {
         return $this->belongsTo(General_model::class, 'general_id', 'id');

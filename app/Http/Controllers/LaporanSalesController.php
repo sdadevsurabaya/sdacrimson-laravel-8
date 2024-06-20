@@ -26,8 +26,11 @@ class LaporanSalesController extends Controller
         'contact_person' => 'required|string',
         'no_hp' => 'required|numeric',
         'tanggal_jadwal' => 'required|string',
-        'latitude' => 'nullable|numeric',
-        'longitude' => 'nullable|numeric',
+        'latitude' => 'required|numeric',
+        'longitude' => 'required|numeric',
+    ], [
+        'latitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
+        'longitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
     ]);
 
 
@@ -122,7 +125,7 @@ class LaporanSalesController extends Controller
         $laporanSales = LaporanSales::where('id', $idLaporan)
         ->where('created_at', '>=', Carbon::now()->subDay()) // Pengecekan jika melebihi 1 hari
         ->firstOrFail();
-        
+        // ->where('created_at', '>=', Carbon::now()) // Pengecekan jika melebihi 1 hari jika beda hari bukan jam
         // Update pesan dengan data yang divalidasi
         $laporanSales->pesan = $validatedLaporan['laporan'];
         $laporanSales->contact_person = $validatedLaporan['contact_person'];

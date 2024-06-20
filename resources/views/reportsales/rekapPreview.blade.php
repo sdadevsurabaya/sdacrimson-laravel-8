@@ -70,6 +70,7 @@
                         <th>CP</th>
                         <th>HP</th>
                         <th>Keterangan</th>
+                        <th>Type Aktifitas</th>
                         <th>Email</th>
                     </tr>
                 </thead>
@@ -83,9 +84,18 @@
                         <td>{{ $item->contact_person }}</td>
                         <td>{{ $item->no_hp }}</td>
                         <td>{{ $item->pesan }}</td>
+                        <td>
+                            @foreach($item->detailJadwal as $detail)
+                            @if($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
+                                {{ $detail->activity_type }}
+                                @break
+                            @endif
+                        @endforeach
+                        </td>
                         <td>{{ $item->general->email }}</td>
                     </tr>
                     @endforeach
+                    
                 </tbody>
             </table>
         </div>
