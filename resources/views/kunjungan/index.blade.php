@@ -62,32 +62,38 @@
                                     <th>NO</th>
 
                                     <th>Nama Usaha</th>
+                                    <th>Tanggal</th>
+                                    <th>Type Aktifitas</th>
                                     <th>Nama Pemilik</th>
                                     <th>Alamat</th>
-                                    <th>Tanggal</th>
                                     <th>AR</th>
                                     <th width="280px">Aksi</th>
 
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $key => $general)
-                                @foreach($general->jadwals as $jadwal)
-                                    <tr>
-                                        <td>{{ ++$i }} </td>
-                                        <td>{{ $general->nama_usaha }} @if($general->laporanSales->isNotEmpty())
+                                @foreach($formattedData as $i => $item)
+                                <tr>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td>{{ $item['general']->nama_usaha }} 
+                                        @if($item['general']->laporanSales->isNotEmpty())
                                             ✅
-                                        @endif</td>
-                                        <td>{{ $general->nama_lengkap }}</td>
-                                        <td>{{ $general->alamat_kantor }}</td>
-                                        <td>{{ $jadwal->date }}</td>
-                                        <td>{{ $jadwal->user->name }}</td>
-                                        <td>
-                                            <a href="{{ route('kunjungan.laporan', ['general_id' => $general->id, 'jadwal_id' => $jadwal->id, 'tanggal' => $jadwal->date]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
-                                        </td>
-                                    </tr>
-                             @endforeach
+                                        @endif
+                                    </td>
+                                    <td>{{ $item['jadwal']->date }}</td>
+                                    <td>
+                                        {{ $item['activityType'] ?? 'Tidak Ada Aktivitas' }}
+                                    </td>
+                                    <td>{{ $item['general']->nama_lengkap }}</td>
+                                    <td>{{ $item['general']->alamat_kantor }}</td>
+                                    <td>{{ $item['jadwal']->user->name }}</td>
+                                    <td>
+                                        <a href="{{ route('kunjungan.laporan', ['general_id' => $item['general']->id, 'jadwal_id' => $item['jadwal']->id, 'tanggal' => $item['jadwal']->date]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
+                                    </td>
+                                </tr>
                             @endforeach
+                            
+                            
 
                             </tbody>
                         </table>
@@ -248,7 +254,10 @@
     <script src="{{ URL::asset('/assets/libs/html5-qrcode/html5-qrcode.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
-            $('#datatable-home').DataTable();
+            $('#datatable-home').DataTable({
+    // "order": [[5, 'desc']]  // Mengatur urutan default berdasarkan kolom ke-5 (date) secara descending
+});
+
             cekLocalStorage();
         });
 
