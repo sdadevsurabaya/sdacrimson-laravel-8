@@ -247,7 +247,7 @@
                                             <span style="color: crimson;">*</span> Contact Person
                                         </label>
                                         <div class="form-floating">
-                                            <input type="text" name="contact_person" id="contactPerson" value="{{$general->nama_lengkap}}" class="form-control" placeholder="Contact Person">
+                                            <input type="text" name="contact_person" id="contactPerson" value="{{$general->nama_lengkap}}" class="form-control" placeholder="Contact Person" required>
                                             <label for="contactPerson">Contact Person</label>
                                         </div>
                                     </div>
@@ -257,7 +257,7 @@
                                             <span style="color: crimson;">*</span> No HP
                                         </label>
                                         <div class="form-floating">
-                                            <input type="text" name="no_hp" id="noHp" class="form-control"  value="{{ str_replace(' ', '', $general->mobile_phone) }}" placeholder="No HP">
+                                            <input type="text" name="no_hp" id="noHp" class="form-control"  value="{{ str_replace(' ', '', $general->mobile_phone) }}" placeholder="No HP" required>
                                             <label for="noHp">No HP</label>
                                         </div>
                                     </div>
@@ -269,7 +269,7 @@
                                             <span style="color: crimson;">*</span> Laporan
                                         </label>
                                         <div class="form-floating">
-                                            <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px">{{ old('laporan') }}</textarea>
+                                            <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" required>{{ old('laporan') }}</textarea>
                                             <label for="floatingTextarea2">Masukan catatan..</label>
                                         </div>
                                     </div>

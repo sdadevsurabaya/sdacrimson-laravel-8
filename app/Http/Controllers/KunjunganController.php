@@ -89,16 +89,15 @@ class KunjunganController extends Controller
             }
         ])->get();
         
-        // dd($data);
-        // Manipulasi data untuk menyatukan informasi yang diperlukan
+    
         $formattedData = $data->flatMap(function ($item) {
             return $item->jadwals->map(function ($jadwal) use ($item) {
-                $detailJadwal = $jadwal->detailJadwals->first();
-        
+                $detailJadwal = $jadwal->detailJadwals->where('general_id', $item->id)->first();
+                
                 return [
                     'general' => $item,
                     'jadwal' => $jadwal,
-                    'activityType' => $detailJadwal ? $detailJadwal->activity_type : null,
+                    'activityType' => $detailJadwal ? $detailJadwal['activity_type'] : null,
                 ];
             });
         });
@@ -108,7 +107,8 @@ class KunjunganController extends Controller
             return $item['jadwal']->date;
         })->values();
         
-
+        
+      
         return view('kunjungan.index', compact('formattedData'))
             ->with('i', ($request->input('page', 1) - 1) * 5);
     }
