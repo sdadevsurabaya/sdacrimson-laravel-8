@@ -123,9 +123,9 @@ class LaporanSalesController extends Controller
         $idLaporan =$validatedLaporan['laporan_id'];
         // Dapatkan laporan yang ingin diperbarui
         $laporanSales = LaporanSales::where('id', $idLaporan)
-        ->where('created_at', '>=', Carbon::now()->subDay()) // Pengecekan jika melebihi 1 hari
+        ->where('created_at', '>=',Carbon::today()) // Pengecekan jika melebihi 1 hari
         ->firstOrFail();
-        // ->where('created_at', '>=', Carbon::now()) // Pengecekan jika melebihi 1 hari jika beda hari bukan jam
+        // ->where('created_at', '>=', Carbon::now()->subDay()) // Pengecekan jika melebihi 1 hari jika beda hari bukan jam
         // Update pesan dengan data yang divalidasi
         $laporanSales->pesan = $validatedLaporan['laporan'];
         $laporanSales->contact_person = $validatedLaporan['contact_person'];
