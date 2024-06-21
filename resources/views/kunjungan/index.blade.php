@@ -76,8 +76,12 @@
                                 <tr>
                                     <td>{{ $i + 1 }}</td>
                                     <td>{{ $item['general']->nama_usaha }} 
-                                        @if($item['general']->laporanSales->isNotEmpty())
-                                            ✅
+                                       
+                                        @php
+                                            $laporanSales = $item['general']->laporanSales->where('jadwal_id', $item['jadwal']->id)->first();
+                                        @endphp
+                                        @if($laporanSales)
+                                            ✅ 
                                         @endif
                                     </td>
                                     <td>{{ $item['jadwal']->date }}</td>
