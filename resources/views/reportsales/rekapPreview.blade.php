@@ -60,7 +60,7 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="8" style="border: none;">Rekap Visit {{ $userJadwal->user->name}}</th>
+                        <th colspan="9" style="border: none;">Rekap Visit {{ $userJadwal->user->name}}</th>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -95,7 +95,7 @@
                         <td>{{ $item->general->email }}</td>
                     </tr>
                     @endforeach
-                    
+
                 </tbody>
             </table>
         </div>
