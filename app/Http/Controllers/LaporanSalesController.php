@@ -17,9 +17,9 @@ class LaporanSalesController extends Controller
     {
         try {
         // dd($request->hasFile('member_image'));
-       // Validasi input untuk data laporan
+       // Validasi input untuk data laporan 
        $validatedLaporan = $request->validate([
-        'laporan' => 'required|string',
+        'laporan' => 'required|string|min:30', 
         'user_id' => 'required|string',
         'general_id' => 'required|string',
         'jadwal_id' => 'required|string',
@@ -29,6 +29,7 @@ class LaporanSalesController extends Controller
         'latitude' => 'required|numeric',
         'longitude' => 'required|numeric',
     ], [
+        'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas ???.',
         'latitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
         'longitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
     ]);
@@ -112,13 +113,16 @@ class LaporanSalesController extends Controller
         try {
         // dd($request->hasFile('member_image'));
         $validatedLaporan = $request->validate([
-            'laporan' => 'required|string',
+            'laporan' => 'required|string|min:30',
             'laporan_id' => 'required|string',
             'general_id' => 'required|string',
             'jadwal_id' => 'required|string',
             'tanggal_jadwal' => 'required|string',
             'contact_person' => 'required|string',
             'no_hp' => 'required|numeric',
+        ],
+        [
+            'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas ???.',
         ]);
         $idLaporan =$validatedLaporan['laporan_id'];
         // Dapatkan laporan yang ingin diperbarui
