@@ -17,9 +17,9 @@ class LaporanSalesController extends Controller
     {
         try {
         // dd($request->hasFile('member_image'));
-       // Validasi input untuk data laporan 
+       // Validasi input untuk data laporan
        $validatedLaporan = $request->validate([
-        'laporan' => 'required|string|min:30', 
+        'laporan' => 'required|string|min:30',
         'user_id' => 'required|string',
         'general_id' => 'required|string',
         'jadwal_id' => 'required|string',
@@ -29,7 +29,7 @@ class LaporanSalesController extends Controller
         'latitude' => 'required|numeric',
         'longitude' => 'required|numeric',
     ], [
-        'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas ???.',
+        'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
         'latitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
         'longitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
     ]);
@@ -46,17 +46,17 @@ class LaporanSalesController extends Controller
     $laporanSales->no_hp = $validatedLaporan['no_hp'];
     $laporanSales->save();
 
- 
+
     $validatedFoto = $request->validate([
         'member_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8048',
         'namafoto.*' => 'nullable|string',
     ]);
 
-   
+
 
     if ($request->hasFile('member_image')) {
         foreach ($request->file('member_image') as $key => $file) {
-        
+
             $now = Carbon::now();
             $formattedDate = $now->format('Ymd_');
             $name = $formattedDate . Str::random(5) . '.' . $file->getClientOriginalExtension();
@@ -65,11 +65,11 @@ class LaporanSalesController extends Controller
                 $constraint->aspectRatio();
             })->save($path);
 
-          
+
             $laporanFoto = new LaporanFoto();
-            $laporanFoto->laporan_sales_id = $laporanSales->id; 
+            $laporanFoto->laporan_sales_id = $laporanSales->id;
             $laporanFoto->foto = $name;
-            $laporanFoto->nama = $validatedFoto['namafoto'][$key] ?? ''; 
+            $laporanFoto->nama = $validatedFoto['namafoto'][$key] ?? '';
             $laporanFoto->save();
         }
     }
@@ -86,20 +86,20 @@ class LaporanSalesController extends Controller
     {
         // Temukan model LaporanFoto berdasarkan ID
         $laporanFoto = LaporanFoto::find($laporanFotoId);
-    
+
         // Pastikan model ditemukan
         if ($laporanFoto) {
             // Dapatkan path lengkap dari gambar
             $gambarPath = public_path('laporan/' . $laporanFoto->foto);
-        
+
             // Hapus file gambar dari sistem file
             if (File::exists($gambarPath)) {
                 File::delete($gambarPath);
             }
-        
+
             // Hapus entri dari basis data
             $laporanFoto->delete();
-            
+
             return response()->json(['message' => 'Gambar berhasil dihapus']);
         } else {
             return response()->json(['error' => 'LaporanFoto tidak ditemukan'], 404);
@@ -122,7 +122,7 @@ class LaporanSalesController extends Controller
             'no_hp' => 'required|numeric',
         ],
         [
-            'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas ???.',
+            'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
         ]);
         $idLaporan =$validatedLaporan['laporan_id'];
         // Dapatkan laporan yang ingin diperbarui
@@ -135,17 +135,17 @@ class LaporanSalesController extends Controller
         $laporanSales->contact_person = $validatedLaporan['contact_person'];
         $laporanSales->no_hp = $validatedLaporan['no_hp'];
         $laporanSales->save();
- 
+
     $validatedFoto = $request->validate([
         'member_image.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:8048',
         'namafoto.*' => 'nullable|string',
     ]);
 
-   
+
 
     if ($request->hasFile('member_image')) {
         foreach ($request->file('member_image') as $key => $file) {
-        
+
             $now = Carbon::now();
             $formattedDate = $now->format('Ymd_');
             $name = $formattedDate . Str::random(5) . '.' . $file->getClientOriginalExtension();
@@ -154,11 +154,11 @@ class LaporanSalesController extends Controller
                 $constraint->aspectRatio();
             })->save($path);
 
-          
+
             $laporanFoto = new LaporanFoto();
-            $laporanFoto->laporan_sales_id =  $idLaporan; 
+            $laporanFoto->laporan_sales_id =  $idLaporan;
             $laporanFoto->foto = $name;
-            $laporanFoto->nama = $validatedFoto['namafoto'][$key] ?? ''; 
+            $laporanFoto->nama = $validatedFoto['namafoto'][$key] ?? '';
             $laporanFoto->save();
         }
     }
