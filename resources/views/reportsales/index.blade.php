@@ -54,7 +54,7 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
-                                    <th>Kode</th>
+                                  
                                     <th>AR</th>
                                     <th>Tanggal</th>
                                     <th width="280px">Aksi</th>
@@ -65,7 +65,7 @@
                                 @foreach ($jadwals as $key => $jadwal)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                        <td>{{ $jadwal->kode }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                    
                                         <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
                                         <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
                                         {{-- Formatting the date --}}
