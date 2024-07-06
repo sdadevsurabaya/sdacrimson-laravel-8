@@ -97,7 +97,14 @@
             <button class="btn text-light p-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i class="bi bi-chat-square-text fs-5"></i>
             </button>
-            <a href="admin/generals" class="btn-close btn-close-white"></a>
+            @php
+            $id_general = request('id_general');
+            $id_jadwal = request('id_jadwal');
+            $tanggal = request('tanggal');
+            $newUrl = url("/laporan/{$id_general}/{$id_jadwal}") . "?tanggal={$tanggal}";
+        @endphp
+        
+        <a href="{{ $newUrl }}" class="btn-close btn-close-white"></a>
         </div>
     </nav>
 
