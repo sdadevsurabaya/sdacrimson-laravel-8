@@ -345,13 +345,13 @@ class GeneralController extends Controller
     {
         $validator = Validator::make($request->all(), [
             // 'id_customer'   => 'required',
-            'type_usaha'    => 'required|not_in:0',
-            'nama_usaha'    => 'required',
+            'type_usaha'    => 'nullable',
+            'nama_usaha'    => 'nullable',
             'nama_lengkap'  => 'required',
             'jabatan'       => 'required',
-            'alamat_kantor' => 'required',
+            'alamat_kantor' => 'nullable',
             // 'telepon'       => 'required',
-            // 'mobile_phone'  => 'required',
+            'mobile_phone'  => 'required',
             // 'email'         => 'required|email',
             // 'web_site'      => 'required',
             // 'no_npwp'       => 'required',
