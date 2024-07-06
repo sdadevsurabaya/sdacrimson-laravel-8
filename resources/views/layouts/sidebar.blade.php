@@ -182,6 +182,85 @@
                             <span>@lang('General')</span>
                         </a>
                     </li>
+
+
+                    @elseif (Str::ucfirst(Auth::user()->hasRole('Toko')) == 1)
+
+                    <li class="menu-title">@lang('translation.Menu')</li>
+                    <li>
+                        {{-- <a href="{{url('index')}}"> --}}
+                        <a href="{{ url('admin/dashboard') }}">
+                            <i class="uil-home-alt"></i>
+                            <span>@lang('translation.Dashboard')</span>
+                        </a>
+                    </li>
+
+              
+
+                    <li class="menu-title">@lang('Master')</li>
+                    <li>
+                        <a href="#" class="has-arrow waves-effect">
+                            <i class="uil-database"></i>
+                            <span>@lang('Master')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('type_outlet.index') }}">@lang('Master Type Outlet')</a></li>
+                            <li><a href="{{ route('bank.index') }}">@lang('Master Bank')</a></li>
+                            <li><a href="{{ route('brand.index') }}">@lang('Master Brand')</a></li>
+                            <li><a href="{{ route('distributor.index') }}">@lang('Master Distributor')</a></li>
+                            <li><a href="{{ route('area.index') }}">@lang('Master Area')</a></li>
+
+                            {{-- <li><a href="#">@lang('Master Harga')</a></li> --}}
+                        </ul>
+                    </li>
+
+                    <li class="menu-title">@lang('General Information')</li>
+                    <li>
+                        <a href="{{ route('generals.index') }}">
+                            <i class="uil-dashboard"></i>
+                            <span>@lang('General')</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-title">@lang('Sales')</li>
+                    <li>
+                        <a href="#" class="has-arrow waves-effect">
+                            <i class="uil-presentation-check"></i>
+                            <span>@lang('Jadwal Kunjungan')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            {{-- <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li> --}}
+                            <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadwal')</a></li>
+                            <li><a href="{{ route('jadwal.exportJadwal') }}">@lang('Export Jadwal')</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ route('kunjungan.index') }}">
+                            <i class="uil-car"></i>
+                            <span>@lang('Kunjungan')</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="#" class="has-arrow waves-effect">
+                            <i class="uil-swatchbook"></i>
+                            <span>@lang('Report')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
+                        </ul>
+                    </li>
+
+
+                    <li class="menu-title">@lang('Area Coverage')</li>
+                    <li>
+                        <a href="{{ route('maps.index') }}">
+                            <i class="uil-map-marker-alt"></i>
+                            <span>@lang('Maps')</span>
+                        </a>
+                    </li>
+
+
                 @endif
             </ul>
         </div>

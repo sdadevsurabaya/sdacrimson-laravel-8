@@ -59,14 +59,21 @@ class LoginController extends Controller
         // dump($user->id);
         // dump($user->name);
         // dd("test");
+        // $userRoles = auth()->user()->roles;
+        // $userRolesArray = $userRoles->pluck('name')->toArray();
+
+        // dd( $userRolesArray);
         if ($user->hasRole('Admin')) {
             return redirect('/admin/dashboard');
         } else  if ($user->hasRole('Sales')) {
             return redirect('/admin/dashboard');
         } else  if ($user->hasRole('Verifikator')) {
             return redirect('/admin/dashboard');
-        } else  if ($user->hasRole('Member')) {
-            // return redirect('/member/board');
+        } else  if ($user->hasRole('Toko')) {
+          
+            return redirect('report-sales');
+        }else{
+            return redirect('/admin/dashboard');
         }
 
     }
