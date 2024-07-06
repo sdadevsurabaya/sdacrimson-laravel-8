@@ -129,7 +129,10 @@ class KunjunganController extends Controller
                     ->where('status', 'check out')
                     ->where('jadwal_id', $jadwal)
                     ->first();
-        return view('kunjungan.laporan', compact('general', 'checkin', 'checkout', 'laporan', 'detailJadwal'));
+
+        $Contact = LaporanSales::where('general_id', $id)->orderBy('id', 'DESC')->first();
+        // dd($Contact);
+        return view('kunjungan.laporan', compact('general', 'checkin', 'checkout', 'laporan', 'detailJadwal', 'Contact'));
     }
 
 }

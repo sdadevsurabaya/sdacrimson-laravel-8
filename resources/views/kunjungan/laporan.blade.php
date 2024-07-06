@@ -241,26 +241,30 @@
                                 @csrf
                                 <div class="row">
 
-
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label" for="contactPerson">
                                             <span style="color: crimson;">*</span> Contact Person
                                         </label>
                                         <div class="form-floating">
-                                            <input type="text" name="contact_person" id="contactPerson" value="{{$general->nama_lengkap}}" class="form-control" placeholder="Contact Person" required>
+                                            <input type="text" name="contact_person" id="contactPerson" 
+                                                   value="{{ $general->nama_lengkap ?? $Contact->contact_person ?? '' }}" 
+                                                   class="form-control" placeholder="Contact Person" required>
                                             <label for="contactPerson">Contact Person</label>
                                         </div>
                                     </div>
-
+                                    
                                     <div class="col-md-12 mb-3">
                                         <label class="form-label" for="noHp">
                                             <span style="color: crimson;">*</span> No HP
                                         </label>
                                         <div class="form-floating">
-                                            <input type="text" name="no_hp" id="noHp" class="form-control"  value="{{ str_replace(' ', '', $general->mobile_phone) }}" placeholder="No HP" required>
+                                            <input type="text" name="no_hp" id="noHp" 
+                                                   value="{{ str_replace(' ', '', $general->mobile_phone ?? $Contact->no_hp ?? '') }}" 
+                                                   class="form-control" placeholder="No HP" required>
                                             <label for="noHp">No HP</label>
                                         </div>
                                     </div>
+                                    
 
 
 
