@@ -74,8 +74,8 @@
                 <div class="card-body">
                     <h3 class="card-title text-center">List Laporan Kunjungan</h3>
                     <div class="table-responsive">
-                        <table id="datatable-kunjungan" class="table table-striped table-bordered dt-responsive nowrap"
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable-kunjungan" class="table table-striped table-bordered dt-responsive"
+                            style="border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
                                     <th>NO</th>
