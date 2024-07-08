@@ -88,12 +88,12 @@
                             <tbody>
                                 @foreach ($laporan as $key => $general)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                        <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                        <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
+                                        <td width="30px">{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
+                                        <td width="50px">{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
+                                        <td width="50px">{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
                                         {{-- Formatting the date --}}
-                                        <td width="280px">{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
-                                        <td width="280px">
+                                        <td width="380px">{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
+                                        <td width="80px">
                                             @foreach ($general->gambar as $gambar)
                                             <a class="image-popup-no-margins" href="{{ url('laporan/' . $gambar->foto) }}">
                                                 <img src="{{ url('laporan/' . $gambar->foto) }}" width="107" height="75">
