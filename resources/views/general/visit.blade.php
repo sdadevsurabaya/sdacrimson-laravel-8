@@ -78,9 +78,9 @@
                             style="border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
+                                    {{-- <th>NO</th>
                                     <th>AR</th>
-                                    <th>Tanggal</th>
+                                    <th>Tanggal</th> --}}
                                     <th >Laporan</th>
                                     <th>Lampiran Foto</th>
                                 </tr>
@@ -88,9 +88,9 @@
                             <tbody>
                                 @foreach ($laporan as $key => $general)
                                     <tr>
-                                        <td width="30px">{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                        <td width="50px">{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                        <td width="50px">{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
+                                        {{-- <td width="30px">{{ $loop->iteration }}</td> 
+                                        <td width="50px">{{ $general->user->name }}</td> 
+                                        <td width="50px">{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td> --}}
                                         {{-- Formatting the date --}}
                                         <td width="380px">{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
                                         <td width="80px">

@@ -104,6 +104,21 @@ class AttendanceController extends Controller
             'longitude' => $request->input('longitude'),
         ]);
 
+        // $attendance = Attendance::updateOrCreate(
+        //     [
+        //         'user_id' => $request->input('iduser'),
+        //         'general_id' => $request->input('general_id'),
+        //         'jadwal_id' => $request->input('id_jadwal')
+        //     ],
+        //     [
+        //         'foto' =>  $name,
+        //         'status' => $request->input('status'),
+        //         'note' => $request->input('note'),
+        //         'latitude' => $request->input('latitude'),
+        //         'longitude' => $request->input('longitude')
+        //     ]
+        // );
+        
         return response()->json(['succes' => true,  'message' => 'Checked in successfully', 'attendance' => $attendance], 200);
     }
 
