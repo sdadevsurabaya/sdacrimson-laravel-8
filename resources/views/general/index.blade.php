@@ -104,8 +104,8 @@
                                                 <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a>
                                                 {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
                                             @elseif (Auth::user()->hasRole("Verifikator") == 1)
-                                                {{-- <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a> --}}
-                                                <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a>
+                                                <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a>
+                                                {{-- <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a> --}}
                                                 {{-- <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a> --}}
                                                 {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
                                             @endif

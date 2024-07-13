@@ -9,23 +9,7 @@
 
 @section('content')
 
-    <div class="absen">
-        <div class="col-12 mb-3">
-            <div class="gap-3 d-flex justify-content-center">
 
-                <div class="col col-auto" id="checkin">
-                    <a href="{{ route('check.checkin', ['id_general' => $general[0]->id_general]) }}"
-                        class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
-                        In <i class="uil uil-arrow-from-right"></i></a>
-                </div>
-                <div class="col col-auto" id="checkout">
-                    <a href="{{ route('check.checkout', ['id_general' => $general[0]->id_general]) }}"
-                        class="btn w-100 fw-bold  @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
-                        Check Out <i class="uil uil-left-arrow-from-left"></i></a>
-                </div>
-            </div>
-        </div>
-    </div>
     @component('common-components.breadcrumb')
         @slot('pagetitle')
             General
@@ -126,6 +110,14 @@
                                 class="form-control @error('alamat_kantor') border border-danger @enderror"
                                 name="alamat_kantor" id="formrow-nama-input" placeholder="Contoh : Pemilik / Owner"
                                 value="{{ old('alamat_kantor', $general[0]->alamat_kantor) }}">
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Area</label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control @error('area') border border-danger @enderror"
+                                name="area" id="formrow-nama-input" placeholder="Contoh: Surabaya Barat "
+                                value="{{ old('area', $general[0]->area) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
