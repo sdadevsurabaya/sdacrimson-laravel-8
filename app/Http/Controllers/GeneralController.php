@@ -52,7 +52,7 @@ class GeneralController extends Controller
     {
 
 
-        if (Auth::user()->hasRole("Admin") == 1 || Auth::user()->hasRole("Verifikator") == 1) {
+        if (Auth::user()->hasRole("Admin") == 1 || Auth::user()->hasRole("Verifikator") == 1 || Auth::user()->hasRole("Toko") == 1) {
             $data = General_model::join("users", "users.id", "=", "general_informations.ar")
                 ->orderBy('general_informations.id', 'desc')
                 ->get(['*', 'general_informations.id as id_general']);
