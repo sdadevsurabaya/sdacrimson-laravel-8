@@ -109,6 +109,7 @@
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
+                            <li><a href="{{ route('laporan.index') }}">@lang('Report Periode Visit')</a></li>
                         </ul>
                     </li>
 
@@ -248,6 +249,7 @@
                         </a>
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
+                            <li><a href="{{ route('laporan.index') }}">@lang('Report Periode Visit')</a></li>
                         </ul>
                     </li>
 
