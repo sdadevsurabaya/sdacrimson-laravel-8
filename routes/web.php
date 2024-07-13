@@ -178,6 +178,8 @@
         Route::get('report-sales', [App\Http\Controllers\ReportSalesController::class, 'index'])->name('reportsales.index');
         // Route::get('Export-Report-Visit', [App\Http\Controllers\ReportSalesController::class, 'exportrekapvisit'])->name('reportsales.rekapvisit');
         Route::get('PreviewRekapVisit/{id}', [App\Http\Controllers\ReportSalesController::class, 'previewrekapvisit'])->name('reportsales.rekapPreview');
+        Route::get('print-laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'laporanPeriode'])->name('laporan.periode');
+        Route::get('laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'index'])->name('laporan.index');
 
 
 
