@@ -18,6 +18,7 @@ class General_model extends Model
         'nama_usaha',
         'nama_lengkap',
         'alamat_kantor',
+        'area',
         'jabatan',
         'telepon',
         'mobile_phone',

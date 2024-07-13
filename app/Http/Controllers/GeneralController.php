@@ -350,6 +350,7 @@ class GeneralController extends Controller
             'nama_lengkap'  => 'required',
             'jabatan'       => 'required',
             'alamat_kantor' => 'nullable',
+            'area'          => 'required',
             // 'telepon'       => 'required',
             'mobile_phone'  => 'required',
             // 'email'         => 'required|email',
@@ -560,15 +561,15 @@ class GeneralController extends Controller
 
         $jadwal = $request->jadwal_id;
         if( $jadwal){
-          
+
             $attendance = Attendance::with(['user'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at','desc')->get();
             $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at','desc')->get();
         } else {
             $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
             $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->orderBy('created_at','desc')->get();
         }
-      
-       
+
+
         // dd($laporan);
 
 
