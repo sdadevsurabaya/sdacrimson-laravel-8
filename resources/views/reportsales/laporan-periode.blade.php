@@ -10,10 +10,10 @@
 @section('content')
     @component('common-components.breadcrumb')
         @slot('pagetitle')
-            Jadwal
+            Report
         @endslot
         @slot('title')
-            Export Jadwal
+            Report Sales By Periode
         @endslot
     @endcomponent
 
@@ -44,28 +44,28 @@
                                     </select>
                                 </div>
                             </div>
-                        
+
                             <div class="mb-3 col-4">
                                 <label for="start" class="col-form-label">Start Date</label>
                                 <div>
                                     <input type="date" class="form-control" id="start" name="start">
                                 </div>
                             </div>
-                        
+
                             <div class="mb-3 col-4">
                                 <label for="end" class="col-form-label">End Date</label>
                                 <div>
                                     <input type="date" class="form-control" id="end" name="end">
                                 </div>
                             </div>
-                        
+
                             <div class="text-center col-12">
                                 <button type="submit" class="btn btn-success">Preview</button>
                             </div>
                         </div>
                     </form>
-                    
-                    
+
+
                 </div>
             </div>
         </div> <!-- end col -->

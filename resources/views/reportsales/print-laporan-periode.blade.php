@@ -43,10 +43,10 @@
     function exportToExcel() {
       // Ambil data dari tabel
       var table = document.getElementById('data-excel');
-  
+
       // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
       var wb = XLSX.utils.table_to_book(table, {sheet:"Sheet JS"});
-  
+
       // Tulis data ke file Excel
       XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
     }
@@ -58,6 +58,7 @@
             <div class="mb-3 text-end">
                 <button class="btn btn-dark" onclick="printContent()">Print</button>
                 <button onclick="exportToExcel()" class="btn btn-success">Export ke Excel</button>
+                <a href="{{ route('laporan.index') }}" class="btn btn-danger">Back</a>
             </div>
             {{-- <h5 class="text-start mb-3"></h5> --}}
             <table id="data-excel">

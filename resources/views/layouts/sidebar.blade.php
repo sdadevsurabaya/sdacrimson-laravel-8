@@ -196,7 +196,7 @@
                         </a>
                     </li>
 
-              
+
 
                     <li class="menu-title">@lang('Master')</li>
                     <li>
@@ -261,8 +261,6 @@
                             <span>@lang('Maps')</span>
                         </a>
                     </li>
-
-
                 @endif
             </ul>
         </div>
