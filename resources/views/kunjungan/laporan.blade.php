@@ -259,8 +259,9 @@
                                         </label>
                                         <div class="form-floating">
                                             <input type="text" name="no_hp" id="noHp" 
-                                                   value="{{ str_replace(' ', '', $general->mobile_phone ?? $Contact->no_hp ?? '') }}" 
-                                                   class="form-control" placeholder="No HP" required>
+                                            value="{{ str_replace(' ', '', ($general->mobile_phone == '-' || empty($general->mobile_phone)) ? ($Contact->no_hp ?? '') : $general->mobile_phone) }}" 
+                                            class="form-control" placeholder="No HP" required>
+                                     
                                             <label for="noHp">No HP</label>
                                         </div>
                                     </div>
