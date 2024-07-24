@@ -28,6 +28,11 @@ class LaporanSales extends Model
         return $this->hasMany(DetailJadwal::class, 'jadwal_id', 'jadwal_id');
     }
     
+
+    public function attendance()
+    {
+        return $this->hasMany(Attendance::class, 'general_id', 'general_id');
+    }
     
 
 

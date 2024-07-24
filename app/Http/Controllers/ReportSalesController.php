@@ -85,7 +85,7 @@ class ReportSalesController extends Controller
     public function previewrekapAbsen($id)
     {
 
-        $laporan = LaporanSales::with(['general', 'user', 'detailJadwal'])
+        $laporan = LaporanSales::with(['general', 'user', 'detailJadwal', 'attendance'])
             ->where('jadwal_id', $id)
             ->get();
 

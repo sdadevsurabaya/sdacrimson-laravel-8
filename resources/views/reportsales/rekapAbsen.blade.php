@@ -77,9 +77,19 @@
                 <tbody>
                     @foreach($laporan as $item)
                     <tr>
-                        <td>{{ $item->created_at }}</td>
-                        <td></td>
-                        <td></td>
+                        <td>{{ $item->created_at->format('Y-m-d') }}</td>
+                        <td>@foreach($item->attendance as $attendances)
+                            @if($attendances->status == 'check in')
+                                {{ $attendances->created_at }}
+                                @break
+                            @endif
+                        @endforeach</td>
+                        <td>@foreach($item->attendance as $attendances)
+                            @if($attendances->status == 'check out')
+                                {{ $attendances->created_at }}
+                                @break
+                            @endif
+                        @endforeach</td>
                         <td>{{ $item->general->nama_usaha }}</td>
                         <td>{{ $item->general->alamat_kantor }}</td>
                         <td>{{ $item->general->area }}</td>
