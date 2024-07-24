@@ -54,7 +54,7 @@
                             <thead>
                                 <tr>
                                     <th>NO</th>
-                                  
+
                                     <th>AR</th>
                                     <th>Tanggal</th>
                                     <th width="280px">Aksi</th>
@@ -65,7 +65,7 @@
                                 @foreach ($jadwals as $key => $jadwal)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                    
+
                                         <td>{{ $jadwal->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
                                         <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
                                         {{-- Formatting the date --}}
@@ -77,6 +77,9 @@
                                             </button>
                                             <a href="{{ route('reportsales.rekapPreview', $jadwal->id) }}" class="btn btn-sm btn-warning">
                                                 Rekap Visit
+                                            </a>
+                                            <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}" class="btn btn-sm btn-primary">
+                                                Rekap Absen
                                             </a>
                                         </td>
 
@@ -162,7 +165,7 @@
                         // Pengecekan apakah laporanSales tidak kosong
                         var hasLaporanSales = item.laporan_sales && item.laporan_sales.length > 0;
                                 var customerCell = `${item.customer.nama_usaha}`;
-                                
+
                                 if (hasLaporanSales) {
                                     customerCell += ' ✅';
                                 }

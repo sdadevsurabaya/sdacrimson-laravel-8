@@ -60,29 +60,53 @@ class ReportSalesController extends Controller
 
     public function previewrekapvisit($id)
     {
-        
+
         $laporan = LaporanSales::with(['general', 'user', 'detailJadwal'])
             ->where('jadwal_id', $id)
             ->get();
-    
-      
+
+
         $userJadwal = Jadwal::with(['user'])->find($id);
-    
-     
+
+
         foreach ($laporan as $laporanItem) {
             $filteredDetailJadwal = $laporanItem->detailJadwal->where('jadwal_id', $laporanItem->jadwal_id)
                 ->where('general_id', $laporanItem->general_id)
-                ->first(); 
-    
+                ->first();
+
             $laporanItem->filteredDetailJadwal = $filteredDetailJadwal;
         }
-    
+
         // dd($laporan);
 
         return view('reportsales.rekapPreview', compact('laporan', 'userJadwal'));
     }
-    
-    
+
+    public function previewrekapAbsen($id)
+    {
+
+        $laporan = LaporanSales::with(['general', 'user', 'detailJadwal'])
+            ->where('jadwal_id', $id)
+            ->get();
+
+
+        $userJadwal = Jadwal::with(['user'])->find($id);
+
+
+        foreach ($laporan as $laporanItem) {
+            $filteredDetailJadwal = $laporanItem->detailJadwal->where('jadwal_id', $laporanItem->jadwal_id)
+                ->where('general_id', $laporanItem->general_id)
+                ->first();
+
+            $laporanItem->filteredDetailJadwal = $filteredDetailJadwal;
+        }
+
+        // dd($laporan);
+
+        return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal'));
+    }
+
+
 
 
 }
