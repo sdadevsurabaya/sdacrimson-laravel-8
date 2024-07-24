@@ -71,16 +71,23 @@
                                         {{-- Formatting the date --}}
 
                                         <td>
-                                            <button data-bs-toggle="modal" data-bs-target="#Show" type="button"
-                                                data-id="{{ $jadwal->id }}"
-                                                class="btn btn-sm btn-secondary show-jadwal">Show
-                                            </button>
-                                            <a href="{{ route('reportsales.rekapPreview', $jadwal->id) }}" class="btn btn-sm btn-warning">
-                                                Rekap Visit
-                                            </a>
-                                            <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}" class="btn btn-sm btn-primary">
-                                                Rekap Absen
-                                            </a>
+
+                                            @if(Str::ucfirst(Auth::user()->hasRole('HCS')) == 1)
+                                                <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}" class="btn btn-sm btn-primary">
+                                                    Rekap Absen
+                                                </a>
+                                            @else
+                                                <button data-bs-toggle="modal" data-bs-target="#Show" type="button"
+                                                    data-id="{{ $jadwal->id }}"
+                                                    class="btn btn-sm btn-secondary show-jadwal">Show
+                                                </button>
+                                                <a href="{{ route('reportsales.rekapPreview', $jadwal->id) }}" class="btn btn-sm btn-warning">
+                                                    Rekap Visit
+                                                </a>
+                                                <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}" class="btn btn-sm btn-primary">
+                                                    Rekap Absen
+                                                </a>
+                                            @endif
                                         </td>
 
                                     </tr>

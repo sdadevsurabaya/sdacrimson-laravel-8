@@ -121,9 +121,6 @@
                             <span>@lang('Maps')</span>
                         </a>
                     </li>
-
-
-
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 
@@ -163,7 +160,17 @@
                             <span>@lang('Kunjungan')</span>
                         </a>
                     </li>
-
+                @elseif (Str::ucfirst(Auth::user()->hasRole('HCS')) == 1)
+                    <li class="menu-title">@lang('translation.Menu')</li>
+                    <li>
+                        <a href="#" class="has-arrow waves-effect">
+                            <i class="uil-swatchbook"></i>
+                            <span>@lang('Report')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
+                        </ul>
+                    </li>
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Verifikator')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 
@@ -183,10 +190,7 @@
                             <span>@lang('General')</span>
                         </a>
                     </li>
-
-
-                    @elseif (Str::ucfirst(Auth::user()->hasRole('Toko')) == 1)
-
+                @elseif (Str::ucfirst(Auth::user()->hasRole('Toko')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
                     <li>
                         {{-- <a href="{{url('index')}}"> --}}
