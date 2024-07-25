@@ -9,6 +9,23 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <title>Preview Rekap Visit</title>
         <style>
+            @media print {
+                body * {
+                    visibility: hidden;
+                }
+
+                #data-excel,
+                #data-excel * {
+                    visibility: visible;
+                }
+
+                #data-excel {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+            }
+
             table {
                 width: 100%;
                 border-collapse: collapse;
@@ -35,19 +52,21 @@
         </style>
 
 
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-<script>
-  function exportToExcel() {
-    // Ambil data dari tabel
-    var table = document.getElementById('data-excel');
+        <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+        <script>
+            function exportToExcel() {
+                // Ambil data dari tabel
+                var table = document.getElementById('data-excel');
 
-    // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
-    var wb = XLSX.utils.table_to_book(table, {sheet:"Sheet JS"});
+                // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
+                var wb = XLSX.utils.table_to_book(table, {
+                    sheet: "Sheet JS"
+                });
 
-    // Tulis data ke file Excel
-    XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
-  }
-</script>
+                // Tulis data ke file Excel
+                XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
+            }
+        </script>
     </head>
 
     <body>
@@ -60,7 +79,7 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="9" style="border: none;">Rekap Visit {{ $userJadwal->user->name}}</th>
+                        <th colspan="9" style="border: none;">Rekap Visit {{ $userJadwal->user->name }}</th>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -75,39 +94,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($laporan as $item)
-                    <tr>
-                        <td>{{ $item->created_at }}</td>
-                        <td>{{ $item->general->nama_usaha }}</td>
-                        <td>{{ $item->general->alamat_kantor }}</td>
-                        <td>{{ $item->general->area }}</td>
-                        <td>{{ $item->contact_person }}</td>
-                        <td>{{ $item->no_hp }}</td>
-                        <td>{{ $item->pesan }}</td>
-                        <td>
-                            @foreach($item->detailJadwal as $detail)
-                            @if($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
-                                {{ $detail->activity_type }}
-                                @break
-                            @endif
-                        @endforeach
+                    @foreach ($laporan as $item)
+                        <tr>
+                            <td>{{ $item->created_at }}</td>
+                            <td>{{ $item->general->nama_usaha }}</td>
+                            <td>{{ $item->general->alamat_kantor }}</td>
+                            <td>{{ $item->general->area }}</td>
+                            <td>{{ $item->contact_person }}</td>
+                            <td>{{ $item->no_hp }}</td>
+                            <td>{{ $item->pesan }}</td>
+                            <td>
+                                @foreach ($item->detailJadwal as $detail)
+                                    @if ($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
+                                        {{ $detail->activity_type }}
+                                    @break
+                                @endif
+                            @endforeach
                         </td>
                         <td>{{ $item->general->email }}</td>
                     </tr>
-                    @endforeach
+                @endforeach
 
-                </tbody>
-            </table>
-        </div>
+            </tbody>
+        </table>
+    </div>
 
 
-    </body>
-    <script>
-        function printContent() {
-            window.print();
-        }
-    </script>
+</body>
+<script>
+    function printContent() {
+        window.print();
+    }
+</script>
 
-    </html>
+</html>
 
 </div>

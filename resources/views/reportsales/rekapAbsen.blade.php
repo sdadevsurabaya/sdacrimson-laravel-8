@@ -9,6 +9,23 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <title>Preview Rekap Visit</title>
         <style>
+             @media print {
+                body * {
+                    visibility: hidden;
+                }
+
+                #data-excel,
+                #data-excel * {
+                    visibility: visible;
+                }
+
+                #data-excel {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                }
+            }
+
             table {
                 width: 100%;
                 border-collapse: collapse;
