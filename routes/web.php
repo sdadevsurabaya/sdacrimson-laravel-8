@@ -181,6 +181,7 @@
         Route::get('PreviewRekapAbsen/{id}', [App\Http\Controllers\ReportSalesController::class, 'previewrekapAbsen'])->name('reportsales.rekapAbsen');
         Route::get('print-laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'laporanPeriode'])->name('laporan.periode');
         Route::get('laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'index'])->name('laporan.index');
+        Route::get('jarak', [App\Http\Controllers\JarakController::class, 'index'])->name('jarak');
 
 
 
