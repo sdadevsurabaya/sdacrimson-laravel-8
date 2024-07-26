@@ -34,6 +34,11 @@ class LaporanSales extends Model
         return $this->hasMany(Attendance::class, 'general_id', 'general_id');
     }
     
+    public function jarak()
+    {
+        return $this->hasMany(Jarak::class, 'general_id', 'general_id');
+    }
+    
 
 
 

@@ -69,6 +69,7 @@
                         <th>Checkout</th>
                         <th>Nama Customer</th>
                         <th>Alamat</th>
+                        <th>Jarak</th>
                         <th>Area</th>
                         <th>Type Aktifitas</th>
                         <th>Email</th>
@@ -92,6 +93,15 @@
                         @endforeach</td>
                         <td>{{ $item->general->nama_usaha }}</td>
                         <td>{{ $item->general->alamat_kantor }}</td>
+                        <td>
+                            @foreach($item->jarak as $jaraks)
+                            @if($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
+                            {{ number_format($jaraks->distance, 0, ',', '.') }} km
+                                @break
+                            @endif
+                        @endforeach
+                        </td>
+                       
                         <td>{{ $item->general->area }}</td>
                         <td>
                             @foreach($item->detailJadwal as $detail)

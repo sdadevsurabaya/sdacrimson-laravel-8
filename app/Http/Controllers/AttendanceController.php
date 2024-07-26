@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jarak;
 use App\Models\Attendance;
-use App\Models\DetailJadwal;
 use Illuminate\Support\Str;
+use App\Models\DetailJadwal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -86,6 +87,72 @@ class AttendanceController extends Controller
         if($request->status == 'check in'){
             $updateJadwal->checkin = now(); 
             $updateJadwal->save(); 
+
+
+            $getAttendance = Attendance::where('user_id',  $request->input('iduser'))
+            ->where('status', 'check in')
+            ->whereDate('created_at', now())
+            ->orderBy('id', 'desc')
+            ->first();
+
+            if ($getAttendance) {
+                $latitudeA = $getAttendance->latitude;
+                $longitudeA = $getAttendance->longitude;
+            } else {
+                $latitudeA = '-7.251104602625086';
+                $longitudeA = '112.73288901915333';
+            }
+
+
+
+ 
+            $latitudeB =  $request->input('latitude');
+            $longitudeB = $request->input('longitude');
+
+            $url = "https://trueway-directions2.p.rapidapi.com/FindDrivingRoute?stops={$latitudeA},{$longitudeA}%3B{$latitudeB},{$longitudeB}&optimize=true&avoid_highways=true&avoid_tolls=false";
+
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, [
+                CURLOPT_URL => $url,
+              CURLOPT_RETURNTRANSFER => true,
+              CURLOPT_ENCODING => "",
+              CURLOPT_MAXREDIRS => 10,
+              CURLOPT_TIMEOUT => 30,
+              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+              CURLOPT_CUSTOMREQUEST => "GET",
+              CURLOPT_HTTPHEADER => [
+                "x-rapidapi-host: trueway-directions2.p.rapidapi.com",
+                "x-rapidapi-key: a609f59694msh3a613d81b9324b6p12364ajsn8a35271dfcb9"
+              ],
+            ]);
+         
+            $response = curl_exec($curl);
+            $err = curl_error($curl);
+            
+            curl_close($curl);
+            
+            $data = json_decode($response, true);
+            
+          
+            $distance = $data['route']['distance'] ?? -1;
+            $duration = $data['route']['duration'] ?? -1;
+            
+
+            Jarak::create([
+                'general_id' => $request->input('general_id'),
+                'user_id' =>  $request->input('iduser'),
+                'jadwal_id' =>$request->input('id_jadwal'),
+                'latitude1' =>   $latitudeA ,
+                'longitude1' => $longitudeA ,
+                'latitude2' => $latitudeB,
+                'longitude2' =>$longitudeB,
+                'distance' => $distance,
+                'duration' => $duration ,
+            ]);
+
+
         }else{
             $updateJadwal->checkout = now(); 
             $updateJadwal->save(); 
