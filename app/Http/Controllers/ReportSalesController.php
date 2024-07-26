@@ -90,7 +90,7 @@ class ReportSalesController extends Controller
         ->where('jadwal_id', $id)
         ->get()
         ->sortBy(function($laporan) {
-            return $laporan->attendance->first()->id; // atau field lain untuk menentukan urutan
+            return $laporan->attendance->first()->id; 
         });
     
 
@@ -98,7 +98,7 @@ class ReportSalesController extends Controller
 
 
      
-        //  dd($laporan);
+      
 
         return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal'));
     }
