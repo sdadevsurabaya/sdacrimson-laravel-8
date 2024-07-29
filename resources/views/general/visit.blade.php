@@ -88,8 +88,8 @@
                             <tbody>
                                 @foreach ($laporan as $key => $general)
                                     <tr>
-                                        {{-- <td width="30px">{{ $loop->iteration }}</td> 
-                                        <td width="50px">{{ $general->user->name }}</td> 
+                                        {{-- <td width="30px">{{ $loop->iteration }}</td>
+                                        <td width="50px">{{ $general->user->name }}</td>
                                         <td width="50px">{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td> --}}
                                         {{-- Formatting the date --}}
                                         <td width="380px">{{ $general->pesan }}</td> {{-- Assuming there's a 'status' field --}}
