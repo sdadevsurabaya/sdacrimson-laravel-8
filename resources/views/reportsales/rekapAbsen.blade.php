@@ -98,13 +98,13 @@
                         <td>{{ $item->created_at->format('Y-m-d') }}</td>
                         <td>@foreach($item->attendance as $attendances)
                             @if($attendances->status == 'check in')
-                               {{ $attendances->created_at->format('H:i A') }}
+                               {{ $attendances->created_at->format('H:i') }}
                                 @break
                             @endif
                         @endforeach</td>
                         <td>@foreach($item->attendance as $attendances)
                             @if($attendances->status == 'check out')
-                               {{ $attendances->created_at->format('H:i A') }}
+                               {{ $attendances->created_at->format('H:i') }}
                                 @break
                             @endif
                         @endforeach</td>
