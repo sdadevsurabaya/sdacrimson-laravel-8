@@ -90,15 +90,16 @@ class ReportSalesController extends Controller
         ->where('jadwal_id', $id)
         ->get()
         ->sortBy(function($laporan) {
-            return $laporan->attendance->first()->id; 
+            $attendance = $laporan->attendance->first();
+            return $attendance ? $attendance->id : null; // Checking if $attendance is not null
         });
-    
+
 
         $userJadwal = Jadwal::with(['user'])->find($id);
 
 
-     
-      
+
+
 
         return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal'));
     }
