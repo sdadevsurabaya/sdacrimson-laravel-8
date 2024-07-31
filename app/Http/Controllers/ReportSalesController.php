@@ -84,22 +84,22 @@ class ReportSalesController extends Controller
 
     public function previewrekapAbsen($id)
     {
-        $laporan = LaporanSales::with(['general', 'user', 'detailJadwal', 'jarak', 'attendance' => function($query) {
+        $laporan = LaporanSales::with(['general', 'user', 'detailJadwal', 'jarak', 'attendance' => function($query) use($id) {
             $query->orderBy('id', 'asc');
+            $query->where('jadwal_id', $id);
         }])
         ->where('jadwal_id', $id)
         ->get()
         ->sortBy(function($laporan) {
             $attendance = $laporan->attendance->first();
-            return $attendance ? $attendance->id : null; // Checking if $attendance is not null
+            return $attendance ? $attendance->id : null; 
         });
-
 
         $userJadwal = Jadwal::with(['user'])->find($id);
 
 
-
-
+        //   dd($laporan);
+      
 
         return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal'));
     }
