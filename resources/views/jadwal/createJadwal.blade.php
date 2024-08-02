@@ -30,8 +30,10 @@
         <div class="col-lg-12 margin-tb">
             <div class="card">
                 <div class="card-body">
-                    <button class="btn btn-info m-1" data-bs-toggle="modal" data-bs-target="#exampleModal">Buat
-                        Jadwal</button>
+                    <button id="buatJadwalBtn" class="btn btn-info m-1" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal" disabled>Buat Jadwal</button>
+                    <button id="startBtn" class="btn btn-success m-1">Start</button>
+                    <button id="endBtn" class="btn btn-danger m-1" disabled>End</button>
                 </div>
             </div>
         </div>
@@ -63,7 +65,8 @@
                                         {{-- Formatting the date --}}
 
                                         <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
-                                                data-id="{{ $jadwal->id }}" class="btn btn-sm btn-secondary show-jadwal">Show</button>
+                                                data-id="{{ $jadwal->id }}"
+                                                class="btn btn-sm btn-secondary show-jadwal">Show</button>
                                             <a href="{{ route('jadwal.addJadwal', ['id' => $jadwal->id]) }}">
                                                 <button type="button" class="btn btn-sm btn-success">Tambah</button>
                                             </a>
@@ -80,6 +83,18 @@
 
                             </tbody>
                         </table>
+                    </div>
+                    <div class="col-xl-5 col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <span style="color: crimson;">*</span> GPS</label>
+                            <input type="hidden" class="form-control" name="latitude" id="latitude"
+                                placeholder="Masukan gps">
+                            <input type="hidden" class="form-control" name="longitude" id="longitude"
+                                placeholder="Masukan gps">
+                            <iframe id="location" src="about:blank" width="100%" height="500" frameborder="0"
+                                style="border:0"></iframe>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -195,6 +210,58 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            // get lat and long location
+            function handlePermission(geoBtn) {
+                navigator.permissions.query({
+                    name: 'geolocation'
+                }).then(function(result) {
+                    if (result.state == 'prompt' || result.state == 'granted') {
+                        navigator.geolocation.getCurrentPosition(revealPosition, showErrorLocation);
+                    } else {
+                        console.log(result.state);
+                    }
+
+                    result.onchange = function() {
+                        console.log(result.state);
+                    }
+                });
+            }
+
+            function revealPosition(position) {
+                var data = position.coords;
+                var lat = data.latitude;
+                var long = data.longitude;
+
+                // alert("Lat : " + lat + ", Long: " + long );
+                // console.log(lat);
+                // console.log(long);
+                $("#latitude").val(lat);
+                $("#longitude").val(long);
+
+                $('#location').attr('src', "https://maps.google.com/maps?q=" + lat + "," + long +
+                    "&z=15&output=embed");
+
+            }
+
+            function showErrorLocation(error) {
+                switch (error.code) {
+                    case error.PERMISSION_DENIED:
+                        var err = "User denied the request for Geolocation."
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        var err = "Location information is unavailable."
+                        break;
+                    case error.TIMEOUT:
+                        var err = "The request to get user location timed out."
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        var err = "An unknown error occurred."
+                        break;
+                }
+
+                console.log(err);
+            }
+
 
             $('#datatable-home').DataTable();
             $('#datatable-kunjungan').DataTable();
@@ -390,7 +457,7 @@
                                         confirmButtonText: 'OK'
                                     }).then(() => {
                                         location
-                                    .reload(); // Reload halaman untuk melihat perubahan
+                                            .reload(); // Reload halaman untuk melihat perubahan
                                     });
                                 } else {
                                     Swal.fire({
@@ -453,7 +520,19 @@
                 });
             });
         });
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const buatJadwalBtn = document.getElementById('buatJadwalBtn');
+            const startBtn = document.getElementById('startBtn');
+            const endBtn = document.getElementById('endBtn');
+
+            startBtn.addEventListener('click', () => {
+                buatJadwalBtn.disabled = false;
+                endBtn.disabled = false;
+            });
+        });
     </script>
+
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>

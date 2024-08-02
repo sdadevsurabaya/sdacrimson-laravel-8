@@ -31,80 +31,30 @@
             <div class="card">
                 <div class="card-body">
 
-                 <h5> Type Aktifitas:   {{$detailJadwal->activity_type}}</h5>
+                    <h5> Type Aktifitas: {{ $detailJadwal->activity_type }}</h5>
 
-                    @if($detailJadwal->activity_type == 'Email' || $detailJadwal->activity_type == 'Telepon')
-                       
+                    @if ($detailJadwal->activity_type == 'Email' || $detailJadwal->activity_type == 'Telepon')
                     @else
-                    <div class="gap-3 d-flex justify-content-center">
-                        <div class="col col-auto" id="checkin">
-
-                            {{-- @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
-                            <button onclick="checkinOver()" class="btn btn-outline-success  w-100 fw-bold">
-                                Check
-                                In <i class="uil uil-arrow-from-right"></i>
-                            </button>
-
-                            @else
-                            <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
-                                class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
-                                In <i class="uil uil-arrow-from-right"></i></a>
-                        @endif --}}
-
-                        <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
-                            class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
-                            In <i class="uil uil-arrow-from-right"></i></a>
-
-
-                        </div>
-                        <div class="col col-auto" id="checkout">
-                            @if ($checkin)
-
-
-{{--
-                            @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
-                            <button onclick="checkOutOver()" class="btn btn-outline-danger  w-100 fw-bold">
-                                Check Out <i class="uil uil-left-arrow-from-left"></i>
-                            </button>
-                            @else
-
-
-                                <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id'),  'tanggal' => request('tanggal')]) }}"
-                                    class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
-                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
-                                </a>
-
+                        <div class="gap-3 d-flex justify-content-center">
+                            <div class="col col-auto" id="checkin">
+                                <a href="{{ route('check.checkin', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
+                                    class="btn  @if ($checkin) btn-success disabled @else btn-outline-success @endif  w-100 fw-bold">Check
+                                    In <i class="uil uil-arrow-from-right"></i></a>
+                            </div>
+                            <div class="col col-auto" id="checkout">
+                                @if ($checkin)
+                                    <a href="{{ route('check.checkout', ['id_general' => $general->id, 'id_jadwal' => request()->route('jadwal_id'), 'tanggal' => request('tanggal')]) }}"
+                                        class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
+                                        Check Out <i class="uil uil-left-arrow-from-left"></i>
+                                    </a>
+                                @else
+                                    <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
+                                        Check Out <i class="uil uil-left-arrow-from-left"></i>
+                                    </button>
                                 @endif
-                            @else
-                                <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
-                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
-                                </button>
-                            @endif --}}
-
-
-
-
-
-
-                                <a href="{{ route('check.checkout', ['id_general' => $general->id,  'id_jadwal' => request()->route('jadwal_id'),  'tanggal' => request('tanggal')]) }}"
-                                    class="btn w-100 fw-bold @if ($checkout) btn-danger disabled @else btn-outline-danger @endif">
-                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
-                                </a>
-
-
-                            @else
-                                <button onclick="checkOutWarning()" class="btn btn-outline-danger w-100 fw-bold">
-                                    Check Out <i class="uil uil-left-arrow-from-left"></i>
-                                </button>
-                            @endif
-
-
+                            </div>
                         </div>
-                    </div>
                     @endif
-
-
-                   
                 </div>
             </div>
 
@@ -125,215 +75,210 @@
                             @endif
 
                             <div class="mt-4">
-                                @if($laporan)
+                                @if ($laporan)
+                                    {!! Form::model($laporan, ['route' => ['laporan.update', $laporan->id], 'method' => 'PUT', 'files' => true]) !!}
+                                    {{-- <form id="edit_general" method="POST" action="javascript:void(0)" accept-charset="utf-8" enctype="multipart/form-data"> --}}
+                                    @csrf
+                                    <div class="row">
 
-                                {!! Form::model($laporan, ['route' => ['laporan.update', $laporan->id], 'method' => 'PUT', 'files' => true]) !!}
-{{-- <form id="edit_general" method="POST" action="javascript:void(0)" accept-charset="utf-8" enctype="multipart/form-data"> --}}
-                                                        @csrf
-                                                    <div class="row">
-
-                                                        <div class="col-md-12 mb-3">
-                                                            <label class="form-label" for="contactPerson">
-                                                                <span style="color: crimson;">*</span> Contact Person
-                                                            </label>
-                                                            <div class="form-floating">
-                                                                <input type="text" name="contact_person" id="contactPerson" value="{{ $laporan->contact_person }}" class="form-control" placeholder="Contact Person">
-                                                                <label for="contactPerson">Contact Person</label>
-                                                            </div>
-                                                        </div>
-
-                                                        <div class="col-md-12 mb-3">
-                                                            <label class="form-label" for="noHp">
-                                                                <span style="color: crimson;">*</span> No HP
-                                                            </label>
-                                                            <div class="form-floating">
-                                                                <input type="number" name="no_hp" id="noHp" class="form-control" value="{{ $laporan->no_hp }}" placeholder="No HP">
-                                                                <label for="noHp">No HP</label>
-                                                            </div>
-                                                        </div>
-
-
-
-
-                                                        <div class="col-md-12 mb-3">
-                                                            <label class="form-label" for="alamat_kantor">
-                                                                <span style="color: crimson;">*</span> Laporan</label>
-                                                            <div class="form-floating">
-                                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
-                                                                    style="height: 100px">{{ $laporan->pesan }}</textarea>
-                                                                <label for="floatingTextarea2">Masukan catatan..</label>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-xl-12 col-md-12">
-                                                            <div class="mb-3">
-                                                                <label class="form-label">
-                                                                    <span style="color: crimson;">*</span> Foto</label>
-                                                                <div class="foto col-12 d-flex">
-
-
-                                                                    @isset($laporan->gambar)
-                                                                    @foreach($laporan->gambar as $index => $gambar)
-                                                                        <div class="col-4 col-md-3 p-1">
-                                                                            <img src="{{ URL::asset('laporan/' . $gambar->foto) }}"
-                                                                                class="img-thumbnail mb-4 output_member_img" id="output_member{{ $index }}">
-                                                                        </div>
-                                                                        <div class="col-1 col-md-1 p-1 btn btn-danger btn-block btn-delete-gambar-edit"
-    id="remove-member-fieldss" style="align-self:center;"
-    data-gambar-id="{{ $gambar->id }}">
-    <i class="uil-trash"></i>
-</div>
-
-                                                                    @endforeach
-                                                                @else
-                                                                <div class="col-2 col-md-1 p-1" style="align-self: center;">
-                                                                    <label for="takefoto" class="btn btn-md btn-secondary"><i
-                                                                            class="uil-camera-plus"></i>
-                                                                    </label>
-                                                                    <input id="takefoto" type="file" name="member_image[]"
-                                                                        onchange="preview_member(event, 0)"
-                                                                        style="visibility:hidden; width:0;"
-                                                                        class="output_member member_image">
-                                                                </div>
-                                                                    <div class="col-4 col-md-3 p-1">
-                                                                        <img src="{{ URL::asset('/assets/images/no-image.jpg') }}"
-                                                                            class="img-thumbnail mb-4 output_member_img" id="output_member0">
-                                                                    </div>
-                                                                    <div class="col-5 col-md-3 p-1" style="align-self: center">
-                                                                        <input type="text" class="form-control namafoto" name="namafoto[]"
-                                                                            id="namafoto" placeholder="Nama foto"">
-                                                                    </div>
-                                                                    <div class="col-1 col-md-1 p-1 btn btn-danger btn-block"
-                                                                        id="remove-member-fieldss" style="align-self:center; opacity:0;">
-                                                                        <i class="uil-trash"></i>
-                                                                    </div>
-                                                                @endisset
-
-                                                                </div>
-                                                                <div id="team-member-fields"></div>
-                                                                <button type="button" class="btn btn-dark btn-block mb-3"
-                                                                    id="add-member-fields">
-                                                                    <i class="uil-plus-circle"></i>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        {{-- </form> --}}
-                                                    </div>
-                                                    <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
-                                                    <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
-
-                                                    <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
-                                                    <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
-                                                    <div class="text-center">
-                                                        <button type="submit" class="btn btn-primary submit-contact">Update Laporan</button>
-                                                    </div>
-
-
-                                                    {!! Form::close() !!}
-
-
-
-
-                                @else
-
-                                {!! Form::open(['route' => 'laporan.post', 'method' => 'POST', 'files' => true]) !!}
-                                {{-- <form id="create_general" method="POST" action="javascript:void(0)" accept-charset="utf-8"
-                                    enctype="multipart/form-data"> --}}
-                                @csrf
-                                <div class="row">
-
-                                    <div class="col-md-12 mb-3">
-                                        <label class="form-label" for="contactPerson">
-                                            <span style="color: crimson;">*</span> Contact Person
-                                        </label>
-                                        <div class="form-floating">
-                                            <input type="text" name="contact_person" id="contactPerson" 
-                                                   value="{{ $general->nama_lengkap ?? $Contact->contact_person ?? '' }}" 
-                                                   class="form-control" placeholder="Contact Person" required>
-                                            <label for="contactPerson">Contact Person</label>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="col-md-12 mb-3">
-                                        <label class="form-label" for="noHp">
-                                            <span style="color: crimson;">*</span> No HP
-                                        </label>
-                                        <div class="form-floating">
-                                            <input type="text" name="no_hp" id="noHp" 
-                                            value="{{ str_replace(' ', '', ($general->mobile_phone == '-' || empty($general->mobile_phone)) ? ($Contact->no_hp ?? '') : $general->mobile_phone) }}" 
-                                            class="form-control" placeholder="No HP" required>
-                                     
-                                            <label for="noHp">No HP</label>
-                                        </div>
-                                    </div>
-                                    
-
-
-
-                                    <div class="col-md-12 mb-3">
-                                        <label class="form-label" for="laporan">
-                                            <span style="color: crimson;">*</span> Laporan
-                                        </label>
-                                        <div class="form-floating">
-                                            <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px" required>{{ old('laporan') }}</textarea>
-                                            <label for="floatingTextarea2">Masukan catatan..</label>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-xl-12 col-md-12">
-                                        <div class="mb-3">
-                                            <label class="form-label">
-                                                <span style="color: crimson;">*</span> Foto</label>
-                                            <div class="foto col-12 d-flex">
-                                                <div class="col-2 col-md-1 p-1"style="align-self: center;">
-                                                    <label for="takefoto" class="btn btn-md btn-secondary"><i
-                                                            class="uil-camera-plus"></i>
-                                                    </label>
-                                                    <input id="takefoto" type="file" name="member_image[]"
-                                                        onchange="preview_member(event, 0)"
-                                                        style="visibility:hidden; width:0;"
-                                                        class="output_member member_image">
-                                                </div>
-                                                <div class="col-4 col-md-3 p-1">
-                                                    <img src="{{ URL::asset('/assets/images/no-image.jpg') }}"
-                                                        class="img-thumbnail mb-4 output_member_img" id="output_member0">
-                                                </div>
-                                                <div class="col-5 col-md-3 p-1"style="align-self: center">
-                                                    <input type="text" class="form-control namafoto" name="namafoto[]"
-                                                        id="namafoto" placeholder="Nama foto">
-                                                </div>
-                                                <div class="col-1 col-md-1 p-1 btn btn-danger btn-block"
-                                                    id="remove-member-fieldss" style="align-self:center; opacity:0;">
-                                                    <i class="uil-trash"></i>
-                                                </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="contactPerson">
+                                                <span style="color: crimson;">*</span> Contact Person
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="contact_person" id="contactPerson"
+                                                    value="{{ $laporan->contact_person }}" class="form-control"
+                                                    placeholder="Contact Person">
+                                                <label for="contactPerson">Contact Person</label>
                                             </div>
-                                            <div id="team-member-fields"></div>
-                                            <button type="button" class="btn btn-dark btn-block mb-3"
-                                                id="add-member-fields">
-                                                <i class="uil-plus-circle"></i>
-                                            </button>
                                         </div>
-                                    </div>
-                                    <div class="col-xl-5 col-md-6">
-                                        <div class="mb-3">
-                                            <label class="form-label" for="formrow-email-input">
-                                                <span style="color: crimson;">*</span> GPS</label>
-                                            <input type="hidden" class="form-control" name="latitude" id="latitude"
-                                                placeholder="Masukan gps">
-                                            <input type="hidden" class="form-control" name="longitude" id="longitude"
-                                                placeholder="Masukan gps">
-                                            <iframe id="location" src="about:blank" width="100%" height="500"
-                                                frameborder="0" style="border:0"></iframe>
-                                        </div>
-                                    </div>
 
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="noHp">
+                                                <span style="color: crimson;">*</span> No HP
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="number" name="no_hp" id="noHp" class="form-control"
+                                                    value="{{ $laporan->no_hp }}" placeholder="No HP">
+                                                <label for="noHp">No HP</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="alamat_kantor">
+                                                <span style="color: crimson;">*</span> Laporan</label>
+                                            <div class="form-floating">
+                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                                    style="height: 100px">{{ $laporan->pesan }}</textarea>
+                                                <label for="floatingTextarea2">Masukan catatan..</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">
+                                                    <span style="color: crimson;">*</span> Foto</label>
+                                                <div class="foto col-12 d-flex">
+
+
+                                                    @isset($laporan->gambar)
+                                                        @foreach ($laporan->gambar as $index => $gambar)
+                                                            <div class="col-4 col-md-3 p-1">
+                                                                <img src="{{ URL::asset('laporan/' . $gambar->foto) }}"
+                                                                    class="img-thumbnail mb-4 output_member_img"
+                                                                    id="output_member{{ $index }}">
+                                                            </div>
+                                                            <div class="col-1 col-md-1 p-1 btn btn-danger btn-block btn-delete-gambar-edit"
+                                                                id="remove-member-fieldss" style="align-self:center;"
+                                                                data-gambar-id="{{ $gambar->id }}">
+                                                                <i class="uil-trash"></i>
+                                                            </div>
+                                                        @endforeach
+                                                    @else
+                                                        <div class="col-2 col-md-1 p-1" style="align-self: center;">
+                                                            <label for="takefoto" class="btn btn-md btn-secondary"><i
+                                                                    class="uil-camera-plus"></i>
+                                                            </label>
+                                                            <input id="takefoto" type="file" name="member_image[]"
+                                                                onchange="preview_member(event, 0)"
+                                                                style="visibility:hidden; width:0;"
+                                                                class="output_member member_image">
+                                                        </div>
+                                                        <div class="col-4 col-md-3 p-1">
+                                                            <img src="{{ URL::asset('/assets/images/no-image.jpg') }}"
+                                                                class="img-thumbnail mb-4 output_member_img"
+                                                                id="output_member0">
+                                                        </div>
+                                                        <div class="col-5 col-md-3 p-1" style="align-self: center">
+                                                            <input type="text" class="form-control namafoto"
+                                                                name="namafoto[]" id="namafoto" placeholder="Nama foto"">
+                                                        </div>
+                                                        <div class="col-1 col-md-1 p-1 btn btn-danger btn-block"
+                                                            id="remove-member-fieldss" style="align-self:center; opacity:0;">
+                                                            <i class="uil-trash"></i>
+                                                        </div>
+                                                    @endisset
+
+                                                </div>
+                                                <div id="team-member-fields"></div>
+                                                <button type="button" class="btn btn-dark btn-block mb-3"
+                                                    id="add-member-fields">
+                                                    <i class="uil-plus-circle"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        {{-- </form> --}}
+                                    </div>
+                                    <input type="hidden" name="laporan_id" value="{{ $laporan->id }}">
                                     <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
-                                    <input type="hidden" name="user_id" value="{{ Auth::id() }}">
-                                    <input type="hidden" name="jadwal_id" value="{{  request()->route('jadwal_id') }}">
-                                    <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
-                                    {{-- </form> --}}
-                                </div>
 
-                                {{-- @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
+                                    <input type="hidden" name="jadwal_id" value="{{ request()->route('jadwal_id') }}">
+                                    <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary submit-contact">Update
+                                            Laporan</button>
+                                    </div>
+
+
+                                    {!! Form::close() !!}
+                                @else
+                                    {!! Form::open(['route' => 'laporan.post', 'method' => 'POST', 'files' => true]) !!}
+                                    {{-- <form id="create_general" method="POST" action="javascript:void(0)" accept-charset="utf-8"
+                                    enctype="multipart/form-data"> --}}
+                                    @csrf
+                                    <div class="row">
+
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="contactPerson">
+                                                <span style="color: crimson;">*</span> Contact Person
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="contact_person" id="contactPerson"
+                                                    value="{{ $general->nama_lengkap ?? ($Contact->contact_person ?? '') }}"
+                                                    class="form-control" placeholder="Contact Person" required>
+                                                <label for="contactPerson">Contact Person</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="noHp">
+                                                <span style="color: crimson;">*</span> No HP
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="no_hp" id="noHp"
+                                                    value="{{ str_replace(' ', '', $general->mobile_phone == '-' || empty($general->mobile_phone) ? $Contact->no_hp ?? '' : $general->mobile_phone) }}"
+                                                    class="form-control" placeholder="No HP" required>
+
+                                                <label for="noHp">No HP</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="laporan">
+                                                <span style="color: crimson;">*</span> Laporan
+                                            </label>
+                                            <div class="form-floating">
+                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                                    style="height: 100px" required>{{ old('laporan') }}</textarea>
+                                                <label for="floatingTextarea2">Masukan catatan..</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-xl-12 col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label">
+                                                    <span style="color: crimson;">*</span> Foto</label>
+                                                <div class="foto col-12 d-flex">
+                                                    <div class="col-2 col-md-1 p-1"style="align-self: center;">
+                                                        <label for="takefoto" class="btn btn-md btn-secondary"><i
+                                                                class="uil-camera-plus"></i>
+                                                        </label>
+                                                        <input id="takefoto" type="file" name="member_image[]"
+                                                            onchange="preview_member(event, 0)"
+                                                            style="visibility:hidden; width:0;"
+                                                            class="output_member member_image">
+                                                    </div>
+                                                    <div class="col-4 col-md-3 p-1">
+                                                        <img src="{{ URL::asset('/assets/images/no-image.jpg') }}"
+                                                            class="img-thumbnail mb-4 output_member_img"
+                                                            id="output_member0">
+                                                    </div>
+                                                    <div class="col-5 col-md-3 p-1"style="align-self: center">
+                                                        <input type="text" class="form-control namafoto"
+                                                            name="namafoto[]" id="namafoto" placeholder="Nama foto">
+                                                    </div>
+                                                    <div class="col-1 col-md-1 p-1 btn btn-danger btn-block"
+                                                        id="remove-member-fieldss" style="align-self:center; opacity:0;">
+                                                        <i class="uil-trash"></i>
+                                                    </div>
+                                                </div>
+                                                <div id="team-member-fields"></div>
+                                                <button type="button" class="btn btn-dark btn-block mb-3"
+                                                    id="add-member-fields">
+                                                    <i class="uil-plus-circle"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-5 col-md-6">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="formrow-email-input">
+                                                    <span style="color: crimson;">*</span> GPS</label>
+                                                <input type="hidden" class="form-control" name="latitude"
+                                                    id="latitude" placeholder="Masukan gps">
+                                                <input type="hidden" class="form-control" name="longitude"
+                                                    id="longitude" placeholder="Masukan gps">
+                                                <iframe id="location" src="about:blank" width="100%" height="500"
+                                                    frameborder="0" style="border:0"></iframe>
+                                            </div>
+                                        </div>
+
+                                        <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
+                                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
+                                        <input type="hidden" name="jadwal_id"
+                                            value="{{ request()->route('jadwal_id') }}">
+                                        <input type="hidden" name="tanggal_jadwal" value="{{ request('tanggal') }}">
+                                        {{-- </form> --}}
+                                    </div>
+
+                                    {{-- @if (request()->query('tanggal') !== \Carbon\Carbon::now()->format('Y-m-d'))
                                 <a onclick="submitNotif()" class="btn btn-primary fw-bold">
                                     Submit
                                   </a>
@@ -343,14 +288,13 @@
                                 </div>
                                 @endif --}}
 
-                                <div class="text-center">
-                                    <button type="submit" class="btn btn-primary submit-contact">Submit</button>
-                                </div>
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary submit-contact">Submit</button>
+                                    </div>
 
 
 
-                                {!! Form::close() !!}
-
+                                    {!! Form::close() !!}
                                 @endif
 
 
@@ -375,28 +319,28 @@
             });
 
             $(document).on('click', '.btn-delete-gambar-edit', function() {
-        var gambarId = $(this).data('gambar-id');
+                var gambarId = $(this).data('gambar-id');
 
-        // Tampilkan dialog konfirmasi sebelum menghapus gambar
-        if (confirm('Apakah Anda yakin ingin menghapus gambar ini?')) {
-            $.ajax({
-                url: '/delete-gambar/' + gambarId,
-                type: 'DELETE',
-                data: {
+                // Tampilkan dialog konfirmasi sebelum menghapus gambar
+                if (confirm('Apakah Anda yakin ingin menghapus gambar ini?')) {
+                    $.ajax({
+                        url: '/delete-gambar/' + gambarId,
+                        type: 'DELETE',
+                        data: {
                             _token: '{{ csrf_token() }}'
                         },
-                success: function(response) {
-                    // location.reload();
-                    // Tampilkan pesan sukses atau lakukan operasi lain yang diperlukan
-                    location.reload();
-                },
-                error: function(xhr, status, error) {
-                    // Tampilkan pesan kesalahan jika terjadi
-                    console.error(xhr.responseText);
+                        success: function(response) {
+                            // location.reload();
+                            // Tampilkan pesan sukses atau lakukan operasi lain yang diperlukan
+                            location.reload();
+                        },
+                        error: function(xhr, status, error) {
+                            // Tampilkan pesan kesalahan jika terjadi
+                            console.error(xhr.responseText);
+                        }
+                    });
                 }
             });
-        }
-    });
 
 
 
@@ -433,6 +377,7 @@
                 confirmButtonText: 'OK'
             });
         }
+
         function submitNotif() {
             Swal.fire({
                 icon: 'warning',
@@ -441,6 +386,7 @@
                 confirmButtonText: 'OK'
             });
         }
+
         function checkinOver() {
             Swal.fire({
                 icon: 'warning',
@@ -449,6 +395,7 @@
                 confirmButtonText: 'OK'
             });
         }
+
         function checkOutOver() {
             Swal.fire({
                 icon: 'warning',
