@@ -210,6 +210,8 @@
 @section('script')
     <script>
         $(document).ready(function() {
+            handlePermission(this);
+
             // get lat and long location
             function handlePermission(geoBtn) {
                 navigator.permissions.query({
