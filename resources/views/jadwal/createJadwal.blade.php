@@ -87,13 +87,12 @@
                     <div class="col-xl-5 col-md-6">
                         <div class="mb-3">
                             <label class="form-label">
-                                <span style="color: crimson;">*</span> GPS</label>
                             <input type="hidden" class="form-control" name="latitude" id="latitude"
                                 placeholder="Masukan gps">
                             <input type="hidden" class="form-control" name="longitude" id="longitude"
                                 placeholder="Masukan gps">
-                            <iframe id="location" src="about:blank" width="100%" height="500" frameborder="0"
-                                style="border:0"></iframe>
+                            {{-- <iframe id="location" src="about:blank" width="100%" height="500" frameborder="0"
+                                style="border:0"></iframe> --}}
                         </div>
                     </div>
                 </div>
