@@ -187,6 +187,7 @@
 
 
         Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
+        Route::get('getDetailByJadwal', [App\Http\Controllers\DetailJadwal\GetDetailJadwalController::class, 'index'])->name('index.getDetail');
         Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
         Route::get('exportJadwal', [App\Http\Controllers\JadwalController::class, 'exportJadwal'])->name('jadwal.exportJadwal');
         Route::get('previewJadwal', [App\Http\Controllers\JadwalController::class, 'previewJadwal'])->name('jadwal.previewJadwal');
@@ -197,6 +198,8 @@
 
         Route::delete('jadwal-detail/{id}', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'destroy'])->name('delete.detail.jadwal');
         Route::get('reports', [App\Http\Controllers\JadwalController::class, 'getGeneralInformationsByMonth']);
+
+        Route::post('/location-times', [ App\Http\Controllers\LocationTime\LocationTimeController::class, 'store'])->name('location.start');
 
 
     });

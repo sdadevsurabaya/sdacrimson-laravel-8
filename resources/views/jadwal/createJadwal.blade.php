@@ -26,14 +26,16 @@
 
     @include('sweetalert::alert')
 
+
+
     <div class="row">
         <div class="col-lg-12 margin-tb">
             <div class="card">
                 <div class="card-body">
                     <button id="buatJadwalBtn" class="btn btn-info m-1" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" disabled>Buat Jadwal</button>
-                    <button id="startBtn" class="btn btn-success m-1">Start</button>
-                    <button id="endBtn" class="btn btn-danger m-1" disabled>End</button>
+                        data-bs-target="#exampleModal" @if (!$start) disabled  @endif >Buat Jadwal</button>
+                    <button id="startBtn" class="btn btn-success m-1"  @if ($start) disabled  @endif>Start</button>
+                    <button id="endBtn" class="btn btn-danger m-1"  @if (!$start || $stop) disabled  @endif >End</button>
                 </div>
             </div>
         </div>
@@ -87,13 +89,14 @@
                     <div class="col-xl-5 col-md-6">
                         <div class="mb-3">
                             <label class="form-label">
-                                <span style="color: crimson;">*</span> GPS</label>
+                               
                             <input type="hidden" class="form-control" name="latitude" id="latitude"
                                 placeholder="Masukan gps">
                             <input type="hidden" class="form-control" name="longitude" id="longitude"
                                 placeholder="Masukan gps">
-                            <iframe id="location" src="about:blank" width="100%" height="500" frameborder="0"
-                                style="border:0"></iframe>
+                            <input type="hidden" class="form-control" name="user_id" id="user_id" value="{{ Auth::id()}}"
+                                placeholder="Masukan gps">
+                         
                         </div>
                     </div>
                 </div>
@@ -240,8 +243,7 @@
                 $("#latitude").val(lat);
                 $("#longitude").val(long);
 
-                $('#location').attr('src', "https://maps.google.com/maps?q=" + lat + "," + long +
-                    "&z=15&output=embed");
+            
 
             }
 
@@ -521,18 +523,111 @@
                     }
                 });
             });
-        });
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            const buatJadwalBtn = document.getElementById('buatJadwalBtn');
-            const startBtn = document.getElementById('startBtn');
-            const endBtn = document.getElementById('endBtn');
 
-            startBtn.addEventListener('click', () => {
-                buatJadwalBtn.disabled = false;
-                endBtn.disabled = false;
+            $('#startBtn').click(function() {
+    
+                var latitude = $('#latitude').val();
+                var longitude = $('#longitude').val();
+                var userId = $('#user_id').val();
+
+             
+                var data = {
+                    user_id: userId,
+                    type: 'start', 
+                    latitude: latitude,
+                    longitude: longitude,
+                    _token: "{{ csrf_token() }}",
+                };
+
+              
+                $.ajax({
+                    url: '/location-times',
+                    type: 'POST',
+                    data: data,
+                    success: function(response) {
+                        alert('Location recorded successfully');
+                      
+                        $('#startBtn').prop('disabled', true);
+                        $('#buatJadwalBtn').prop('disabled', false);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('An error occurred');
+                    }
+                });
+            });
+
+            document.getElementById('endBtn').addEventListener('click', function() {
+            $.ajax({
+                url: '/getDetailByJadwal',
+                method: 'GET',
+                success: function(response) {
+                    const customerData = response;
+
+                
+                    let selectOptions = '';
+                    for (const [key, value] of Object.entries(customerData)) {
+                    
+                        const isSelected = key === '470' ? 'selected' : '';
+                        selectOptions += `<option value="${key}" ${isSelected}>${value}</option>`;
+                    }
+
+                    const selectHtml = `<select id="customerSelect" class="swal2-select">${selectOptions}</select>`;
+
+            
+                    Swal.fire({
+                        title: 'Select Customer',
+                        html: selectHtml,
+                        focusConfirm: false,
+                        showCancelButton: true,
+                        confirmButtonText: 'Ok',
+                        preConfirm: () => {
+                            return document.getElementById('customerSelect').value;
+                        }
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            const selectedCustomerId = result.value;
+
+                            var latitude = $('#latitude').val();
+                            var longitude = $('#longitude').val();
+                            var userId = $('#user_id').val();
+
+                        
+                            var data = {
+                                user_id: userId,
+                                type: 'stop', 
+                                latitude: latitude,
+                                longitude: longitude,
+                                customer: selectedCustomerId,
+                                _token: "{{ csrf_token() }}",
+                            };
+
+                        
+                            $.ajax({
+                                url: '/location-times',
+                                type: 'POST',
+                                data: data,
+                                success: function(response) {
+                                   window.location.reload();
+                                },
+                                error: function(xhr, status, error) {
+                                    console.error('Error:', error);
+                                    alert('An error occurred');
+                                }
+                            });
+                        }
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Error: ', status, error);
+                }
             });
         });
+
+        });
+
+   
     </script>
 
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

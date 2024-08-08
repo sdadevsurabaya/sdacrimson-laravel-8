@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use Validator;
 
 use App\Models\User;
+use App\Models\Jarak;
 use App\Models\Jadwal;
 use App\Models\Report;
 use Illuminate\Support\Str;
+use App\Models\LaporanSales;
+use App\Models\LocationTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
-use App\Models\LaporanSales;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -97,8 +99,9 @@ class ReportSalesController extends Controller
 
         $userJadwal = Jadwal::with(['user'])->find($id);
 
-
-        //   dd($laporan);
+        
+       
+        // dd($laporan);
       
 
         return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal'));
