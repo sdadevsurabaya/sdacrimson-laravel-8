@@ -8,6 +8,7 @@ use App\Models\LocationTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\Jadwal;
 use Illuminate\Support\Facades\Auth;
 
 class LocationTimeController extends Controller
@@ -80,11 +81,16 @@ class LocationTimeController extends Controller
             $now = Carbon::now();
             $diff_in_minutes = $now->diffInMinutes($created_at);
 
+            $getJadwal = Jadwal::where('user_id',   Auth::id())
+            ->whereDate('created_at', now())
+            ->orderBy('id', 'desc')
+            ->first();
+
 
             Jarak::create([
                 'general_id' => $request->customer,
                 'user_id' =>  Auth::id(),
-                'jadwal_id' => 0,
+                'jadwal_id' => $getJadwal->id,
                 'latitude1' =>   $latitudeA ,
                 'longitude1' => $longitudeA ,
                 'latitude2' => $latitudeB,
