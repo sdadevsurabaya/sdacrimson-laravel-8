@@ -87,50 +87,71 @@
                         <th>Nama Customer</th>
                         <th>Alamat</th>
                         <th>Jarak</th>
+                        <th>Durasi</th>
                         <th>Area</th>
                         <th>Type Aktifitas</th>
                         <th>Email</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($laporan as $item)
+                    @php
+                    $lastCheckIn = null;
+                    $lastCheckOut = null;
+                @endphp
+                
+                @foreach($laporan as $item)
                     <tr>
                         <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                        <td>@foreach($item->attendance as $attendances)
-                            @if($attendances->status == 'check in')
-                               {{ $attendances->created_at->format('H:i') }}
-                                @break
-                            @endif
-                        @endforeach</td>
-                        <td>@foreach($item->attendance as $attendances)
-                            @if($attendances->status == 'check out')
-                               {{ $attendances->created_at->format('H:i') }}
-                                @break
-                            @endif
-                        @endforeach</td>
+                        
+                        @php
+                            $checkInTime = null;
+                            $checkOutTime = null;
+                            
+                            foreach ($item->attendance as $attendances) {
+                                if ($attendances->status == 'check in' && $attendances->jadwal_id == $item->jadwal_id) {
+                                    $checkInTime = $attendances->created_at->format('H:i');
+                                    $lastCheckIn = $checkInTime;
+                                }
+                                if ($attendances->status == 'check out' && $attendances->jadwal_id == $item->jadwal_id) {
+                                    $checkOutTime = $attendances->created_at->format('H:i');
+                                    $lastCheckOut = $checkOutTime;
+                                }
+                            }
+                        @endphp
+                
+                        <td>{{ $loop->last && $lastCheckIn == $checkInTime ? '' : $checkInTime }}</td>
+                        <td>{{ $loop->last && $lastCheckOut == $checkOutTime ? '' : $checkOutTime }}</td>
                         <td>{{ $item->general->nama_usaha }}</td>
                         <td>{{ $item->general->alamat_kantor }}</td>
                         <td>
                             @foreach($item->jarak as $jaraks)
-                            @if($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
-                            {{ number_format($jaraks->distance, 0, ',', '.') }} km
-                                @break
-                            @endif
-                        @endforeach
+                                @if($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
+                                    {{ number_format($jaraks->distance, 0, ',', '.') }} km
+                                    @break
+                                @endif
+                            @endforeach
                         </td>
-
+                        <td>
+                            @foreach($item->jarak as $jaraks)
+                                @if($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
+                                    {{ $jaraks->duration_web }} Menit
+                                    @break
+                                @endif
+                            @endforeach
+                        </td>
                         <td>{{ $item->general->area }}</td>
                         <td>
                             @foreach($item->detailJadwal as $detail)
-                            @if($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
-                                {{ $detail->activity_type }}
-                                @break
-                            @endif
-                        @endforeach
+                                @if($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
+                                    {{ $detail->activity_type }}
+                                    @break
+                                @endif
+                            @endforeach
                         </td>
                         <td>{{ $item->general->email }}</td>
                     </tr>
-                    @endforeach
+                @endforeach
+                
 
                 </tbody>
             </table>

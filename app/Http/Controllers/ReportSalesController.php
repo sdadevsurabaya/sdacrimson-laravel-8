@@ -99,7 +99,34 @@ class ReportSalesController extends Controller
 
         $userJadwal = Jadwal::with(['user'])->find($id);
 
+        $getJarak= Jarak::where('user_id', Auth::id())->orderBy('id', 'desc')->first();
+
+        // dd($getJarak);
         
+            $newLaporan = new LaporanSales([
+            'jadwal_id' => $id,
+            'user_id' => Auth::id(),
+            'created_at' =>$laporan[0]->created_at,
+            'general_id' => $getJarak->general_id,
+         
+        ]);
+
+     
+        if ($getJarak) {
+            $newLaporan->setRelation('jarak', collect([$getJarak]));
+        }
+
+      
+        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
+        ->where('type', 'stop')
+        ->orderBy('id', 'desc')
+        ->first();
+        
+        if($stop){
+            $laporan->push($newLaporan);
+        }
+     
+
        
         // dd($laporan);
       
