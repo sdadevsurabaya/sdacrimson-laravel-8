@@ -6,6 +6,7 @@ use App\Models\Jarak;
 use App\Models\Attendance;
 use Illuminate\Support\Str;
 use App\Models\DetailJadwal;
+use App\Models\LocationTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -95,12 +96,29 @@ class AttendanceController extends Controller
             ->orderBy('id', 'desc')
             ->first();
 
+            $waktuStart = LocationTime::where('user_id',  $request->input('iduser'))->whereDate('created_at', now())
+            ->where('type', 'start')
+            ->orderBy('id', 'desc')
+            ->first();
+
+              
+                if (!$waktuStart) {
+                    return response()->json([
+                        'success' => false, 
+                        'message' => [
+                            'start' => ['Anda Belum Melakukan Klik Start, Silahkan Klik Tombol Start Di Halaman Jadwal Dahulu']
+                        ]
+                    ], 422);
+                }
+
             if ($getAttendance) {
                 $latitudeA = $getAttendance->latitude;
                 $longitudeA = $getAttendance->longitude;
+                $durations = $getAttendance->created_at;
             } else {
-                $latitudeA = '-7.251104602625086';
-                $longitudeA = '112.73288901915333';
+                $latitudeA = $waktuStart->latitude;
+                $longitudeA = $waktuStart->longitude;
+                $durations = $waktuStart->created_at;
             }
 
 
@@ -139,6 +157,10 @@ class AttendanceController extends Controller
             $distance = $data['route']['distance'] ?? -1;
             $duration = $data['route']['duration'] ?? -1;
             
+            $created_at = Carbon::parse($durations);
+            $now = Carbon::now();
+            $diff_in_minutes = $now->diffInMinutes($created_at);
+
 
             Jarak::create([
                 'general_id' => $request->input('general_id'),
@@ -150,6 +172,7 @@ class AttendanceController extends Controller
                 'longitude2' =>$longitudeB,
                 'distance' => $distance,
                 'duration' => $duration ,
+                'duration_web' => $diff_in_minutes,
             ]);
 
 

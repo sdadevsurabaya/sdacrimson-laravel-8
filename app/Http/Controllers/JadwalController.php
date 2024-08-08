@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Http\Controllers\Controller;
+use App\Models\LocationTime;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -32,7 +33,17 @@ class JadwalController extends Controller
 
         }
 
-        return view('jadwal.createJadwal', compact('users', 'jadwals'));
+        $start = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
+        ->where('type', 'start')
+        ->orderBy('id', 'desc')
+        ->first();
+        
+        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
+        ->where('type', 'stop')
+        ->orderBy('id', 'desc')
+        ->first();
+
+        return view('jadwal.createJadwal', compact('users', 'jadwals', 'start', 'stop'));
     }
 
     public function exportJadwal(){
