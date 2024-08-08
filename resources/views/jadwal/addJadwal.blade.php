@@ -90,7 +90,8 @@
                                         <select class="form-select " name="activity_type" id="floatingSelectGrid"
                                             aria-label="Floating label select example">
                                             <option value="">-- Pilih --</option>
-                                            <option value="Telepon">Telepon</option>
+                                            <option value="Telepon In">Telepon In</option>
+                                            <option value="Telepon Out">Telepon Out</option>
                                             <option value="Meeting">Meeting</option>
                                             <option value="Email">Email</option>
                                             <option value="Visit">Visit</option>
