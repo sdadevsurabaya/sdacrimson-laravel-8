@@ -101,8 +101,14 @@ class ReportSalesController extends Controller
 
         $getJarak= Jarak::where('user_id', Auth::id())->orderBy('id', 'desc')->first();
 
-        // dd($getJarak);
+        // dd($laporan[0]->created_at);
+
+        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', $laporan[0]->created_at)
+        ->where('type', 'stop')
+        ->orderBy('id', 'desc')
+        ->first();
         
+        if($stop){
             $newLaporan = new LaporanSales([
             'jadwal_id' => $id,
             'user_id' => Auth::id(),
@@ -111,18 +117,17 @@ class ReportSalesController extends Controller
          
         ]);
 
+    
+
      
         if ($getJarak) {
             $newLaporan->setRelation('jarak', collect([$getJarak]));
         }
 
       
-        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
-        ->where('type', 'stop')
-        ->orderBy('id', 'desc')
-        ->first();
+      
         
-        if($stop){
+      
             $laporan->push($newLaporan);
         }
      

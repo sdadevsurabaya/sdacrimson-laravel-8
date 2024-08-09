@@ -103,7 +103,7 @@
                     <tr>
                         <td>{{ $item->created_at->format('Y-m-d') }}</td>
                         
-                        @php
+                        {{-- @php
                             $checkInTime = null;
                             $checkOutTime = null;
                             
@@ -118,9 +118,22 @@
                                 }
                             }
                         @endphp
-                
-                        <td>{{ $loop->last && $lastCheckIn == $checkInTime ? '' : $checkInTime }}</td>
-                        <td>{{ $loop->last && $lastCheckOut == $checkOutTime ? '' : $checkOutTime }}</td>
+                 --}}
+                        {{-- <td>{{ $loop->last && $lastCheckIn == $checkInTime ? '' : $checkInTime }}</td>
+                        <td>{{ $loop->last && $lastCheckOut == $checkOutTime ? '' : $checkOutTime }}</td> --}}
+
+                        <td>@foreach($item->attendance as $attendances)
+                            @if($attendances->status == 'check in')
+                               {{ $attendances->created_at->format('H:i') }}
+                                @break
+                            @endif
+                        @endforeach</td>
+                        <td>@foreach($item->attendance as $attendances)
+                            @if($attendances->status == 'check out')
+                               {{ $attendances->created_at->format('H:i') }}
+                                @break
+                            @endif
+                        @endforeach</td>
                         <td>{{ $item->general->nama_usaha }}</td>
                         <td>{{ $item->general->alamat_kantor }}</td>
                         <td>
