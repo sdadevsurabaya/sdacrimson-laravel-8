@@ -33,7 +33,7 @@
 
                     <h5> Type Aktifitas: {{ $detailJadwal->activity_type }}</h5>
 
-                    @if ($detailJadwal->activity_type == 'Email' || $detailJadwal->activity_type == 'Telepon')
+                    @if ($detailJadwal->activity_type == 'Email' || $detailJadwal->activity_type == 'Telepon In' || $detailJadwal->activity_type == 'Telepon Out')
                     @else
                         <div class="gap-3 d-flex justify-content-center">
                             <div class="col col-auto" id="checkin">
