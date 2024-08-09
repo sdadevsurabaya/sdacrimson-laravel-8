@@ -13,7 +13,7 @@ class GetDetailJadwalController extends Controller
     {
         $Jadwal = DetailJadwal::with('customer')->whereDate('created_at', now())->get();
         $customerDetails = $Jadwal->pluck('customer.nama_usaha', 'customer.id')->toArray();
-        $newCustomer = [470 => 'Toko SDA Global'];
+        $newCustomer = [553 => 'SDA GLOBAL INDONESIA'];
 
         // Menggabungkan data baru dengan data yang diambil dari database
         $combinedDetails = $newCustomer + $customerDetails;

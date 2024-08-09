@@ -101,9 +101,9 @@ class ReportSalesController extends Controller
 
         $getJarak= Jarak::where('user_id', Auth::id())->orderBy('id', 'desc')->first();
 
-        // dd($getJarak);
+        // dd($laporan[0]->created_at);
 
-        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
+        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', $laporan[0]->created_at)
         ->where('type', 'stop')
         ->orderBy('id', 'desc')
         ->first();
