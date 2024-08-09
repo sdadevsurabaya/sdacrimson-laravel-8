@@ -96,17 +96,23 @@ class ReportSalesController extends Controller
             $attendance = $laporan->attendance->first();
             return $attendance ? $attendance->id : null; 
         });
-
+       
         $userJadwal = Jadwal::with(['user'])->find($id);
 
         $getJarak= Jarak::where('user_id', Auth::id())->orderBy('id', 'desc')->first();
-
+     
         // dd($laporan[0]->created_at);
 
-        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', $laporan[0]->created_at)
-        ->where('type', 'stop')
-        ->orderBy('id', 'desc')
-        ->first();
+        $createdAt = $laporan[0]->created_at ?? now();
+
+        $stop = LocationTime::where('user_id', Auth::id())
+            ->whereDate('created_at', $createdAt)
+            ->where('type', 'stop')
+            ->orderBy('id', 'desc')
+            ->first();
+        
+
+        // dd('ok');
         
         if($stop){
             $newLaporan = new LaporanSales([
