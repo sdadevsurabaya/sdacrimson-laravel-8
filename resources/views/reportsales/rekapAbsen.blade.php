@@ -78,7 +78,7 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="9" style="border: none;">Rekap Absen {{ $userJadwal->user->name}}</th>
+                        <th colspan="10" style="border: none;">Rekap Absen {{ $userJadwal->user->name}}</th>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -98,15 +98,15 @@
                     $lastCheckIn = null;
                     $lastCheckOut = null;
                 @endphp
-                
+
                 @foreach($laporan as $item)
                     <tr>
                         <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                        
+
                         {{-- @php
                             $checkInTime = null;
                             $checkOutTime = null;
-                            
+
                             foreach ($item->attendance as $attendances) {
                                 if ($attendances->status == 'check in' && $attendances->jadwal_id == $item->jadwal_id) {
                                     $checkInTime = $attendances->created_at->format('H:i');
@@ -164,7 +164,7 @@
                         <td>{{ $item->general->email }}</td>
                     </tr>
                 @endforeach
-                
+
 
                 </tbody>
             </table>
