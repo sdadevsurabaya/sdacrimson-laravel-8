@@ -101,7 +101,7 @@ class ReportSalesController extends Controller
 
         $user_id = $laporan[0]->user_id ?? 0;
 
-        $getJarak= Jarak::where('user_id', $user_id)->orderBy('id', 'desc')->first();
+        $getJarak= Jarak::where('user_id', $user_id)->where('jadwal_id', $id)->orderBy('id', 'desc')->first();
      
         // dd($laporan[0]->created_at);
 
