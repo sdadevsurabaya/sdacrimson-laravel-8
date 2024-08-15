@@ -166,6 +166,7 @@
         Route::delete('/delete-gambar/{gambar}', [App\Http\Controllers\LaporanSalesController::class, 'deleteGambar'])->name('delete-gambar');
 
         Route::post('/leads/store', [App\Http\Controllers\Lead\LeadController::class, 'store'])->name('leads.store');
+        Route::get('/generate-lead', [App\Http\Controllers\Lead\GenerateLeadController::class, 'index'])->name('generate.lead');
 
         //Penjadwalan Kunjungan
         Route::resource('jadwal', JadwalController::class);
