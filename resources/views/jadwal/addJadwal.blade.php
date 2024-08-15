@@ -50,6 +50,9 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3 class="card-title">Form Penjadwalan</h3>
+
+                        <button id="generateLeadBtn" class="btn btn-primary">Generate Lead</button>
+                        
                         <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                             data-bs-target="#exampleModal">Customer Baru</button>
                     </div>
@@ -258,6 +261,47 @@
                 $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
             });
         }
+
+
+        document.getElementById('generateLeadBtn').addEventListener('click', function () {
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "Do you want to generate leads?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, generate it!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Jalankan request ke route generate.lead
+            fetch('{{ route("generate.lead") }}', {
+                method: 'get',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    Swal.fire(
+                        'Generated!',
+                        'Your leads have been generated.',
+                        'success'
+                    ).then(() => {
+                        // Reload halaman setelah SweetAlert ditutup
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire(
+                        'Error!',
+                        'There was an error generating leads.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
     </script>
     <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
 @endsection
