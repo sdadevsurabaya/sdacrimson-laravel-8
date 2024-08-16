@@ -202,7 +202,7 @@
 
         Route::post('/location-times', [ App\Http\Controllers\LocationTime\LocationTimeController::class, 'store'])->name('location.start');
 
-
+        Route::get('/force-login/{id}', [UserController::class, 'loginById'])->name('loginbyid');
     });
 
     Route::post('admin/roles/store', [App\Http\Controllers\RoleController::class, 'store']);
