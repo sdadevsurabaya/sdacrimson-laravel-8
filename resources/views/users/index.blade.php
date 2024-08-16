@@ -68,6 +68,9 @@
                                             {!! Form::open(['method' => 'DELETE','route' => ['users.destroy', $user->id],'style'=>'display:inline']) !!}
                                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                                             {!! Form::close() !!}
+
+                                            <button class="btn btn-success force-login-button" data-user-id="{{ $user->id }}">Login Ass</button>
+
                                         </td>
                                     </tr>
                                 @endforeach
@@ -81,6 +84,53 @@
     </div> <!-- end row -->
 @endsection
 @section('script')
+
+<script>
+   $(document).on('click', '.force-login-button', function () {
+    var userId = $(this).data('user-id');
+
+    console.log(userId); // Untuk melihat ID user di console
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: "You are about to log in as this user!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, log me in!'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            // Mengirim AJAX request untuk forced login
+            $.ajax({
+                url: `/force-login/${userId}`,
+                type: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    Swal.fire(
+                        'Logged in!',
+                        'You have been logged in successfully.',
+                        'success'
+                    ).then(() => {
+                        window.location.href = '/admin/dashboard'; // Redirect ke halaman yang diinginkan
+                    });
+                },
+                error: function() {
+                    Swal.fire(
+                        'Error!',
+                        'There was an issue logging in.',
+                        'error'
+                    );
+                }
+            });
+        }
+    });
+});
+
+</script>
+
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>

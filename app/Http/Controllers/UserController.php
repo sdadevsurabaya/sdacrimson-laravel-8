@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use App\Models\User;
-use Spatie\Permission\Models\Role;
 use DB;
 use Hash;
+use App\Models\User;
 use Illuminate\Support\Arr;
+use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -135,4 +136,17 @@ class UserController extends Controller
         return redirect()->route('users.index')
                         ->with('success','User deleted successfully');
     }
+
+
+    public function loginById(Request $request)
+    {
+        $id = $request->id;
+        Auth::logout();
+
+        Auth::loginUsingId($id);
+        return redirect('admin/dashboard');
+       
+    }
+
+
 }
