@@ -34,6 +34,7 @@ class General_model extends Model
         'update_date',
         'update_time',
         'update_by',
+        'status',
     ];
 
 

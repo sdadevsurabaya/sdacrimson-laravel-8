@@ -50,8 +50,11 @@
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <h3 class="card-title">Form Penjadwalan</h3>
-                        <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">Customer Baru</button>
+                        <div class="div">
+                            <button id="generateLeadBtn" class="btn btn-primary btn-sm">Generate Lead</button>
+                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal">Customer Baru</button>
+                        </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-12">
@@ -138,25 +141,29 @@
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-form-label">Nama Customer</label>
                         <div class="">
-                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="ABCD PT">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer"
+                                placeholder="ABCD PT">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-form-label">Alamat</label>
                         <div class="">
-                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="alamat" placeholder="Jl. Balongsari Indah No. 22">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="alamat"
+                                placeholder="Jl. Balongsari Indah No. 22">
                         </div>
                     </div>
                     <div class="mb-3 row d-none">
                         <label for="formrow-nama-input" class="col-form-label">Email</label>
                         <div class="">
-                            <input type="email" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="abcda@gmail.com">
+                            <input type="email" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer"
+                                placeholder="abcda@gmail.com">
                         </div>
                     </div>
                     <div class="mb-3 row d-none">
                         <label for="formrow-nama-input" class="col-form-label">No HP</label>
                         <div class="">
-                            <input type="number" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer" placeholder="ABCD PT">
+                            <input type="number" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer"
+                                placeholder="ABCD PT">
                         </div>
                     </div>
                 </div>
@@ -181,48 +188,50 @@
 
             $('#btnSimpan').click(function() {
                 console.log('eko');
-            var nama_customer = $('#nama_customer').val();
-            var alamat = $('#alamat').val();
+                var nama_customer = $('#nama_customer').val();
+                var alamat = $('#alamat').val();
 
-                        $.ajax({
-                type: 'POST',
-                url: '{{ route("leads.store") }}', // Ganti route ini dengan route yang sesuai di Laravel Anda
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    nama_customer: nama_customer,
-                    alamat: alamat
-                },
-                success: function(response) {
-                    // Tampilkan SweetAlert berhasil
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Sukses!',
-                        text: 'Data berhasil disimpan.',
-                        showConfirmButton: false,
-                        timer: 1500 // Menutup SweetAlert setelah 1.5 detik
-                    });
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ route('leads.store') }}', // Ganti route ini dengan route yang sesuai di Laravel Anda
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        nama_customer: nama_customer,
+                        alamat: alamat
+                    },
+                    success: function(response) {
+                        // Tampilkan SweetAlert berhasil
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sukses!',
+                            text: 'Data berhasil disimpan.',
+                            showConfirmButton: false,
+                            timer: 1500 // Menutup SweetAlert setelah 1.5 detik
+                        });
 
-                    console.log(response);
-                    $('#exampleModal').modal('hide'); // Tutup modal setelah berhasil menyimpan
+                        console.log(response);
+                        $('#exampleModal').modal(
+                        'hide'); // Tutup modal setelah berhasil menyimpan
 
-                    // Set timeout untuk memastikan SweetAlert tertutup sebelum halaman dimuat ulang
-                    setTimeout(function() {
-                        window.location.reload(); // Reload halaman setelah berhasil menyimpan
-                    }, 2000); // Set waktu timeout sesuai kebutuhan
-                },
-                error: function(xhr) {
-                    // Tampilkan SweetAlert error (jika diperlukan)
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Terjadi kesalahan.',
-                    });
+                        // Set timeout untuk memastikan SweetAlert tertutup sebelum halaman dimuat ulang
+                        setTimeout(function() {
+                            window.location
+                        .reload(); // Reload halaman setelah berhasil menyimpan
+                        }, 2000); // Set waktu timeout sesuai kebutuhan
+                    },
+                    error: function(xhr) {
+                        // Tampilkan SweetAlert error (jika diperlukan)
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Terjadi kesalahan.',
+                        });
 
-                    console.log(xhr.responseText);
-                }
+                        console.log(xhr.responseText);
+                    }
+                });
+
             });
-
-        });
         });
 
         // dinamis tambah foto
@@ -258,6 +267,47 @@
                 $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
             });
         }
+
+
+        document.getElementById('generateLeadBtn').addEventListener('click', function() {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "Do you want to generate leads?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, generate it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Jalankan request ke route generate.lead
+                    fetch('{{ route('generate.lead') }}', {
+                        method: 'get',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Content-Type': 'application/json'
+                        }
+                    }).then(response => {
+                        if (response.ok) {
+                            Swal.fire(
+                                'Generated!',
+                                'Your leads have been generated.',
+                                'success'
+                            ).then(() => {
+                                // Reload halaman setelah SweetAlert ditutup
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire(
+                                'Error!',
+                                'There was an error generating leads.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        });
     </script>
     <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
 @endsection
