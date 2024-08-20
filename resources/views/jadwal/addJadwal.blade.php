@@ -51,9 +51,14 @@
                     <div class="d-flex justify-content-between">
                         <h3 class="card-title">Form Penjadwalan</h3>
                         <div class="div">
-                            <button id="generateLeadBtn" class="btn btn-primary btn-sm">Generate Lead</button>
-                            <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">Customer Baru</button>
+                            @if (Str::ucfirst(Auth::user()->hasRole('Admin')) == 1)
+                                <button id="generateLeadBtn" class="btn btn-primary btn-sm">Generate Lead</button>
+                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">Customer Baru</button>
+                            @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
+                                <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">Customer Baru</button>
+                            @endif
                         </div>
                     </div>
                     <div class="row">
@@ -173,8 +178,6 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 @section('script')
     <script type="text/javascript">
@@ -211,12 +214,12 @@
 
                         console.log(response);
                         $('#exampleModal').modal(
-                        'hide'); // Tutup modal setelah berhasil menyimpan
+                            'hide'); // Tutup modal setelah berhasil menyimpan
 
                         // Set timeout untuk memastikan SweetAlert tertutup sebelum halaman dimuat ulang
                         setTimeout(function() {
                             window.location
-                        .reload(); // Reload halaman setelah berhasil menyimpan
+                                .reload(); // Reload halaman setelah berhasil menyimpan
                         }, 2000); // Set waktu timeout sesuai kebutuhan
                     },
                     error: function(xhr) {
