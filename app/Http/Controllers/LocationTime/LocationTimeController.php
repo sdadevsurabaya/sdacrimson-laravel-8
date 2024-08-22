@@ -15,7 +15,7 @@ class LocationTimeController extends Controller
 {
     public function store(Request $request)
     {
-       
+
         $validatedData = $request->validate([
             'user_id' => 'required',
             'type' => 'required|in:start,stop',
@@ -25,13 +25,13 @@ class LocationTimeController extends Controller
         ]);
 
 
-        if($request->type == 'stop'){
+        if ($request->type == 'stop') {
 
             $getAttendance = Attendance::where('user_id',  Auth::id())
-            ->where('status', 'check in')
-            ->whereDate('created_at', now())
-            ->orderBy('id', 'desc')
-            ->first();
+                ->where('status', 'check in')
+                ->whereDate('created_at', now())
+                ->orderBy('id', 'desc')
+                ->first();
 
 
             if ($getAttendance) {
@@ -42,8 +42,8 @@ class LocationTimeController extends Controller
 
 
 
-         
- 
+
+
             $latitudeB =  $request->input('latitude');
             $longitudeB = $request->input('longitude');
 
@@ -54,55 +54,75 @@ class LocationTimeController extends Controller
 
             curl_setopt_array($curl, [
                 CURLOPT_URL => $url,
-              CURLOPT_RETURNTRANSFER => true,
-              CURLOPT_ENCODING => "",
-              CURLOPT_MAXREDIRS => 10,
-              CURLOPT_TIMEOUT => 30,
-              CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-              CURLOPT_CUSTOMREQUEST => "GET",
-              CURLOPT_HTTPHEADER => [
-                "x-rapidapi-host: trueway-directions2.p.rapidapi.com",
-                "x-rapidapi-key: a609f59694msh3a613d81b9324b6p12364ajsn8a35271dfcb9"
-              ],
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => "",
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 30,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => "GET",
+                CURLOPT_HTTPHEADER => [
+                    "x-rapidapi-host: trueway-directions2.p.rapidapi.com",
+                    "x-rapidapi-key: a609f59694msh3a613d81b9324b6p12364ajsn8a35271dfcb9"
+                ],
             ]);
-         
+
             $response = curl_exec($curl);
             $err = curl_error($curl);
-            
+
             curl_close($curl);
-            
+
             $data = json_decode($response, true);
-            
-          
+
+
             $distance = $data['route']['distance'] ?? -1;
             $duration = $data['route']['duration'] ?? -1;
-            
+
             $created_at = Carbon::parse($durations);
             $now = Carbon::now();
             $diff_in_minutes = $now->diffInMinutes($created_at);
 
             $getJadwal = Jadwal::where('user_id',   Auth::id())
-            ->whereDate('created_at', now())
-            ->orderBy('id', 'desc')
-            ->first();
+                ->whereDate('created_at', now())
+                ->orderBy('id', 'desc')
+                ->first();
 
 
             Jarak::create([
                 'general_id' => $request->customer,
                 'user_id' =>  Auth::id(),
                 'jadwal_id' => $getJadwal->id,
-                'latitude1' =>   $latitudeA ,
-                'longitude1' => $longitudeA ,
+                'latitude1' =>   $latitudeA,
+                'longitude1' => $longitudeA,
                 'latitude2' => $latitudeB,
-                'longitude2' =>$longitudeB,
+                'longitude2' => $longitudeB,
                 'distance' => $distance,
-                'duration' => $duration ,
+                'duration' => $duration,
                 'duration_web' => $diff_in_minutes,
             ]);
         }
 
-       
-        $locationTime = LocationTime::create($validatedData);
+
+        // $locationTime = LocationTime::create($validatedData);
+
+        // return response()->json([
+        //     'message' => 'Location time recorded successfully',
+        // ], 201);
+
+
+
+
+        // Check if the record exists for today
+        $existingRecord = LocationTime::where('user_id', $validatedData['user_id'])
+            ->where('type', $validatedData['type'])
+            ->whereDate('created_at', now()->toDateString())
+            ->first();
+
+        if (!$existingRecord) {
+            $locationTime = LocationTime::create($validatedData);
+        }
+
+        // If no record exists, create the new one
+
 
         return response()->json([
             'message' => 'Location time recorded successfully',

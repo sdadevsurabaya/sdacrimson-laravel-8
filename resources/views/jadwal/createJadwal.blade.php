@@ -34,7 +34,7 @@
                 <div class="card-body">
                     <button id="buatJadwalBtn" class="btn btn-info m-1" data-bs-toggle="modal"
                         data-bs-target="#exampleModal" @if (!$start) disabled  @endif >Buat Jadwal</button>
-                    <button id="startBtn" class="btn btn-success m-1"  @if ($start) disabled  @endif>Start</button>
+                    <button id="startBtn" class="btn btn-success m-1"@if ($start) disabled  @endif>Start</button>
                     <button id="endBtn" class="btn btn-danger m-1"  @if (!$start || $stop) disabled  @endif >End</button>
                 </div>
             </div>
