@@ -14,6 +14,7 @@
     <!-- Begin page -->
     <div id="layout-wrapper">
         @include('layouts.topbar')
+
         @include('layouts.sidebar')
         <!-- ============================================================== -->
         <!-- Start right Content here -->
@@ -34,6 +35,7 @@
 
     <!-- Right Sidebar -->
     @include('layouts.right-sidebar')
+    @include('layouts.navdown')
     <!-- /Right-bar -->
 
     <!-- JAVASCRIPT -->
