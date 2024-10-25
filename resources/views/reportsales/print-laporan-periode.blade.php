@@ -37,8 +37,6 @@
 
 <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 
-
-
 <script>
     function exportToExcel() {
       // Ambil data dari tabel
@@ -81,7 +79,7 @@
                 </thead>
                 <tbody>
                     @php
-                        // dd($laporan)
+                        dd($laporan)
                     @endphp
                     @foreach($laporan as $item)
                     <tr>
