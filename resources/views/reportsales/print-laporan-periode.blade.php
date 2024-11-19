@@ -79,7 +79,7 @@
                 </thead>
                 <tbody>
                     @php
-                        dd($laporan)
+                        // dd($laporan)
                     @endphp
                     @foreach($laporan as $item)
                     <tr>
