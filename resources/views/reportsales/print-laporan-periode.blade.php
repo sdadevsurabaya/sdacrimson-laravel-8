@@ -85,7 +85,11 @@
                     <tr>
                         <td>{{ $item->created_at }}</td>
                         <td>{{ $item->user->name }}</td>
-                        <td>{{ $item->general->nama_usaha }}</td>
+                        <td>@if(isset($item->general->nama_usaha))
+                            {{ $item->general->nama_usaha }}
+                          @else
+                          @endif
+                        </td>
                         <td>{{ $item->general->alamat_kantor }}</td>
                         <td>{{ $item->general->area }}</td>
                         <td>{{ $item->contact_person }}</td>
