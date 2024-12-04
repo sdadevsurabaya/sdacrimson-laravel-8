@@ -106,7 +106,7 @@
                                     </div>
 
 
-                                    <div class="col-12 col-md-6 mb-3">
+                                    <div class="col-12 col-md-6 mb-3 d-none">
                                         <label class="form-label" for="plant_date">Jam Kunjungan</label>
                                         <input type="time" class="form-control" name="plant_date" id="plant_date" value="{{ $DetailJadwal->plant_date }}" placeholder="Jam Kunjungan" readonly>
                                     </div>

@@ -106,12 +106,12 @@
                                             <option value="Demo">Demo</option>
                                         </select>
                                     </div>
-                                    <div class="col-12 col-md-6 mb-3">
+                                    {{-- <div class="col-12 col-md-6 mb-3 d">
                                         <label class="form-label" for="alamat_kantor">Jam Kunjungan</label>
                                         <input type="time" class="form-control" name="plant_date"
                                             placeholder="Jam Kunjungan">
-                                    </div>
-                                    <div class="col-12 col-md-6 mb-3">
+                                    </div> --}}
+                                    <div class="col-12 col-md-12 mb-3">
                                         <label class="form-label" for="alamat_kantor">
                                             </span>Note</label>
                                         <div class="form-floating">
@@ -185,12 +185,8 @@
             $(".js-select2-multi").select2();
             $(".js-select2").select2();
 
-
-
-
-
             $('#btnSimpan').click(function() {
-                console.log('eko');
+                // console.log('eko');
                 var nama_customer = $('#nama_customer').val();
                 var alamat = $('#alamat').val();
 

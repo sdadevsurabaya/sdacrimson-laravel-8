@@ -72,8 +72,9 @@
 
                                         <td>
 
-                                            @if(Str::ucfirst(Auth::user()->hasRole('HCS')) == 1)
-                                                <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}" class="btn btn-sm btn-primary">
+                                            @if (Str::ucfirst(Auth::user()->hasRole('HCS')) == 1)
+                                                <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}"
+                                                    class="btn btn-sm btn-primary">
                                                     Rekap Absen
                                                 </a>
                                             @else
@@ -81,10 +82,12 @@
                                                     data-id="{{ $jadwal->id }}"
                                                     class="btn btn-sm btn-secondary show-jadwal">Show
                                                 </button>
-                                                <a href="{{ route('reportsales.rekapPreview', $jadwal->id) }}" class="btn btn-sm btn-warning">
+                                                <a href="{{ route('reportsales.rekapPreview', $jadwal->id) }}"
+                                                    class="btn btn-sm btn-warning">
                                                     Rekap Visit
                                                 </a>
-                                                <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}" class="btn btn-sm btn-primary">
+                                                <a href="{{ route('reportsales.rekapAbsen', $jadwal->id) }}"
+                                                    class="btn btn-sm btn-primary">
                                                     Rekap Absen
                                                 </a>
                                             @endif
@@ -154,6 +157,7 @@
 
             });
 
+
             function loadModalData(id) {
                 $.ajax({
                     url: '/getByidDetailJadwal',
@@ -166,23 +170,41 @@
 
 
                         response.forEach(function(item, index) {
+                            var waktucheckin = '00:00:00';
+                            if (item.checkin !== null) {
+                                const dateTime = item.checkin; // String tanggal
+                                const date = new Date(dateTime);
+
+                                // Ambil jam dan menit secara manual
+                                const hours = date.getHours().toString().padStart(2, '0');
+                                const minutes = date.getMinutes().toString().padStart(2, '0');
+
+                                // Gabungkan
+                                const timeOnly = `${hours}:${minutes}`;
+                                waktucheckin = timeOnly;
+                                console.log(timeOnly); // Output: "13:34"
+                            }
+
                             var editUrl =
                                 `/admin/general/visit/${item.general_id}?jadwal_id=${item.jadwal_id}`;
 
-                        // Pengecekan apakah laporanSales tidak kosong
-                        var hasLaporanSales = item.laporan_sales && item.laporan_sales.length > 0;
-                                var customerCell = `${item.customer.nama_usaha}`;
+                            // Pengecekan apakah laporanSales tidak kosong
+                            var hasLaporanSales = item.laporan_sales && item.laporan_sales
+                                .length > 0;
+                            var customerCell = `${item.customer.nama_usaha}`;
 
-                                if (hasLaporanSales) {
-                                    customerCell += ' ✅';
-                                }
+                            if (hasLaporanSales) {
+                                customerCell += ' ✅';
+                            }
 
 
                             var row = `<tr>
                             <td>${index + 1}</td>
                             <td>${customerCell}</td>
                             <td>${item.activity_type}</td>
-                            <td>${item.plant_date}</td>
+                            <td>
+                                ${waktucheckin}
+                            </td>
                             <td>${item.note}</td>
                             <td>
                                 <a href="${editUrl}" class="btn btn-sm btn-warning">Detail</a>

@@ -169,7 +169,7 @@
                                     <th>NO</th>
                                     <th>Customer</th>
                                     <th>Type Aktifitas</th>
-                                    <th>Jam Kunjungan</th>
+                                    {{-- <th>Jam Kunjungan</th> --}}
                                     <th>Note</th>
                                     <th width="280px">Aksi</th>
                                 </tr>
@@ -410,7 +410,7 @@
                             <td>${index + 1}</td>
                             <td>${item.customer.nama_usaha}</td>
                             <td>${item.activity_type}</td>
-                            <td>${item.plant_date}</td>
+
                             <td>${item.note}</td>
                             <td>
                                 <a href="${editUrl}" class="btn btn-sm btn-warning">Edit</a>
