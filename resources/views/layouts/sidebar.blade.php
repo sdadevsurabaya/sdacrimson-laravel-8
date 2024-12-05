@@ -8,7 +8,7 @@
                 <img src="{{ URL::asset('/assets/images/ro-logo.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="45">
+                <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}"  style="width: 90%;">
             </span>
         </a>
 
@@ -17,7 +17,7 @@
                 <img src="{{ URL::asset('/assets/images/ro-logo.png') }}" alt="" height="22">
             </span>
             <span class="logo-lg">
-                <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="45">
+                <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" style="width: 90%;">
             </span>
         </a>
     </div>

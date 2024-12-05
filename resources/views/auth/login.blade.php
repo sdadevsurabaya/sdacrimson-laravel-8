@@ -12,9 +12,9 @@
                 <div class="col-lg-12">
                     <div class="text-center">
                         <a href="{{ url('index') }}" class="mb-5 d-block auth-logo">
-                            <img src="{{ URL::asset('/assets/images/logo-indracode.png') }}" alt="" height="22"
+                            <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="22"
                                 class="logo logo-dark">
-                            <img src="{{ URL::asset('/assets/images/logo-indracode.png') }}" alt="" height="22"
+                            <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="22"
                                 class="logo logo-light">
                         </a>
                     </div>

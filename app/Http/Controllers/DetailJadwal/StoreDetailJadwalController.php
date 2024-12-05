@@ -14,7 +14,7 @@ class StoreDetailJadwalController extends Controller
         // Validasi input
         $request->validate([
             'general_id' => 'required', // Sesuaikan dengan aturan validasi yang Anda butuhkan
-            // 'plant_date' => 'required',
+            'plant_date' => 'nullable',
             'note' => 'required',
             'general_id' => 'required',
             'activity_type' => 'required',
@@ -24,7 +24,7 @@ class StoreDetailJadwalController extends Controller
         // Simpan data ke dalam database
         DetailJadwal::create([
             'general_id' => $request->general_id,
-            // 'plant_date' => $request->plant_date,
+            'plant_date' => $request->plant_date,
             'note' => $request->note,
             'general_id' => $request->general_id,
             'jadwal_id' => $request->jadwal_id,

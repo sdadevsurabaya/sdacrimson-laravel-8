@@ -96,7 +96,7 @@
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="floatingSelectGrid" class="col-form-label">Type Aktifitas</label>
                                         <select class="form-select " name="activity_type" id="floatingSelectGrid"
-                                            aria-label="Floating label select example">
+                                            onchange="hideInputJam(this.value);" aria-label="Floating label select example">
                                             <option value="">-- Pilih --</option>
                                             <option value="Telepon In">Telepon In</option>
                                             <option value="Telepon Out">Telepon Out</option>
@@ -106,12 +106,12 @@
                                             <option value="Demo">Demo</option>
                                         </select>
                                     </div>
-                                    {{-- <div class="col-12 col-md-6 mb-3 d">
+                                    <div class="col-12 col-md-6 mb-3" id="plant_date">
                                         <label class="form-label" for="alamat_kantor">Jam Kunjungan</label>
                                         <input type="time" class="form-control" name="plant_date"
                                             placeholder="Jam Kunjungan">
-                                    </div> --}}
-                                    <div class="col-12 col-md-12 mb-3">
+                                    </div>
+                                    <div class="col-12 col-md-6 mb-3">
                                         <label class="form-label" for="alamat_kantor">
                                             </span>Note</label>
                                         <div class="form-floating">
@@ -307,6 +307,18 @@
                 }
             });
         });
+
+        function hideInputJam(val) {
+            var idInputJam = document.getElementById('plant_date');
+            if (val == 'Visit') {
+                idInputJam.style.display = 'none';
+            } else {
+                idInputJam.style.display = 'block';
+            }
+
+        }
     </script>
+
+
     <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
 @endsection
