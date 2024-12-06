@@ -4,4 +4,4 @@
 <meta content="Register Outlet | Indraco Global Indonesia" name="description" />
 <meta content="Indraco Webdev" name="author" />
 <!-- App favicon -->
-<link rel="shortcut icon" href="{{ URL::asset('assets/images/redtop.png')}}">
+<link rel="shortcut icon" href="{{ URL::asset('assets/images/simbol-sda.ico')}}">
