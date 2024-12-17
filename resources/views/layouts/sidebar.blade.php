@@ -265,6 +265,54 @@
                             <span>@lang('Maps')</span>
                         </a>
                     </li>
+                @elseif (Str::ucfirst(Auth::user()->hasRole('Manager Sales')) == 1)
+                    <li class="menu-title">@lang('translation.Menu')</li>
+                        <li>
+                            {{-- <a href="{{url('index')}}"> --}}
+                            <a href="{{ url('admin/dashboard') }}">
+                                <i class="uil-home-alt"></i>
+                                <span>@lang('translation.Dashboard')</span>
+                            </a>
+                        </li>
+
+                        <li class="menu-title">@lang('Sales')</li>
+                        <li>
+                            <a href="#" class="has-arrow waves-effect">
+                                <i class="uil-presentation-check"></i>
+                                <span>@lang('Jadwal Kunjungan')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="true">
+                                {{-- <li><a href="{{ route('jadwal.index') }}">@lang('Jadwal')</a></li> --}}
+                                <li><a href="{{ route('jadwal.createJadwal') }}">@lang('Buat Jadwal')</a></li>
+                                <li><a href="{{ route('jadwal.exportJadwal') }}">@lang('Export Jadwal')</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="{{ route('kunjungan.index') }}">
+                                <i class="uil-car"></i>
+                                <span>@lang('Kunjungan')</span>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="#" class="has-arrow waves-effect">
+                                <i class="uil-swatchbook"></i>
+                                <span>@lang('Report')</span>
+                            </a>
+                            <ul class="sub-menu" aria-expanded="true">
+                                <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
+                                <li><a href="{{ route('laporan.index') }}">@lang('Report Periode Visit')</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li class="menu-title">@lang('Area Coverage')</li>
+                        <li>
+                            <a href="{{ route('maps.index') }}">
+                                <i class="uil-map-marker-alt"></i>
+                                <span>@lang('Maps')</span>
+                            </a>
+                        </li>
                 @endif
             </ul>
         </div>
