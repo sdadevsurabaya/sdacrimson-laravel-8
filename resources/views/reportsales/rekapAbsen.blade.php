@@ -145,10 +145,11 @@
                     <td>
                         @foreach ($item->jarak as $jaraks)
                             @if ($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
-                                {{ number_format($jaraks->distance/1000, 2, ',', '.') }} km
-                                @php
-                                    $total+=$jaraks->distance;
-                                @endphp
+                            @php
+                                    $jarak=$jaraks->distance/1000;
+                                    $total+= $jarak;
+                                    @endphp
+                            {{ number_format($jarak, 2, ',', '.') }} km
                             @break
                         @endif
                     @endforeach
@@ -176,7 +177,7 @@
 @endforeach
 <tr>
     <td colspan="5">TOTAL</td>
-    <td>{{ number_format($total/1000, 2, ',', '.') }} km</td>
+    <td>{{ number_format($total, 2, ',', '.') }} km</td>
     <td colspan="4"></td>
 </tr>
 </tbody>
