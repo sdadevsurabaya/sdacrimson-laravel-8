@@ -9,7 +9,7 @@
             integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
         <title>Preview Rekap Visit</title>
         <style>
-             @media print {
+            @media print {
                 body * {
                     visibility: hidden;
                 }
@@ -53,19 +53,21 @@
         </style>
 
 
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
-<script>
-  function exportToExcel() {
-    // Ambil data dari tabel
-    var table = document.getElementById('data-excel');
+        <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+        <script>
+            function exportToExcel() {
+                // Ambil data dari tabel
+                var table = document.getElementById('data-excel');
 
-    // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
-    var wb = XLSX.utils.table_to_book(table, {sheet:"Sheet JS"});
+                // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
+                var wb = XLSX.utils.table_to_book(table, {
+                    sheet: "Sheet JS"
+                });
 
-    // Tulis data ke file Excel
-    XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
-  }
-</script>
+                // Tulis data ke file Excel
+                XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
+            }
+        </script>
     </head>
 
     <body>
@@ -78,7 +80,7 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="10" style="border: none;">Rekap Absen {{ $userJadwal->user->name}}</th>
+                        <th colspan="10" style="border: none;">Rekap Absen {{ $userJadwal->user->name }}</th>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -95,15 +97,15 @@
                 </thead>
                 <tbody>
                     @php
-                    $lastCheckIn = null;
-                    $lastCheckOut = null;
-                @endphp
+                        $lastCheckIn = null;
+                        $lastCheckOut = null;
+                        $total = 0;
+                    @endphp
+                    @foreach ($laporan as $item)
+                        <tr>
+                            <td>{{ $item->created_at->format('Y-m-d') }}</td>
 
-                @foreach($laporan as $item)
-                    <tr>
-                        <td>{{ $item->created_at->format('Y-m-d') }}</td>
-
-                        {{-- @php
+                            {{-- @php
                             $checkInTime = null;
                             $checkOutTime = null;
 
@@ -119,65 +121,76 @@
                             }
                         @endphp
                  --}}
-                        {{-- <td>{{ $loop->last && $lastCheckIn == $checkInTime ? '' : $checkInTime }}</td>
+                            {{-- <td>{{ $loop->last && $lastCheckIn == $checkInTime ? '' : $checkInTime }}</td>
                         <td>{{ $loop->last && $lastCheckOut == $checkOutTime ? '' : $checkOutTime }}</td> --}}
 
-                        <td>@foreach($item->attendance as $attendances)
-                            @if($attendances->status == 'check in')
-                               {{ $attendances->created_at->format('H:i') }}
+                            <td>
+                                @foreach ($item->attendance as $attendances)
+                                    @if ($attendances->status == 'check in')
+                                        {{ $attendances->created_at->format('H:i') }}
+                                    @break
+                                @endif
+                            @endforeach
+                        </td>
+                        <td>
+                            @foreach ($item->attendance as $attendances)
+                                @if ($attendances->status == 'check out')
+                                    {{ $attendances->created_at->format('H:i') }}
                                 @break
                             @endif
-                        @endforeach</td>
-                        <td>@foreach($item->attendance as $attendances)
-                            @if($attendances->status == 'check out')
-                               {{ $attendances->created_at->format('H:i') }}
-                                @break
-                            @endif
-                        @endforeach</td>
-                        <td>{{ $item->general->nama_usaha }}</td>
-                        <td>{{ $item->general->alamat_kantor }}</td>
-                        <td>
-                            @foreach($item->jarak as $jaraks)
-                                @if($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
-                                    {{ number_format($jaraks->distance, 0, ',', '.') }} km
-                                    @break
-                                @endif
-                            @endforeach
-                        </td>
-                        <td>
-                            @foreach($item->jarak as $jaraks)
-                                @if($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
-                                    {{ $jaraks->duration_web }} Menit
-                                    @break
-                                @endif
-                            @endforeach
-                        </td>
-                        <td>{{ $item->general->area }}</td>
-                        <td>
-                            @foreach($item->detailJadwal as $detail)
-                                @if($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
-                                    {{ $detail->activity_type }}
-                                    @break
-                                @endif
-                            @endforeach
-                        </td>
-                        <td>{{ $item->general->email }}</td>
-                    </tr>
+                        @endforeach
+                    </td>
+                    <td>{{ $item->general->nama_usaha }}</td>
+                    <td>{{ $item->general->alamat_kantor }}</td>
+                    <td>
+                        @foreach ($item->jarak as $jaraks)
+                            @if ($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
+                                {{ number_format($jaraks->distance/1000, 2, ',', '.') }} km
+                                @php
+                                    $total+=$jaraks->distance;
+                                @endphp
+                            @break
+                        @endif
+                    @endforeach
+                </td>
+                <td>
+                    @foreach ($item->jarak as $jaraks)
+                        @if ($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
+                            {{ $jaraks->duration_web }} Menit
+                        @break
+                    @endif
                 @endforeach
+            </td>
+            <td>{{ $item->general->area }}</td>
+            <td>
+                @foreach ($item->detailJadwal as $detail)
+                    @if ($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
+                        {{ $detail->activity_type }}
+                    @break
+                @endif
+            @endforeach
+        </td>
+        <td>{{ $item->general->email }}</td>
+
+    </tr>
+@endforeach
+<tr>
+    <td colspan="5">TOTAL</td>
+    <td>{{ number_format($total/1000, 2, ',', '.') }} km</td>
+    <td colspan="4"></td>
+</tr>
+</tbody>
+</table>
+</div>
 
 
-                </tbody>
-            </table>
-        </div>
+</body>
+<script>
+    function printContent() {
+        window.print();
+    }
+</script>
 
-
-    </body>
-    <script>
-        function printContent() {
-            window.print();
-        }
-    </script>
-
-    </html>
+</html>
 
 </div>
