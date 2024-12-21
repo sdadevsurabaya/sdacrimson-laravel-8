@@ -5,19 +5,19 @@
             <div class="navbar-brand-box" style="align-self:center;">
                 <a href="{{url('admin/dashboard')}}" class="logo logo-dark">
                     <span class="logo-sm">
-                        <img src="{{ URL::asset('/assets/images/logo-sda-hitam.png') }}" alt="" height="35">
+                        <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="35">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ URL::asset('/assets/images/logo-dark.png') }}" alt="" height="20">
+                        <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="20">
                     </span>
                 </a>
 
                 <a href="{{url('admin/dashboard')}}" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="{{ URL::asset('/assets/images/ikon-indraco.png') }}" alt="" height="22">
+                        <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="22">
                     </span>
                     <span class="logo-lg">
-                        <img src="{{ URL::asset('/assets/images/logo-light.png') }}" alt="" height="20">
+                        <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="20">
                     </span>
                 </a>
             </div>
