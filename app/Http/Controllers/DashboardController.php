@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 use App\Models\General_model;
 use App\Models\Legal_model;
 use App\Models\ContactPerson_model;
+use App\Models\LocationTime;
 use App\Models\Outlet_model;
 
 use Illuminate\Http\Request;
@@ -59,6 +60,18 @@ class DashboardController extends Controller
             $get_outlet = Outlet_model::all();
         }
 
-        return view('dashboard.index',compact('get_general', 'get_legal', 'get_kontak', 'get_outlet'));
+        $start = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
+        ->where('type', 'start')
+        ->orderBy('id', 'desc')
+        ->first();
+
+        $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
+        ->where('type', 'stop')
+        ->orderBy('id', 'desc')
+        ->first();
+
+        return view('dashboard.index',compact('get_general', 'get_legal', 'get_kontak', 'get_outlet','start','stop'));
     }
+
+
 }

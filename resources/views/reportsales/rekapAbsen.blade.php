@@ -80,7 +80,8 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="10" style="border: none;">Rekap Absen {{ $userJadwal->user->name }}</th>
+                        <th colspan="10" style="border: none; text-transform:capitalize;">Rekap Absen
+                            {{ $userJadwal->user->name }}</th>
                     </tr>
                     <tr>
                         <th>Tanggal</th>
@@ -101,37 +102,45 @@
                         $lastCheckOut = null;
                         $total = 0;
                     @endphp
-                    @foreach ($laporan as $item)
+
+                    {{-- @dump($start)
+                    @dump($stop) --}}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            @if (!empty($start))
+                                {{ $start->created_at->format('H:i') }}
+                            @endif
+
+                        </td>
+                        <td>SDA GLOBAL INDONESIA</td>
+                        <td>Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20 </td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Start</td>
+                        <td></td>
+                    </tr>
+                    {{-- @dump(end($laporan)) --}}
+                    @foreach ($laporan as $key => $item)
                         <tr>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>
-
-                            {{-- @php
-                            $checkInTime = null;
-                            $checkOutTime = null;
-
-                            foreach ($item->attendance as $attendances) {
-                                if ($attendances->status == 'check in' && $attendances->jadwal_id == $item->jadwal_id) {
-                                    $checkInTime = $attendances->created_at->format('H:i');
-                                    $lastCheckIn = $checkInTime;
-                                }
-                                if ($attendances->status == 'check out' && $attendances->jadwal_id == $item->jadwal_id) {
-                                    $checkOutTime = $attendances->created_at->format('H:i');
-                                    $lastCheckOut = $checkOutTime;
-                                }
-                            }
-                        @endphp
-                 --}}
-                            {{-- <td>{{ $loop->last && $lastCheckIn == $checkInTime ? '' : $checkInTime }}</td>
-                        <td>{{ $loop->last && $lastCheckOut == $checkOutTime ? '' : $checkOutTime }}</td> --}}
-
                             <td>
-                                @foreach ($item->attendance as $attendances)
-                                    @if ($attendances->status == 'check in')
-                                        {{ $attendances->created_at->format('H:i') }}
-                                    @break
-                                @endif
-                            @endforeach
-                        </td>
+                                @if ($key == count($laporan) - 1)
+
+                                    @if (!empty($stop))
+                                        {{ $stop->created_at->format('H:i') }}
+                                    @endif
+                                @else
+                                    @foreach ($item->attendance as $attendances)
+                                        @if ($attendances->status == 'check in')
+                                            {{ $attendances->created_at->format('H:i') }}
+                                        @break
+                                    @endif
+                                @endforeach
+                            @endif
+                            </td>
                         <td>
                             @foreach ($item->attendance as $attendances)
                                 @if ($attendances->status == 'check out')
@@ -146,10 +155,10 @@
                         @foreach ($item->jarak as $jaraks)
                             @if ($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
                             @php
-                                    $jarak=$jaraks->distance/1000;
-                                    $total+= $jarak;
-                                    @endphp
-                            {{ number_format($jarak, 2, ',', '.') }} km
+                            $jarak=$jaraks->distance/1000;
+                            $total+= $jarak;
+                            @endphp
+                              {{ number_format($jarak, 2, ',', '.') }} km
                             @break
                         @endif
                     @endforeach
@@ -164,20 +173,26 @@
             </td>
             <td>{{ $item->general->area }}</td>
             <td>
+                @if ($key == count($laporan) - 1)
+                @if (!empty($stop))
+                     End
+                 @endif
+                @else
                 @foreach ($item->detailJadwal as $detail)
-                    @if ($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
-                        {{ $detail->activity_type }}
-                    @break
+                @if ($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
+                    {{ $detail->activity_type }}
+                @break
+               @endif
+                @endforeach
                 @endif
-            @endforeach
+
         </td>
         <td>{{ $item->general->email }}</td>
-
     </tr>
 @endforeach
 <tr>
-    <td colspan="5">TOTAL</td>
-    <td>{{ number_format($total, 2, ',', '.') }} km</td>
+    <td colspan="5" style="text-align: right; font-weight:bold;">TOTAL</td>
+    <td style="font-weight:bold;">{{ number_format($total, 2, ',', '.') }} km</td>
     <td colspan="4"></td>
 </tr>
 </tbody>

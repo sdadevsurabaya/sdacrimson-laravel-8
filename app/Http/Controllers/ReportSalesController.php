@@ -94,60 +94,65 @@ class ReportSalesController extends Controller
         ->get()
         ->sortBy(function($laporan) {
             $attendance = $laporan->attendance->first();
-            return $attendance ? $attendance->id : null; 
+            return $attendance ? $attendance->id : null;
         });
-       
+
         $userJadwal = Jadwal::with(['user'])->find($id);
 
         $user_id = $laporan[0]->user_id ?? 0;
 
         $getJarak= Jarak::where('user_id', $user_id)->where('jadwal_id', $id)->orderBy('id', 'desc')->first();
-     
+
         // dd($laporan[0]->created_at);
 
         $createdAt = $laporan[0]->created_at ?? now();
-     
+
+
+        $start = LocationTime::where('user_id', $user_id)
+            ->whereDate('created_at', $createdAt)
+            ->where('type', 'start')
+            ->orderBy('id', 'desc')
+            ->first();
 
         $stop = LocationTime::where('user_id', $user_id)
             ->whereDate('created_at', $createdAt)
             ->where('type', 'stop')
             ->orderBy('id', 'desc')
             ->first();
-        
 
         // dd($stop);
-        
+
         if($stop){
             $newLaporan = new LaporanSales([
             'jadwal_id' => $id,
             'user_id' => Auth::id(),
             'created_at' =>$laporan[0]->created_at,
             'general_id' => $getJarak->general_id,
-         
+
         ]);
 
-    
 
-     
+
+
         if ($getJarak) {
             $newLaporan->setRelation('jarak', collect([$getJarak]));
         }
 
-      
-      
-        
-      
+
+
+
+
             $laporan->push($newLaporan);
 
             //  dd($laporan);
-      
+
         }
-     
 
-       
-       
 
-        return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal'));
+
+
+
+        return view('reportsales.rekapAbsen', compact('laporan', 'userJadwal','start','stop'));
     }
 
 

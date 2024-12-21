@@ -33,9 +33,9 @@
             <div class="card">
                 <div class="card-body">
                     <button id="buatJadwalBtn" class="btn btn-info m-1" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal" @if (!$start) disabled  @endif >Buat Jadwal</button>
-                    <button id="startBtn" class="btn btn-success m-1"@if ($start) disabled  @endif>Start</button>
-                    <button id="endBtn" class="btn btn-danger m-1"  @if (!$start || $stop) disabled  @endif >End</button>
+                        data-bs-target="#exampleModal">Buat Jadwal</button>
+                    {{-- <button id="startBtn" class="btn btn-success m-1"@if ($start) disabled  @endif>Start</button>
+                    <button id="endBtn" class="btn btn-danger m-1"  @if (!$start || $stop) disabled  @endif >End</button> --}}
                 </div>
             </div>
         </div>
@@ -491,7 +491,7 @@
             $('#saveButton').click(function() {
                 var user_id = $('#user_id').val();
                 var date = $('#date').val();
-
+                @if (!$start) LupaStart(); @endif
                 $.ajax({
                     url: "{{ route('save.jadwal') }}",
                     type: "POST",
@@ -524,39 +524,37 @@
                 });
             });
 
-
-            $('#startBtn').click(function() {
-
+            function LupaStart(){
                 var latitude = $('#latitude').val();
-                var longitude = $('#longitude').val();
-                var userId = $('#user_id').val();
+                    var longitude = $('#longitude').val();
+                    var userId = $('#user_id').val();
 
 
-                var data = {
-                    user_id: userId,
-                    type: 'start',
-                    latitude: latitude,
-                    longitude: longitude,
-                    _token: "{{ csrf_token() }}",
-                };
+                    var data = {
+                        user_id: userId,
+                        type: 'start',
+                        latitude: latitude,
+                        longitude: longitude,
+                        _token: "{{ csrf_token() }}",
+                    };
 
 
-                $.ajax({
-                    url: '/location-times',
-                    type: 'POST',
-                    data: data,
-                    success: function(response) {
-                        alert('Location recorded successfully');
+                    $.ajax({
+                        url: '/location-times',
+                        type: 'POST',
+                        data: data,
+                        success: function(response) {
+                            console.log('Location recorded successfully');
 
-                        $('#startBtn').prop('disabled', true);
-                        $('#buatJadwalBtn').prop('disabled', false);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error:', error);
-                        alert('An error occurred');
-                    }
-                });
-            });
+                            $('#startBtn').prop('disabled', true);
+                            $('#buatJadwalBtn').prop('disabled', false);
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error:', error);
+                            console.log('An error occurred');
+                        }
+                    });
+            }
 
             document.getElementById('endBtn').addEventListener('click', function() {
             $.ajax({
@@ -609,7 +607,7 @@
                                 type: 'POST',
                                 data: data,
                                 success: function(response) {
-                                   window.location.reload();
+                                //    window.location.reload();
                                 },
                                 error: function(xhr, status, error) {
                                     console.error('Error:', error);
