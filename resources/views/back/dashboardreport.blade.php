@@ -116,7 +116,7 @@
                                     <div class="avatar bg-sda me-3">{{ Str::upper(Str::substr($sale->name, 0, 1)) }}
                                     </div>
                                     <div>
-                                        <h6 class="mb-0">{{ $sale->name }}</h6>
+                                        <h6 class="mb-0 text-capitalize">{{ $sale->name }}</h6>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center text-muted">
