@@ -73,9 +73,10 @@
     //Report
     use App\Http\Controllers\ReportSalesController;
 
+    use App\Http\Controllers\Back\DashboardReportController;
 
 
-
+    Route::get('/back/dashboardreport', [DashboardReportController::class, 'index'])->name('back.dashboardreport.index');
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -83,6 +84,8 @@
     Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
     Route::get('/crudbuilder', [CrudBuilderController::class, 'index']);
+
+
 
     /*
     |--------------------------------------------------------------------------
