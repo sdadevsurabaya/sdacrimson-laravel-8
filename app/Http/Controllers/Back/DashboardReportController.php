@@ -31,9 +31,9 @@ class DashboardReportController extends Controller
 
         foreach ($sales as $sale) {
             $result = DB::select("
-            SELECT 
+            SELECT
                 u.name, j.date, dj.activity_type, dj.note AS catatan,
-                g.nama_usaha AS customer, l.pesan AS laporan_kunjungan 
+                g.nama_usaha AS customer, l.pesan AS laporan_kunjungan
             FROM users u
             INNER JOIN jadwals j ON j.user_id = u.id
             INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id

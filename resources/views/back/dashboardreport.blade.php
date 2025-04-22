@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>Dashboard Agenda Bulanan</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
     <style>
         .week-label {
             font-weight: bold;
@@ -22,6 +24,39 @@
             border-radius: 5px;
             margin-bottom: 5px;
             font-size: 12px;
+        }
+
+        .table>thead {
+            vertical-align: middle;
+        }
+
+        .table td {
+            vertical-align: baseline;
+        }
+
+        .table th {
+            padding: 2px 4px 2px 4px;
+        }
+
+        .company-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        .bg-sda{
+            background-color: #8a2432;
         }
     </style>
 </head>
@@ -49,10 +84,31 @@
         </div>
 
         <div class="list-group mb-5">
-            @foreach ($sales as $sale)
-                <button type="button" class="list-group-item list-group-item-action" onclick="modalInitial1('agendaModal{{ $sale->id }}');">
+            <div class="row g-4">
+                @foreach ($sales as $sale)
+                <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <div class="card position-relative shadow-sm"  onclick="modalInitial1('agendaModal{{ $sale->id }}');">
+                        <div class="card-body">
+                            <span class="badge bg-danger company-badge">active</span>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="avatar bg-sda me-3">R</div>
+                                <div>
+                                    <h6 class="mb-0">Rizky Nanda</h6>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center text-muted">
+                                <i class='bx bx-child bx-md'></i> Sales Representative
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- @foreach ($sales as $sale) --}}
+                {{-- <button type="button" class="list-group-item list-group-item-action"
+                    onclick="modalInitial1('agendaModal{{ $sale->id }}');">
                     {{ $sale->name }}
-                </button>
+                </button> --}}
                 <!-- Modal -->
                 <div class="modal fade" id="agendaModal{{ $sale->id }}">
                     <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -67,12 +123,25 @@
                             <div class="modal-body">
                                 @foreach ($weeks as $i => $week)
                                     <div class="table-responsive mb-4">
-                                        <table class="table table-bordered text-center align-middle bg-white">
-                                            <thead>
+                                        <table class="table table-bordered text-center align-middle bg-white"
+                                            style="table-layout: fixed;">
+                                            <thead class="table-primary">
                                                 <tr>
                                                     <th class="week-label">W{{ $i + 1 }}</th>
-                                                    @foreach (['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'] as $hari)
-                                                        <th>{{ $hari }}</th>
+                                                    @foreach ($week as $day)
+                                                        @if ($day)
+                                                            @php
+                                                                $carbonDate = \Carbon\Carbon::createFromFormat(
+                                                                    'd/m/Y',
+                                                                    $day['date'] . '/2025',
+                                                                );
+                                                            @endphp
+                                                            <th>
+                                                                {{ $carbonDate->translatedFormat('l') }}<br>({{ $carbonDate->format('Y-m-d') }})
+                                                            </th>
+                                                        @else
+                                                            <th>-</th>
+                                                        @endif
                                                     @endforeach
                                                     <th>Total</th>
                                                     <th>Productivity</th>
@@ -82,36 +151,26 @@
                                                 <tr>
                                                     <td class="week-label">Agenda {{ $sale->id }}</td>
                                                     @php $activeCount = 0; @endphp
+
                                                     @foreach ($week as $day)
                                                         @if ($day)
                                                             @php
-                                                                if ($sale->id == 19) {
-                                                                    // @dump($agendas[$sale->id][\Carbon\Carbon::createFromFormat('d/m/Y', $day['date'] . '/2025')->format('Y-m-d')]);
-                                                                }
-                                                                $dayAgendas =
-                                                                    $agendas[$sale->id][
-                                                                        \Carbon\Carbon::createFromFormat(
-                                                                            'd/m/Y',
-                                                                            $day['date'] . '/2025',
-                                                                        )->format('Y-m-d')
-                                                                    ] ?? [];
+                                                                $dateFormatted = \Carbon\Carbon::createFromFormat(
+                                                                    'd/m/Y',
+                                                                    $day['date'] . '/2025',
+                                                                )->format('Y-m-d');
+                                                                $dayAgendas = $agendas[$sale->id][$dateFormatted] ?? [];
                                                             @endphp
-                                                            <td>
 
-                                                                <div><strong>
-                                                                        {{-- {{ $day['date'] }} --}}
-                                                                        {{ \Carbon\Carbon::createFromFormat('d/m/Y', $day['date'] . '/2025')->format('Y-m-d') }}
-                                                                    </strong></div>
+                                                            <td>
                                                                 @foreach ($dayAgendas as $agenda)
                                                                     <div class="agenda-entry text-start"
-                                                                        onclick="modalInitial2('ModalReport','{{ $agenda->laporan_kunjungan }}');"
+                                                                        onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`);"
                                                                         style="cursor:pointer;">
                                                                         <div><strong>Type:</strong>
                                                                             {{ $agenda->activity_type }}</div>
-                                                                        {{-- <div><strong>Catatan:</strong> {{ $agenda->catatan }}</div> --}}
                                                                         <div><strong>Customer:</strong>
                                                                             {{ $agenda->customer }}</div>
-                                                                        {{-- <div><strongD>Laporan:</strong> <small class="text-muted">{{ $agenda->laporan_kunjungan }}</small></div> --}}
                                                                     </div>
                                                                 @endforeach
                                                             </td>
@@ -120,10 +179,10 @@
                                                             <td>-</td>
                                                         @endif
                                                     @endforeach
+
                                                     <td>{{ $activeCount }}</td>
                                                     <td class="productivity-cell">
-                                                        {{ number_format(($activeCount / 7) * 100, 1) }}%
-                                                    </td>
+                                                        {{ number_format(($activeCount / 7) * 100, 1) }}%</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -149,11 +208,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <strong>Laporan:</strong> <small class="text-muted" id="hasil-report">{{ $agenda->laporan_kunjungan }}</small>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    {{-- <button type="button" class="btn btn-primary">Save changes</button> --}}
+                    <strong>Laporan:</strong> <small class="text-muted"
+                        id="hasil-report">{{ $agenda->laporan_kunjungan }}</small>
                 </div>
             </div>
         </div>
@@ -217,13 +273,13 @@
             });
         });
 
-        function modalInitial1(modalId){
+        function modalInitial1(modalId) {
             const myModal1 = new bootstrap.Modal(document.getElementById(modalId));
             // e.preventDefault();
             myModal1.show();
         }
 
-        function modalInitial2(modalId, laporan){
+        function modalInitial2(modalId, laporan) {
             const myModal2 = new bootstrap.Modal(document.getElementById(modalId));
             const report = document.getElementById('hasil-report');
             report.textContent = laporan;
