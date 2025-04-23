@@ -32,14 +32,27 @@ class DashboardReportController extends Controller
         foreach ($sales as $sale) {
             $result = DB::select("
             SELECT
-                u.name, j.date, dj.activity_type, dj.note AS catatan,
-                g.nama_usaha AS customer, l.pesan AS laporan_kunjungan
-            FROM users u
+                u.id AS user_id,
+                u.NAME,
+                j.id AS jadwal_id,
+                j.DATE as date,
+                dj.id AS dj_id,
+                dj.activity_type,
+                dj.note AS catatan,
+                g.id AS general_id,
+                g.nama_usaha AS customer,
+                l.id AS laporan_id,
+                l.pesan AS laporan_kunjungan,
+                l.latitude,
+                l.longitude
+            FROM
+            users u
             INNER JOIN jadwals j ON j.user_id = u.id
             INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id
-            INNER JOIN general_informations g ON dj.general_id = g.id
             INNER JOIN laporan_sales l ON l.jadwal_id = j.id
-            WHERE u.id = ? AND j.created_at BETWEEN ? AND ?
+            INNER JOIN general_informations g ON l.general_id = g.id
+            AND dj.general_id = g.id
+            WHERE u.id = ? AND dj.deleted_at IS NULL AND j.date BETWEEN ? AND ?
         ", [$sale->id, $startDate, $endDate]);
 
             foreach ($result as $agenda) {
@@ -48,7 +61,7 @@ class DashboardReportController extends Controller
             }
         }
 
-         //dump($agendas);
+        //dump($agendas);
 
         return view('back.dashboardreport', compact('month', 'year', 'weeks', 'sales', 'agendas'));
     }
