@@ -163,7 +163,7 @@
                                                                 <td>
                                                                     {{-- @dump($dayAgendas) --}}
                                                                     @foreach ($dayAgendas as $agenda)
-                                                                        <div class="agenda-entry text-start"
+                                                                        <div class="agenda-entry text-start {{ !empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : 'bg-danger'  }}"
                                                                             onclick='modalInitial2("ModalReport", @json($agenda));'
                                                                             {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}}
                                                                             style="cursor:pointer;">
@@ -260,8 +260,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary"
-                        data-bs-dismiss="modal">Tutup</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
@@ -351,83 +350,137 @@
         }
 
         function initMap(jsonObj) {
-            // var attendanceId = $(this).data('id');
+            const multiMaps = document.getElementById('multi-maps');
+            multiMaps.innerHTML = ''; // Clear previous content
 
-            $.ajax({
-                url: '/api/get-data-attendances',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    user_id: jsonObj.user_id,
-                    general_id: jsonObj.general_id,
-                    date: jsonObj.date,
-                },
-                success: function(response) {
-                    // console.log(response);
+            const assetPath = (file) => `https://crimson.sda.id/attendance/${file}`;
 
-                    const multiMaps = document.getElementById('multi-maps');
-                    multiMaps.innerHTML = ''; // Clear previous content
+            const createSection = (type) => {
+                const prefix = type === 'Check-In' ? 'checkin' : 'checkout';
+                const foto = jsonObj[`${prefix}_foto`];
+                const latitude = jsonObj[`${prefix}_latitude`];
+                const longitude = jsonObj[`${prefix}_longitude`];
+                const waktu = jsonObj[`${prefix}_time`];
 
-                    // Default values
-                    let checkIn = response.find(r => r.status === 'check in');
-                    let checkOut = response.find(r => r.status === 'check out');
+                if (foto && latitude && longitude && waktu) {
+                    const date = new Date(waktu);
+                    const timeWIB = date.toLocaleTimeString('id-ID', {
+                        timeZone: 'Asia/Jakarta',
+                        hour12: false
+                    });
 
-                    // Helper function for image and map
-                    const createSection = (data, type) => {
-                        // console.log(data);
-                        let timestamp = data.created_at;
-                        let date = new Date(timestamp);
-
-                        // Konversi ke waktu lokal Jakarta (WIB)
-                        // let timeWIB = date.toLocaleTimeString('id-ID', {
-                        //     timeZone: 'Asia/Jakarta',
-                        //     hour12: false
-                        // });
-
-                        let timeUTC = date.toLocaleTimeString('id-ID', {
-                            timeZone: 'UTC',
-                            hour12: false
-                        });
-
-
-                        if (data) {
-                            return `
+                    return `
                 <div class="col-md-6">
                     <div class="d-flex flex-column align-items-center">
                         <strong>Foto (${type}):</strong>
-                        <img src="https://crimson.sda.id/attendance/${data.foto}" alt="${type}" width="70%" height="auto" class="img-fluid" />
+                        <img src="${assetPath(foto)}" alt="${type}" width="70%" height="auto" class="img-fluid" />
+                        <strong>Waktu (${type}):</strong>
+                        <p>${timeWIB}</p>
                         <strong>Lokasi (${type}):</strong>
-                        <br>
-                        ${timeUTC}
-                        <iframe src="https://maps.google.com/maps?q=${data.latitude},${data.longitude}&z=15&output=embed&t=k"
+                        <iframe src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed&t=k"
                             width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
                             referrerpolicy="no-referrer-when-downgrade"></iframe>
                     </div>
                 </div>`;
-                        } else {
-                            return `
+                } else {
+                    return `
                 <div class="col-md-6">
-                    <div class="d-flex flex-column">
+                    <div class="d-flex flex-column align-items-center">
                         <strong>Foto (${type}):</strong>
-                        <p>Belum ${type}</p>
+                        <p>Belum ${type.toLowerCase()}</p>
                         <strong>Lokasi (${type}):</strong>
                         <p>Belum tersedia</p>
                     </div>
                 </div>`;
-                        }
-                    };
-
-                    multiMaps.innerHTML = `
-            <div class="row">
-                ${createSection(checkIn, 'Check-In')}
-                ${createSection(checkOut, 'Check-Out')}
-            </div>`;
-                },
-                error: function(xhr) {
-                    console.error(xhr.responseText);
                 }
-            });
+            };
+
+            multiMaps.innerHTML = `
+        <div class="row">
+            ${createSection('Check-In')}
+            ${createSection('Check-Out')}
+        </div>`;
         }
+
+
+        // function initMap(jsonObj) {
+        //     // var attendanceId = $(this).data('id');
+
+        //     $.ajax({
+        //         url: '/api/get-data-attendances',
+        //         type: 'POST',
+        //         data: {
+        //             _token: '{{ csrf_token() }}',
+        //             user_id: jsonObj.user_id,
+        //             general_id: jsonObj.general_id,
+        //             date: jsonObj.date,
+        //         },
+        //         success: function(response) {
+        //             // console.log(response);
+
+        //             const multiMaps = document.getElementById('multi-maps');
+        //             multiMaps.innerHTML = ''; // Clear previous content
+
+        //             // Default values
+        //             let checkIn = response.find(r => r.status === 'check in');
+        //             let checkOut = response.find(r => r.status === 'check out');
+
+        //             // Helper function for image and map
+        //             const createSection = (data, type) => {
+        //                 // console.log(data);
+        //                 let timestamp = data.created_at;
+        //                 let date = new Date(timestamp);
+
+        //                 // Konversi ke waktu lokal Jakarta (WIB)
+        //                 // let timeWIB = date.toLocaleTimeString('id-ID', {
+        //                 //     timeZone: 'Asia/Jakarta',
+        //                 //     hour12: false
+        //                 // });
+
+        //                 let timeUTC = date.toLocaleTimeString('id-ID', {
+        //                     timeZone: 'UTC',
+        //                     hour12: false
+        //                 });
+
+
+        //                 if (data) {
+        //                     return `
+    //         <div class="col-md-6">
+    //             <div class="d-flex flex-column align-items-center">
+    //                 <strong>Foto (${type}):</strong>
+    //                 <img src="https://crimson.sda.id/attendance/${data.foto}" alt="${type}" width="70%" height="auto" class="img-fluid" />
+    //                 <strong>Lokasi (${type}):</strong>
+    //                 <br>
+    //                 ${timeUTC}
+    //                 <iframe src="https://maps.google.com/maps?q=${data.latitude},${data.longitude}&z=15&output=embed&t=k"
+    //                     width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
+    //                     referrerpolicy="no-referrer-when-downgrade"></iframe>
+    //             </div>
+    //         </div>`;
+        //                 } else {
+        //                     return `
+    //         <div class="col-md-6">
+    //             <div class="d-flex flex-column">
+    //                 <strong>Foto (${type}):</strong>
+    //                 <p>Belum ${type}</p>
+    //                 <strong>Lokasi (${type}):</strong>
+    //                 <p>Belum tersedia</p>
+    //             </div>
+    //         </div>`;
+        //                 }
+        //             };
+
+        //             multiMaps.innerHTML = `
+    //     <div class="row">
+    //         ${createSection(checkIn, 'Check-In')}
+    //         ${createSection(checkOut, 'Check-Out')}
+    //     </div>`;
+        //         },
+        //         error: function(xhr) {
+        //             console.error(xhr.responseText);
+        //         }
+        //     });
+        // }
     </script>
 
 
