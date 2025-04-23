@@ -35,7 +35,7 @@ class DashboardReportController extends Controller
                 u.id AS user_id,
                 u.NAME,
                 j.id AS jadwal_id,
-                j.DATE as date,
+                j.DATE AS date,
                 dj.id AS dj_id,
                 dj.activity_type,
                 dj.note AS catatan,
@@ -44,14 +44,34 @@ class DashboardReportController extends Controller
                 l.id AS laporan_id,
                 l.pesan AS laporan_kunjungan,
                 l.latitude,
-                l.longitude
-            FROM
-            users u
-            INNER JOIN jadwals j ON j.user_id = u.id
-            INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id
-            INNER JOIN laporan_sales l ON l.jadwal_id = j.id
-            INNER JOIN general_informations g ON l.general_id = g.id
-            AND dj.general_id = g.id
+                l.longitude,
+                a_in.id AS checkin_id,
+                a_in.foto AS checkin_foto,
+                a_in.STATUS AS checkin_status,
+                a_in.latitude AS checkin_latitude,
+                a_in.longitude AS checkin_longitude,
+                a_in.created_at AS checkin_time,
+                a_out.id AS checkout_id,
+                a_out.foto AS checkout_foto,
+                a_out.STATUS AS checkout_status,
+                a_out.latitude AS checkout_latitude,
+                a_out.longitude AS checkout_longitude,
+                a_out.created_at AS checkout_time
+                FROM
+                users u
+                INNER JOIN jadwals j ON j.user_id = u.id
+                INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id
+                INNER JOIN laporan_sales l ON l.jadwal_id = j.id
+                INNER JOIN general_informations g ON l.general_id = g.id
+                AND dj.general_id = g.id
+                LEFT JOIN attendances a_in ON a_in.user_id = u.id
+                AND a_in.general_id = g.id
+                AND DATE(a_in.created_at) = j.DATE
+                AND a_in.STATUS = 'check in'
+                LEFT JOIN attendances a_out ON a_out.user_id = u.id
+                AND a_out.general_id = g.id
+                AND DATE(a_out.created_at) = j.DATE
+                AND a_out.STATUS = 'check out'
             WHERE u.id = ? AND dj.deleted_at IS NULL AND j.date BETWEEN ? AND ?
         ", [$sale->id, $startDate, $endDate]);
 
