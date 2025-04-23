@@ -84,27 +84,6 @@
         </div>
 
         <div class="list-group mb-5">
-            {{-- <div class="row g-4">
-                @foreach ($sales as $sale)
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
-                        <div class="card position-relative shadow-sm"
-                            onclick="modalInitial1('agendaModal{{ $sale->id }}');">
-                            <div class="card-body">
-                                <span class="badge bg-danger company-badge">active</span>
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="avatar bg-sda me-3">R</div>
-                                    <div>
-                                        <h6 class="mb-0">Rizky Nanda</h6>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center text-muted">
-                                    <i class='bx bx-child bx-md'></i> Sales Representative
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div> --}}
             <div class="row g-4">
                 @foreach ($sales as $sale)
                     <div class="col-sm-6 col-lg-4 col-xl-3">
@@ -125,10 +104,6 @@
                             </div>
                         </div>
                     </div>
-                    {{-- <button type="button" class="list-group-item list-group-item-action"
-                    onclick="modalInitial1('agendaModal{{ $sale->id }}');">
-                    {{ $sale->name }}
-                </button> --}}
                     <!-- Modal -->
                     <div class="modal fade" id="agendaModal{{ $sale->id }}">
                         <div class="modal-dialog modal-xl modal-dialog-scrollable">
@@ -142,6 +117,7 @@
                                 </div>
                                 <div class="modal-body">
                                     @foreach ($weeks as $i => $week)
+                                        {{-- @dump($week) --}}
                                         <div class="table-responsive mb-4">
                                             <table class="table table-bordered text-center align-middle bg-white"
                                                 style="table-layout: fixed;">
@@ -149,6 +125,7 @@
                                                     <tr>
                                                         <th class="week-label">W{{ $i + 1 }}</th>
                                                         @foreach ($week as $day)
+                                                            {{-- @dump($day) --}}
                                                             @if ($day)
                                                                 @php
                                                                     $carbonDate = \Carbon\Carbon::createFromFormat(
@@ -184,12 +161,32 @@
                                                                 @endphp
 
                                                                 <td>
+                                                                    {{-- @dump($dayAgendas) --}}
                                                                     @foreach ($dayAgendas as $agenda)
                                                                         <div class="agenda-entry text-start"
-                                                                            onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`);"
+                                                                            onclick='modalInitial2("ModalReport", @json($agenda));'
+                                                                            {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}}
                                                                             style="cursor:pointer;">
                                                                             <div><strong>Type:</strong>
+                                                                                {{-- {{ $agenda->longitude }}-{{ $agenda->latitude }} --}}
+
                                                                                 {{ $agenda->activity_type }}</div>
+                                                                            {{-- <div>
+                                                                                <strong>user id:</strong>
+                                                                                {{ $agenda->user_id }}
+                                                                                <br>
+                                                                                <strong>general id:</strong>
+                                                                                {{ $agenda->general_id }}
+                                                                                <br>
+                                                                                <strong>jadwal id:</strong>
+                                                                                {{ $agenda->jadwal_id }}
+                                                                                <br>
+                                                                                <strong>detail jadwal id:</strong>
+                                                                                {{ $agenda->dj_id }}
+                                                                                <br>
+                                                                                <strong>laporan id:</strong>
+                                                                                {{ $agenda->laporan_id }}
+                                                                            </div> --}}
                                                                             <div><strong>Customer:</strong>
                                                                                 {{ $agenda->customer }}</div>
                                                                         </div>
@@ -222,17 +219,49 @@
             </div>
         </div>
     </div>
-
     <div class="modal fade" id="ModalReport" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">Notes</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <strong>Type Aktivitas:</strong> <small class="text-muted"
+                        id="type-modal2">{{ $agenda->laporan_kunjungan }}</small>
+                    <br>
+                    <strong>Customer:</strong> <small class="text-muted"
+                        id="cst-modal2">{{ $agenda->laporan_kunjungan }}</small>
+                    <br>
                     <strong>Laporan:</strong> <small class="text-muted"
                         id="hasil-report">{{ $agenda->laporan_kunjungan }}</small>
+
+                    <div id="multi-maps" class="row mt-3">
+                        {{-- <div class="col-md-6">
+                            <div class="d-flex flex-column">
+                                <strong>Foto:</strong>
+                                <img src="" alt="">
+                                <strong>Lokasi:</strong>
+                                <iframe id="map-iframe-in" src="" width="100%" height="400"
+                                    style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="d-flex flex-column">
+                                <strong>Foto:</strong>
+                                <img src="" alt="">
+                                <strong>Lokasi:</strong>
+                                <iframe id="map-iframe-out" src="" width="100%" height="400"
+                                    style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            </div>
+                        </div> --}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
@@ -240,6 +269,7 @@
 
     <!-- Bootstrap 5 JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ URL::asset('/assets/libs/jquery/jquery.min.js') }}"></script>
 
     <script>
         let modalCount = 0;
@@ -265,14 +295,14 @@
             // Reset z-index modal
             modal.style.zIndex = '';
 
-            // Jika tidak ada modal yang terbuka, pastikan semua backdrop disembunyikan
+            // Jika tidak ada modal yang terbuka, sembunyikan semua backdrop
             if (modalCount <= 0) {
                 const backdrops = document.querySelectorAll('.modal-backdrop');
                 backdrops.forEach(backdrop => {
                     backdrop.classList.remove('show');
                     backdrop.style.display = 'none';
                 });
-                modalCount = 0; // Reset modalCount untuk mencegah nilai negatif
+                modalCount = 0; // Reset modalCount agar tidak negatif
             } else {
                 // Atur z-index backdrop untuk modal yang masih terbuka
                 const zIndexBackdrop = 1039 + (10 * modalCount);
@@ -298,15 +328,105 @@
 
         function modalInitial1(modalId) {
             const myModal1 = new bootstrap.Modal(document.getElementById(modalId));
-            // e.preventDefault();
             myModal1.show();
         }
 
-        function modalInitial2(modalId, laporan) {
+        function modalInitial2(modalId, dataObj) {
             const myModal2 = new bootstrap.Modal(document.getElementById(modalId));
+            const type = document.getElementById('type-modal2');
+            const cust = document.getElementById('cst-modal2');
             const report = document.getElementById('hasil-report');
-            report.textContent = laporan;
+            type.textContent = dataObj.activity_type;
+            cust.textContent = dataObj.customer;
+            report.textContent = dataObj.laporan_kunjungan;
+            // console.log(dataObj);
+
+            // report.textContent = laporan;
+            initMap(dataObj);
+            // var mapsUrl = `https://maps.google.com/maps?q=${lat},${long}&z=15&output=embed&t=k`;
+            // document.getElementById('map-iframe-in').src = mapsUrl;
+            // document.getElementById('map-iframe-out').src = mapsUrl;
+            // Jika modal sudah terbuka, panggil initMap
             myModal2.show();
+        }
+
+        function initMap(jsonObj) {
+            // var attendanceId = $(this).data('id');
+
+            $.ajax({
+                url: '/api/get-data-attendances',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: jsonObj.user_id,
+                    general_id: jsonObj.general_id,
+                    date: jsonObj.date,
+                },
+                success: function(response) {
+                    // console.log(response);
+
+                    const multiMaps = document.getElementById('multi-maps');
+                    multiMaps.innerHTML = ''; // Clear previous content
+
+                    // Default values
+                    let checkIn = response.find(r => r.status === 'check in');
+                    let checkOut = response.find(r => r.status === 'check out');
+
+                    // Helper function for image and map
+                    const createSection = (data, type) => {
+                        // console.log(data);
+                        let timestamp = data.created_at;
+                        let date = new Date(timestamp);
+
+                        // Konversi ke waktu lokal Jakarta (WIB)
+                        // let timeWIB = date.toLocaleTimeString('id-ID', {
+                        //     timeZone: 'Asia/Jakarta',
+                        //     hour12: false
+                        // });
+
+                        let timeUTC = date.toLocaleTimeString('id-ID', {
+                            timeZone: 'UTC',
+                            hour12: false
+                        });
+
+
+                        if (data) {
+                            return `
+                <div class="col-md-6">
+                    <div class="d-flex flex-column align-items-center">
+                        <strong>Foto (${type}):</strong>
+                        <img src="https://crimson.sda.id/attendance/${data.foto}" alt="${type}" width="70%" height="auto" class="img-fluid" />
+                        <strong>Lokasi (${type}):</strong>
+                        <br>
+                        ${timeUTC}
+                        <iframe src="https://maps.google.com/maps?q=${data.latitude},${data.longitude}&z=15&output=embed&t=k"
+                            width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>`;
+                        } else {
+                            return `
+                <div class="col-md-6">
+                    <div class="d-flex flex-column">
+                        <strong>Foto (${type}):</strong>
+                        <p>Belum ${type}</p>
+                        <strong>Lokasi (${type}):</strong>
+                        <p>Belum tersedia</p>
+                    </div>
+                </div>`;
+                        }
+                    };
+
+                    multiMaps.innerHTML = `
+            <div class="row">
+                ${createSection(checkIn, 'Check-In')}
+                ${createSection(checkOut, 'Check-Out')}
+            </div>`;
+                },
+                error: function(xhr) {
+                    console.error(xhr.responseText);
+                }
+            });
         }
     </script>
 
