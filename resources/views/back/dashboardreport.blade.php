@@ -163,7 +163,7 @@
                                                                 <td>
                                                                     {{-- @dump($dayAgendas) --}}
                                                                     @foreach ($dayAgendas as $agenda)
-                                                                        <div class="agenda-entry text-start {{ !empty($agenda->checkin_status) && !empty($agenda->checkout_status) || $agenda->activity_type == "Meeting" || $agenda->activity_type == "Telepon Out"  ? 'bg-success' : (empty($agenda->checkin_status) && !empty($agenda->checkout_status) || !empty($agenda->checkin_status) && empty($agenda->checkout_status) ? 'bg-warning' : 'bg-danger') }}"
+                                                                        <div class="agenda-entry text-start {{ $agenda->activity_type == "Meeting" || $agenda->activity_type == "Telepon Out" ? "bg-info" : (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : (empty($agenda->checkin_status) && !empty($agenda->checkout_status) || !empty($agenda->checkin_status) && empty($agenda->checkout_status) ? 'bg-warning' : 'bg-danger')) }}"
                                                                             onclick='modalInitial2("ModalReport", @json($agenda));'
                                                                             {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}}
                                                                             style="cursor:pointer;">
