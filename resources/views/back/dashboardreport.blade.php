@@ -163,7 +163,7 @@
                                                                 <td>
                                                                     {{-- @dump($dayAgendas) --}}
                                                                     @foreach ($dayAgendas as $agenda)
-                                                                        <div class="agenda-entry text-start {{ !empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : 'bg-danger'  }}"
+                                                                        <div class="agenda-entry text-start {{ !empty($agenda->checkin_status) && !empty($agenda->checkout_status) || $agenda->activity_type == "Meeting" || $agenda->activity_type == "Telepon Out"  ? 'bg-success' : (empty($agenda->checkin_status) && !empty($agenda->checkout_status) || !empty($agenda->checkin_status) && empty($agenda->checkout_status) ? 'bg-warning' : 'bg-danger') }}"
                                                                             onclick='modalInitial2("ModalReport", @json($agenda));'
                                                                             {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}}
                                                                             style="cursor:pointer;">
@@ -364,8 +364,13 @@
 
                 if (foto && latitude && longitude && waktu) {
                     const date = new Date(waktu);
-                    const timeWIB = date.toLocaleTimeString('id-ID', {
-                        timeZone: 'Asia/Jakarta',
+                    // const timeWIB = date.toLocaleTimeString('id-ID', {
+                    //     timeZone: 'Asia/Jakarta',
+                    //     hour12: false
+                    // });
+
+                    let timeUTC = date.toLocaleTimeString('id-ID', {
+                        timeZone: 'UTC',
                         hour12: false
                     });
 
@@ -375,7 +380,7 @@
                         <strong>Foto (${type}):</strong>
                         <img src="${assetPath(foto)}" alt="${type}" width="70%" height="auto" class="img-fluid" />
                         <strong>Waktu (${type}):</strong>
-                        <p>${timeWIB}</p>
+                        <p>${timeUTC}</p>
                         <strong>Lokasi (${type}):</strong>
                         <iframe src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed&t=k"
                             width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
