@@ -72,7 +72,7 @@ use App\Http\Controllers\Api\Berkas_General\UpdateBerkasContactController;
 use App\Http\Controllers\Api\Berkas_General\UpdateBerkasDistributorController;
 use App\Http\Controllers\Api\Berkas_General\UpdateBerkaSAccountController;
 use App\Http\Controllers\Api\Berkas_General\UpdateBerkasOutletController;
-
+use App\Http\Controllers\Api\Map_Attendances\GetAttendancesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -101,6 +101,8 @@ Route::post('/attendance', [App\Http\Controllers\AttendanceController::class, 'i
 Route::post('/postLaporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan');
 // routes/web.php
 Route::get('/attendance-id/{id}', [App\Http\Controllers\AttendanceController::class, 'getAttendanceDetails']);
+
+Route::post('/get-data-attendances',[GetAttendancesController::class, 'index'])->name('get.attendances');
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
