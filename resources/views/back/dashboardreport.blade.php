@@ -1,12 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard Agenda Bulanan</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-
+@extends('layouts.master')
+@section('title')
+    @lang('translation.General')
+@endsection
+@section('css')
+    <!-- DataTables -->
     <style>
         .week-label {
             font-weight: bold;
@@ -59,18 +56,60 @@
             background-color: #8a2432;
         }
     </style>
-</head>
+@endsection
 
-<body class="p-4 bg-light">
-    <div class="container">
+@section('content')
+    @component('common-components.breadcrumb')
+        @slot('pagetitle')
+            Report
+        @endslot
+        @slot('title')
+            Report Sales Weekly
+        @endslot
+    @endcomponent
+
+    @if (session()->has('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Successfully!</strong> {{ session('success') }}.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    @include('sweetalert::alert')
+
+    <div class="wrapper">
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Launch demo modal
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <h1 class="mb-4">Daftar Sales</h1>
 
         <div class="row mb-4">
             <form method="GET" action="{{ route('back.dashboardreport.index') }}" class="row g-3">
                 <div class="col-auto">
                     <label for="month" class="form-label">Bulan</label>
-                    <input type="number" name="month" id="month" class="form-control" min="1"
-                        max="12" value="{{ $month }}">
+                    <input type="number" name="month" id="month" class="form-control" min="1" max="12"
+                        value="{{ $month }}">
                 </div>
                 <div class="col-auto">
                     <label for="year" class="form-label">Tahun</label>
@@ -105,8 +144,8 @@
                         </div>
                     </div>
                     <!-- Modal -->
-                    <div class="modal fade" id="agendaModal{{ $sale->id }}">
-                        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+                    <div class="modal fade" id="agendaModal{{ $sale->id }}" tabindex="-2" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="agendaModalLabel{{ $sale->id }}">
@@ -164,10 +203,9 @@
                                                                 <td>
                                                                     {{-- @dump($dayAgendas) --}}
                                                                     @foreach ($dayAgendas as $agenda)
-                                                                        <div class="agenda-entry text-start {{ $agenda->activity_type == "Meeting" || $agenda->activity_type == "Telepon Out" ? "bg-info" : (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : (empty($agenda->checkin_status) && !empty($agenda->checkout_status) || !empty($agenda->checkin_status) && empty($agenda->checkout_status) ? 'bg-warning' : 'bg-danger')) }}"
+                                                                        <div class="agenda-entry text-start {{ $agenda->activity_type == 'Meeting' || $agenda->activity_type == 'Telepon Out' ? 'bg-info' : (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : ((empty($agenda->checkin_status) && !empty($agenda->checkout_status)) || (!empty($agenda->checkin_status) && empty($agenda->checkout_status)) ? 'bg-warning' : 'bg-danger')) }}"
                                                                             onclick='modalInitial2("ModalReport", @json($agenda));'
-                                                                            {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}}
-                                                                            style="cursor:pointer;">
+                                                                            {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}} style="cursor:pointer;">
                                                                             <div><strong>Type:</strong>
                                                                                 {{-- {{ $agenda->longitude }}-{{ $agenda->latitude }} --}}
 
@@ -201,14 +239,14 @@
 
                                                         <td></td>
                                                         <td class="productivity-cell">
-                                                            </td>
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <td>
                                                             Productivity
                                                         </td>
                                                         @foreach ($week as $day)
-                                                        @if ($day)
+                                                            @if ($day)
                                                                 @php
                                                                     $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
@@ -224,21 +262,20 @@
                                                                         // $totalCount = count($dayAgendas);
                                                                         $totalCount = 3; // minimum target 3 / day
                                                                         foreach ($dayAgendas as $agenda) {
-                                                                            if ($agenda->activity_type == "Visit" && !empty($agenda->checkin_status) && !empty($agenda->checkout_status)) {
+                                                                            if (
+                                                                                $agenda->activity_type == 'Visit' &&
+                                                                                !empty($agenda->checkin_status) &&
+                                                                                !empty($agenda->checkout_status)
+                                                                            ) {
                                                                                 $productivityCount++;
                                                                             }
                                                                         }
-                                                                        $productivityPercentage = $totalCount > 0 ? ($productivityCount / $totalCount) * 100 : 0;
+                                                                        $productivityPercentage =
+                                                                            $totalCount > 0
+                                                                                ? ($productivityCount / $totalCount) *
+                                                                                    100
+                                                                                : 0;
                                                                     @endphp
-                                                                    {{-- @foreach ($dayAgendas as $agenda)
-                                                                        <div class="agenda-entry text-start {{ $agenda->activity_type == "Meeting" || $agenda->activity_type == "Telepon Out" ? "bg-info" : (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : (empty($agenda->checkin_status) && !empty($agenda->checkout_status) || !empty($agenda->checkin_status) && empty($agenda->checkout_status) ? 'bg-warning' : 'bg-danger')) }}"
-                                                                            onclick='modalInitial2("ModalReport", @json($agenda));'
-
-                                                                            style="cursor:pointer;">
--
-
-                                                                        </div>
-                                                                    @endforeach --}}
                                                                     {{ number_format($productivityPercentage, 1) }}%
                                                                 </td>
                                                                 @php $activeCount++; @endphp
@@ -261,7 +298,11 @@
                                                                         // $totalCount = count($dayAgendas);
                                                                         $totalCount = 3; // minimum target 3 / day
                                                                         foreach ($dayAgendas as $agenda) {
-                                                                            if ($agenda->activity_type == "Visit" && !empty($agenda->checkin_status) && !empty($agenda->checkout_status)) {
+                                                                            if (
+                                                                                $agenda->activity_type == 'Visit' &&
+                                                                                !empty($agenda->checkin_status) &&
+                                                                                !empty($agenda->checkout_status)
+                                                                            ) {
                                                                                 $productivityCount++;
                                                                             }
                                                                         }
@@ -272,7 +313,7 @@
                                                                 echo number_format($totalProductivity, 0);
 
                                                             @endphp
-                                                            
+
                                                         </td>
                                                         <td>
                                                             @php
@@ -289,16 +330,27 @@
                                                                         // $totalCount = count($dayAgendas);
                                                                         $totalCount = 3; // minimum target 3 / day
                                                                         foreach ($dayAgendas as $agenda) {
-                                                                            if ($agenda->activity_type == "Visit" && !empty($agenda->checkin_status) && !empty($agenda->checkout_status)) {
+                                                                            if (
+                                                                                $agenda->activity_type == 'Visit' &&
+                                                                                !empty($agenda->checkin_status) &&
+                                                                                !empty($agenda->checkout_status)
+                                                                            ) {
                                                                                 $productivityCount++;
                                                                             }
                                                                         }
-                                                                        $productivityPercentage = $totalCount > 0 ? ($productivityCount / $totalCount) * 100 : 0;
+                                                                        $productivityPercentage =
+                                                                            $totalCount > 0
+                                                                                ? ($productivityCount / $totalCount) *
+                                                                                    100
+                                                                                : 0;
                                                                         $totalProductivity += $productivityPercentage;
                                                                     }
                                                                 }
-                                                                echo number_format($totalProductivity / count($week), 1);
-                                                                echo ' %'
+                                                                echo number_format(
+                                                                    $totalProductivity / count($week),
+                                                                    1,
+                                                                );
+                                                                echo ' %';
                                                             @endphp
 
                                                         </td>
@@ -310,8 +362,7 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Tutup</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                                 </div>
                             </div>
                         </div>
@@ -366,11 +417,8 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap 5 JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ URL::asset('/assets/libs/jquery/jquery.min.js') }}"></script>
-
+@endsection
+@section('script')
     <script>
         let modalCount = 0;
 
@@ -476,120 +524,37 @@
                     });
 
                     return `
-                <div class="col-md-6">
-                    <div class="d-flex flex-column align-items-center">
-                        <strong>Foto (${type}):</strong>
-                        <img src="${assetPath(foto)}" alt="${type}" width="70%" height="auto" class="img-fluid" />
-                        <strong>Waktu (${type}):</strong>
-                        <p>${timeUTC}</p>
-                        <strong>Lokasi (${type}):</strong>
-                        <iframe src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed&t=k"
-                            width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>`;
+            <div class="col-md-6">
+                <div class="d-flex flex-column align-items-center">
+                    <strong>Foto (${type}):</strong>
+                    <img src="${assetPath(foto)}" alt="${type}" width="70%" height="auto" class="img-fluid" />
+                    <strong>Waktu (${type}):</strong>
+                    <p>${timeUTC}</p>
+                    <strong>Lokasi (${type}):</strong>
+                    <iframe src="https://maps.google.com/maps?q=${latitude},${longitude}&z=15&output=embed&t=k"
+                        width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>`;
                 } else {
                     return `
-                <div class="col-md-6">
-                    <div class="d-flex flex-column align-items-center">
-                        <strong>Foto (${type}):</strong>
-                        <p>Belum ${type.toLowerCase()}</p>
-                        <strong>Lokasi (${type}):</strong>
-                        <p>Belum tersedia</p>
-                    </div>
-                </div>`;
+            <div class="col-md-6">
+                <div class="d-flex flex-column align-items-center">
+                    <strong>Foto (${type}):</strong>
+                    <p>Belum ${type.toLowerCase()}</p>
+                    <strong>Lokasi (${type}):</strong>
+                    <p>Belum tersedia</p>
+                </div>
+            </div>`;
                 }
             };
 
             multiMaps.innerHTML = `
-        <div class="row">
-            ${createSection('Check-In')}
-            ${createSection('Check-Out')}
-        </div>`;
+            <div class="row">
+                ${createSection('Check-In')}
+                ${createSection('Check-Out')}
+            </div>`;
         }
-
-
-        // function initMap(jsonObj) {
-        //     // var attendanceId = $(this).data('id');
-
-        //     $.ajax({
-        //         url: '/api/get-data-attendances',
-        //         type: 'POST',
-        //         data: {
-        //             _token: '{{ csrf_token() }}',
-        //             user_id: jsonObj.user_id,
-        //             general_id: jsonObj.general_id,
-        //             date: jsonObj.date,
-        //         },
-        //         success: function(response) {
-        //             // console.log(response);
-
-        //             const multiMaps = document.getElementById('multi-maps');
-        //             multiMaps.innerHTML = ''; // Clear previous content
-
-        //             // Default values
-        //             let checkIn = response.find(r => r.status === 'check in');
-        //             let checkOut = response.find(r => r.status === 'check out');
-
-        //             // Helper function for image and map
-        //             const createSection = (data, type) => {
-        //                 // console.log(data);
-        //                 let timestamp = data.created_at;
-        //                 let date = new Date(timestamp);
-
-        //                 // Konversi ke waktu lokal Jakarta (WIB)
-        //                 // let timeWIB = date.toLocaleTimeString('id-ID', {
-        //                 //     timeZone: 'Asia/Jakarta',
-        //                 //     hour12: false
-        //                 // });
-
-        //                 let timeUTC = date.toLocaleTimeString('id-ID', {
-        //                     timeZone: 'UTC',
-        //                     hour12: false
-        //                 });
-
-
-        //                 if (data) {
-        //                     return `
-    //         <div class="col-md-6">
-    //             <div class="d-flex flex-column align-items-center">
-    //                 <strong>Foto (${type}):</strong>
-    //                 <img src="https://crimson.sda.id/attendance/${data.foto}" alt="${type}" width="70%" height="auto" class="img-fluid" />
-    //                 <strong>Lokasi (${type}):</strong>
-    //                 <br>
-    //                 ${timeUTC}
-    //                 <iframe src="https://maps.google.com/maps?q=${data.latitude},${data.longitude}&z=15&output=embed&t=k"
-    //                     width="100%" height="400" style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
-    //                     referrerpolicy="no-referrer-when-downgrade"></iframe>
-    //             </div>
-    //         </div>`;
-        //                 } else {
-        //                     return `
-    //         <div class="col-md-6">
-    //             <div class="d-flex flex-column">
-    //                 <strong>Foto (${type}):</strong>
-    //                 <p>Belum ${type}</p>
-    //                 <strong>Lokasi (${type}):</strong>
-    //                 <p>Belum tersedia</p>
-    //             </div>
-    //         </div>`;
-        //                 }
-        //             };
-
-        //             multiMaps.innerHTML = `
-    //     <div class="row">
-    //         ${createSection(checkIn, 'Check-In')}
-    //         ${createSection(checkOut, 'Check-Out')}
-    //     </div>`;
-        //         },
-        //         error: function(xhr) {
-        //             console.error(xhr.responseText);
-        //         }
-        //     });
-        // }
     </script>
-
-
-</body>
-
-</html>
+    <script src="{{ URL::asset('/assets/libs/jquery/jquery.min.js') }}"></script>
+@endsection
