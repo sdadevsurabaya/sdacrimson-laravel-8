@@ -347,36 +347,15 @@
                 </div>
                 <div class="modal-body">
                     <strong>Type Aktivitas:</strong> <small class="text-muted"
-                        id="type-modal2">{{ $agenda->laporan_kunjungan }}</small>
+                        id="type-modal2"></small>
                     <br>
                     <strong>Customer:</strong> <small class="text-muted"
-                        id="cst-modal2">{{ $agenda->laporan_kunjungan }}</small>
+                        id="cst-modal2"></small>
                     <br>
                     <strong>Laporan:</strong> <small class="text-muted"
-                        id="hasil-report">{{ $agenda->laporan_kunjungan }}</small>
+                        id="hasil-report"></small>
 
-                    <div id="multi-maps" class="row mt-3">
-                        {{-- <div class="col-md-6">
-                            <div class="d-flex flex-column">
-                                <strong>Foto:</strong>
-                                <img src="" alt="">
-                                <strong>Lokasi:</strong>
-                                <iframe id="map-iframe-in" src="" width="100%" height="400"
-                                    style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="d-flex flex-column">
-                                <strong>Foto:</strong>
-                                <img src="" alt="">
-                                <strong>Lokasi:</strong>
-                                <iframe id="map-iframe-out" src="" width="100%" height="400"
-                                    style="border:0;padding-top:30px;" allowfullscreen="" loading="lazy"
-                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
-                            </div>
-                        </div> --}}
-                    </div>
+                    <div id="multi-maps" class="row mt-3"></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
