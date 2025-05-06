@@ -36,7 +36,7 @@ class ReportSalesController extends Controller
             $jadwalsQuery->where('user_id', $user->id);
         } elseif ($user->hasRole('Toko')) {
             // Toko hanya lihat data user_id tertentu
-            $allowedUserIds = [1, 2, 3];
+            $allowedUserIds = [39, 40, 41, 42];
             $jadwalsQuery->whereIn('user_id', $allowedUserIds);
         }
         // Role lain bisa lihat semua data
