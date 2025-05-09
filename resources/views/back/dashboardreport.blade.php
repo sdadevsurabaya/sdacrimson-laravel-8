@@ -136,6 +136,10 @@
                                     aria-label="Tutup"></button>
                             </div>
                             <div class="modal-body">
+                                @php
+                                    $totalmonthproductivity = 0;
+
+                                @endphp
                                 @foreach ($weeks as $i => $week)
                                     {{-- @dump($week) --}}
                                     <div class="table-responsive mb-4">
@@ -167,7 +171,9 @@
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td class="week-label" style="vertical-align: middle">Agenda {{ $sale->id }}</td>
+                                                    <td class="week-label" style="vertical-align: middle">Agenda
+                                                        {{-- {{ $sale->id }} --}}
+                                                    </td>
                                                     @php $activeCount = 0; @endphp
 
                                                     @foreach ($week as $day)
@@ -248,7 +254,8 @@
 
                                                         @endphp
                                                     </td>
-                                                    <td rowspan="2" class="productivity-cell" style="vertical-align: middle" >
+                                                    <td rowspan="2" class="productivity-cell"
+                                                        style="vertical-align: middle">
                                                         @php
                                                             $totalProductivity = 0;
                                                             foreach ($week as $day) {
@@ -279,14 +286,23 @@
                                                                 }
                                                             }
                                                             echo number_format($totalProductivity / count($week), 1);
-                                                            echo ' %';
+                                                            echo ' %-';
+
                                                         @endphp
+
+
+                                                        @php
+                                                            $totalmonthproductivity += number_format($totalProductivity / count($week), 1);
+                                                            // echo $totalmonthproductivity;
+                                                        @endphp
+
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
                                                         Productivity
                                                     </td>
+
                                                     @foreach ($week as $day)
                                                         @if ($day)
                                                             @php
@@ -311,10 +327,23 @@
                                                                             $productivityCount++;
                                                                         }
                                                                     }
-                                                                    $productivityPercentage =
-                                                                        $totalCount > 0
-                                                                            ? ($productivityCount / $totalCount) * 100
-                                                                            : 0;
+
+                                                                    if ($totalCount > 0) {
+                                                                        if ($productivityCount > 3) {
+                                                                            $productivityPercentage =
+                                                                                (3 / $totalCount) * 100;
+                                                                        } else {
+                                                                            # code...
+                                                                            $productivityPercentage =
+                                                                                ($productivityCount / $totalCount) *
+                                                                                100;
+                                                                        }
+                                                                        // ($productivityCount / $totalCount) * 100;
+                                                                        # code...
+                                                                    }
+                                                                    // $totalCount > 0
+                                                                    //     ? ($productivityCount / $totalCount) * 100
+                                                                    //     : 0;
                                                                 @endphp
                                                                 {{ number_format($productivityPercentage, 1) }}%
                                                             </td>
@@ -326,10 +355,20 @@
                                                 </tr>
                                             </tbody>
                                         </table>
+
                                     </div>
                                 @endforeach
+
+
                             </div>
                             <div class="modal-footer">
+                                <h3>Month Productivity  @php
+                                    echo number_format($totalmonthproductivity / count($weeks), 1)
+                                   @endphp
+                                %   
+                                </h3>
+                               
+                                
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                             </div>
                         </div>
@@ -346,14 +385,11 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <strong>Type Aktivitas:</strong> <small class="text-muted"
-                        id="type-modal2"></small>
+                    <strong>Type Aktivitas:</strong> <small class="text-muted" id="type-modal2"></small>
                     <br>
-                    <strong>Customer:</strong> <small class="text-muted"
-                        id="cst-modal2"></small>
+                    <strong>Customer:</strong> <small class="text-muted" id="cst-modal2"></small>
                     <br>
-                    <strong>Laporan:</strong> <small class="text-muted"
-                        id="hasil-report"></small>
+                    <strong>Laporan:</strong> <small class="text-muted" id="hasil-report"></small>
 
                     <div id="multi-maps" class="row mt-3"></div>
                 </div>
