@@ -76,7 +76,6 @@
     use App\Http\Controllers\Back\DashboardReportController;
 
 
-    Route::get('/back/dashboardreport', [DashboardReportController::class, 'index'])->name('back.dashboardreport.index');
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -109,6 +108,7 @@
 
 
     Route::group(['middleware' => ['auth']], function () {
+        Route::get('/back/dashboardreport', [DashboardReportController::class, 'index'])->name('back.dashboardreport.index');
         Route::resource('admin/dashboard', DashboardController::class);
         Route::resource('admin/websetup', WebsetupController::class);
         Route::resource('member/board', MemberBoardController::class);
@@ -203,7 +203,7 @@
         Route::delete('jadwal-detail/{id}', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'destroy'])->name('delete.detail.jadwal');
         Route::get('reports', [App\Http\Controllers\JadwalController::class, 'getGeneralInformationsByMonth']);
 
-        Route::post('/location-times', [ App\Http\Controllers\LocationTime\LocationTimeController::class, 'store'])->name('location.start');
+        Route::post('/location-times', [App\Http\Controllers\LocationTime\LocationTimeController::class, 'store'])->name('location.start');
 
         Route::get('/force-login/{id}', [UserController::class, 'loginById'])->name('loginbyid');
     });
