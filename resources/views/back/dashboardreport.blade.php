@@ -55,6 +55,8 @@
         .bg-sda {
             background-color: #8a2432;
         }
+
+
     </style>
 @endsection
 
@@ -102,7 +104,7 @@
         <div class="list-group mb-5">
             <div class="row g-4">
                 @foreach ($sales as $sale)
-                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                    <div class="col-sm-6 col-lg-4 col-xl-3" style="cursor: pointer;">
                         <div class="card position-relative shadow-sm"
                             onclick="modalInitial1('agendaModal{{ $sale->id }}');">
                             <div class="card-body">
@@ -365,10 +367,10 @@
                                 <h3>Month Productivity  @php
                                     echo number_format($totalmonthproductivity / count($weeks), 1)
                                    @endphp
-                                %   
+                                %
                                 </h3>
-                               
-                                
+
+
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                             </div>
                         </div>
