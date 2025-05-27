@@ -55,10 +55,11 @@
                                 <button id="generateLeadBtn" class="btn btn-primary btn-sm">Generate Lead</button>
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Customer Baru</button>
-                            @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
+                            @elseif (Str::ucfirst(Auth::user()->hasAnyRole('Sales','Manager Sales')) == 1)
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Customer Baru</button>
                             @endif
+                            
                         </div>
                     </div>
                     <div class="row">
