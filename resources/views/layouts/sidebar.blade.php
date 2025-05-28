@@ -266,7 +266,7 @@
                             <span>@lang('Maps')</span>
                         </a>
                     </li>
-                @elseif (Str::ucfirst(Auth::user()->hasRole('Manager Sales')) == 1)
+                @elseif (Str::ucfirst(Auth::user()->hasRole('Manager Sales')) == 1 || Str::ucfirst(Auth::user()->hasRole('Head Of Sales')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
                         <li>
                             {{-- <a href="{{url('index')}}"> --}}
