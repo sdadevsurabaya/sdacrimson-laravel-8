@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Jadwal;
 use App\Models\LaporanSales;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class DashboardReportController extends Controller
@@ -17,12 +18,17 @@ class DashboardReportController extends Controller
         $month = $request->input('month', date('m'));
         $year = $request->input('year', date('Y'));
 
+        $role = Auth::user()->roles()->first()->id;
+        // dump($role);
+
         $weeks = $this->getCalendarWeeks($month, $year);
 
+        $getIdRolesSalesOrManager = $role !== null && $role == 9 || $role == 1 ? 'IN(5,8)' : 'IN(5)';
+        $idManagerExclude = $role !== null && $role == 9  ? 'NOT IN(1,13)' : 'NOT IN(1)';
         $sales = DB::select("SELECT u.id, u.name, r.name as role FROM users as u
         INNER JOIN model_has_roles as mhr ON mhr.model_id = u.id
         INNER JOIN roles as r ON mhr.role_id = r.id
-        WHERE r.id = 5 AND u.id NOT IN(1,13)");
+        WHERE r.id {$getIdRolesSalesOrManager} AND u.id NOT IN(1,13,36)");
 
         $startDate = date("$year-$month-01");
         $endDate = date("Y-m-t", strtotime($startDate)); // akhir bulan
