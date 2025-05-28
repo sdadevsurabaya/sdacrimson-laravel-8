@@ -74,8 +74,8 @@
     use App\Http\Controllers\ReportSalesController;
 
     use App\Http\Controllers\Back\DashboardReportController;
-
-
+use App\Http\Controllers\CabangController;
+use App\Http\Controllers\CrudBuilderController;
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -100,8 +100,8 @@
 
     Auth::routes();
 
-    Route::get('file', [FileController::class, 'create']);
-    Route::post('file', [FileController::class, 'store']);
+    // Route::get('file', [FileController::class, 'create']);
+    // Route::post('file', [FileController::class, 'store']);
 
     //Route::get('/', [App\Http\Controllers\HomeController::class, 'root']);
     Route::get('/index', [App\Http\Controllers\HomeController::class, 'index']);
@@ -111,9 +111,9 @@
         Route::get('/back/dashboardreport', [DashboardReportController::class, 'index'])->name('back.dashboardreport.index');
         Route::resource('admin/dashboard', DashboardController::class);
         Route::resource('admin/websetup', WebsetupController::class);
-        Route::resource('member/board', MemberBoardController::class);
-        Route::resource('fpdf', FpdfController::class);
-        Route::resource('sync-product', SyncProductController::class);
+        // Route::resource('member/board', MemberBoardController::class);
+        // Route::resource('fpdf', FpdfController::class);
+        // Route::resource('sync-product', SyncProductController::class);
         Route::resource('roles', RoleController::class);
         Route::resource('users', UserController::class);
         Route::resource('permissions', PermissionController::class);
@@ -139,6 +139,9 @@
 
         //Area
         Route::resource('admin/area', AreaController::class);
+
+        // Cabang
+        Route::resource('admin/cabang', CabangController::class);
 
         //Checkin & Chekcout
         Route::get('checkin', [App\Http\Controllers\CheckController::class, 'checkin'])->name('check.checkin');
@@ -207,6 +210,8 @@
 
         Route::get('/force-login/{id}', [UserController::class, 'loginById'])->name('loginbyid');
     });
+
+    Route::post('admin/cabang/update/{cabang}', [CabangController::class, 'update'])->name('cabang.updated');
 
     Route::post('admin/roles/store', [App\Http\Controllers\RoleController::class, 'store']);
     Route::get('admin/roles/show/{id}', [App\Http\Controllers\RoleController::class, 'show']);
