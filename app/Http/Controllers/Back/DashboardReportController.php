@@ -1,13 +1,9 @@
 <?php
-
-
 namespace App\Http\Controllers\Back;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Jadwal;
-use App\Models\LaporanSales;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -16,22 +12,27 @@ class DashboardReportController extends Controller
     public function index(Request $request)
     {
         $month = $request->input('month', date('m'));
-        $year = $request->input('year', date('Y'));
+        $year  = $request->input('year', date('Y'));
+        $user  = Auth::user();
 
-        $role = Auth::user()->roles()->first()->id;
+        $role = $user->roles()->first()->id;
         // dump($role);
 
         $weeks = $this->getCalendarWeeks($month, $year);
 
         $getIdRolesSalesOrManager = $role !== null && $role == 9 || $role == 1 ? 'IN(5,8)' : 'IN(5)';
-        $idManagerExclude = $role !== null && $role == 9  ? 'NOT IN(1,13)' : 'NOT IN(1)';
+        $users                    = User::select('id', 'name', 'cabang_id')->get();
+        $getUsers                 = $users->where('cabang_id', $user->cabang_id)->pluck('id');
+        $userIdsString            = $getUsers->implode(',');
+        $idManagerExclude         = $role !== null && $role == 8 ? "IN({$userIdsString})" : "NOT IN(1,13,36)";
+
         $sales = DB::select("SELECT u.id, u.name, r.name as role FROM users as u
         INNER JOIN model_has_roles as mhr ON mhr.model_id = u.id
         INNER JOIN roles as r ON mhr.role_id = r.id
-        WHERE r.id {$getIdRolesSalesOrManager} AND u.id NOT IN(1,13,36)");
+        WHERE r.id {$getIdRolesSalesOrManager} AND u.id {$idManagerExclude}");
 
         $startDate = date("$year-$month-01");
-        $endDate = date("Y-m-t", strtotime($startDate)); // akhir bulan
+        $endDate   = date("Y-m-t", strtotime($startDate)); // akhir bulan
 
         $agendas = [];
 
@@ -82,7 +83,7 @@ class DashboardReportController extends Controller
         ", [$sale->id, $startDate, $endDate]);
 
             foreach ($result as $agenda) {
-                $dateKey = date('Y-m-d', strtotime($agenda->date));
+                $dateKey                        = date('Y-m-d', strtotime($agenda->date));
                 $agendas[$sale->id][$dateKey][] = $agenda;
             }
         }
@@ -92,14 +93,14 @@ class DashboardReportController extends Controller
         return view('back.dashboardreport', compact('month', 'year', 'weeks', 'sales', 'agendas'));
     }
 
-
-
     private function getCalendarWeeks($month, $year)
     {
-        $weeks = [];
+        $weeks    = [];
         $firstDay = strtotime("$year-$month-01");
-        $start = strtotime("monday this week", $firstDay);
-        if (date('N', $firstDay) == 1) $start = $firstDay;
+        $start    = strtotime("monday this week", $firstDay);
+        if (date('N', $firstDay) == 1) {
+            $start = $firstDay;
+        }
 
         $end = strtotime("last day of $year-$month");
         $end = strtotime("sunday this week", $end);
@@ -107,16 +108,16 @@ class DashboardReportController extends Controller
         while ($start <= $end) {
             $week = [];
             for ($i = 0; $i < 7; $i++) {
-                $dayDate = strtotime("+$i day", $start);
+                $dayDate   = strtotime("+$i day", $start);
                 $isInMonth = date('n', $dayDate) == $month;
-                $week[] = $isInMonth ? [
-                    'day' => jddayofweek(date('w', $dayDate), 1),
+                $week[]    = $isInMonth ? [
+                    'day'  => jddayofweek(date('w', $dayDate), 1),
                     'date' => date('j/n', $dayDate),
-                    'full' => date('Y-m-d', $dayDate)
+                    'full' => date('Y-m-d', $dayDate),
                 ] : null;
             }
             $weeks[] = $week;
-            $start = strtotime("+7 days", $start);
+            $start   = strtotime("+7 days", $start);
         }
 
         return $weeks;
