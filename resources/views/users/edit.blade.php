@@ -55,6 +55,11 @@
                         <strong>Role:</strong>
                         {!! Form::select('roles[]', $roles, $userRole, ['class' => 'form-control', 'multiple']) !!}
                     </div>
+                    <div class="form-group mb-3">
+                        <strong>Cabang:</strong>
+                        {!! Form::select('cabang_id', $cabang, null, ['class' => 'form-select']) !!}
+                    </div>
+
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                     <button type="submit" class="btn btn-primary">Submit</button>

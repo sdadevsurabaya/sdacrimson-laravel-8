@@ -61,6 +61,10 @@
                         @endforeach
                     </select>
                 </div>
+                <div class="mb-3 row">
+                    <strong>Cabang:</strong>
+                    {!! Form::select('cabang_id', $cabang, null, ['class' => 'form-select']) !!}
+                </div>
             </div>
             <div class="mb-3  text-center">
                 <a class="btn btn-primary" href="{{ route('users.index') }}"> Back</a>

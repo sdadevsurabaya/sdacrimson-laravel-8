@@ -9,6 +9,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Models\Cabang;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -35,7 +36,8 @@ class UserController extends Controller
     {
         // $roles = Role::pluck('name','name')->all();
         $roles = Role::all();
-        return view('users.create',compact('roles'));
+        $cabang = Cabang::pluck('cabang AS name','id')->all();
+        return view('users.create',compact('roles','cabang'));
     }
 
     /**
@@ -50,7 +52,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required',
+            'cabang_id' => 'required'
         ]);
 
         $input = $request->all();
@@ -87,8 +90,9 @@ class UserController extends Controller
         $user = User::find($id);
         $roles = Role::pluck('name','name')->all();
         $userRole = $user->roles->pluck('name','name')->all();
+        $cabang = Cabang::pluck('cabang AS name','id')->all();
 
-        return view('users.edit',compact('user','roles','userRole'));
+        return view('users.edit',compact('user','roles','userRole','cabang'));
     }
 
     /**
@@ -104,7 +108,8 @@ class UserController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email,'.$id,
             'password' => 'same:confirm-password',
-            'roles' => 'required'
+            'roles' => 'required',
+            'cabang_id' => 'required'
         ]);
 
         $input = $request->all();
@@ -145,7 +150,7 @@ class UserController extends Controller
 
         Auth::loginUsingId($id);
         return redirect('admin/dashboard');
-       
+
     }
 
 

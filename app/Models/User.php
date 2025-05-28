@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'cabang_id',
     ];
 
     /**
@@ -51,8 +52,12 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
-    public function products()
+    // public function products()
+    // {
+    //     return $this->hasMany(Product::class);
+    // }
+    public function cabang()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Cabang::class, 'cabang_id');
     }
 }

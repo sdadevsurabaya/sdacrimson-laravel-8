@@ -10,4 +10,9 @@ class Cabang extends Model
     use HasFactory;
     protected $table = 'cabang';
     protected $guarded = ['id'];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'cabang_id');
+    }
 }
