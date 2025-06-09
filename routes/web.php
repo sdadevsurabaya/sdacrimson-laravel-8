@@ -76,6 +76,8 @@
     use App\Http\Controllers\Back\DashboardReportController;
 use App\Http\Controllers\CabangController;
 use App\Http\Controllers\CrudBuilderController;
+use App\Http\Controllers\HariLiburController;
+use App\Models\HariLibur;
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -142,6 +144,9 @@ use App\Http\Controllers\CrudBuilderController;
 
         // Cabang
         Route::resource('admin/cabang', CabangController::class);
+
+        // Hari Libur
+        Route::resource('admin/libur', HariLiburController::class);
 
         //Checkin & Chekcout
         Route::get('checkin', [App\Http\Controllers\CheckController::class, 'checkin'])->name('check.checkin');
@@ -212,6 +217,7 @@ use App\Http\Controllers\CrudBuilderController;
     });
 
     Route::post('admin/cabang/update/{cabang}', [CabangController::class, 'update'])->name('cabang.updated');
+    Route::post('admin/libur/update/{libur}', [HariLiburController::class, 'update'])->name('cabang.updated');
 
     Route::post('admin/roles/store', [App\Http\Controllers\RoleController::class, 'store']);
     Route::get('admin/roles/show/{id}', [App\Http\Controllers\RoleController::class, 'show']);
