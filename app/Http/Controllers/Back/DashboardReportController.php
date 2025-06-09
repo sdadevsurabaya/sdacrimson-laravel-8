@@ -2,6 +2,7 @@
 namespace App\Http\Controllers\Back;
 
 use App\Http\Controllers\Controller;
+use App\Models\HariLibur;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,13 @@ class DashboardReportController extends Controller
         $role = $user->roles()->first()->id;
         // dump($role);
 
-        $weeks = $this->getCalendarWeeks($month, $year);
+        // $arrayDateOff = ['2025-05-01', '2025-05-12', '2025-05-29'];
+        // $arrayDateOff = HariLibur::all();
+        $arrayDateOff = HariLibur::whereMonth('tanggal', $month)
+            ->whereYear('tanggal', $year)
+            ->get()
+            ->toArray();
+        $weeks = $this->getCalendarWeeks($month, $year, $arrayDateOff);
 
         $getIdRolesSalesOrManager = $role !== null && $role == 9 || $role == 1 ? 'IN(5,8)' : 'IN(5)';
         $users                    = User::select('id', 'name', 'cabang_id')->get();
@@ -90,31 +97,49 @@ class DashboardReportController extends Controller
 
         //dump($agendas);
 
-        return view('back.dashboardreport', compact('month', 'year', 'weeks', 'sales', 'agendas'));
+        // return view('back.coba', compact('month', 'year', 'weeks', 'sales', 'agendas','arrayDateOff'));
+        return view('back.dashboardreport', compact('month', 'year', 'weeks', 'sales', 'agendas', 'arrayDateOff'));
     }
 
-    private function getCalendarWeeks($month, $year)
+    private function getCalendarWeeks($month, $year, $arrayOff)
     {
+        // Buat lookup tanggal => keterangan
+        $offMap = [];
+        foreach ($arrayOff as $item) {
+            $offMap[$item['tanggal']] = $item['keterangan'];
+        }
+
         $weeks    = [];
         $firstDay = strtotime("$year-$month-01");
         $start    = strtotime("monday this week", $firstDay);
+
         if (date('N', $firstDay) == 1) {
             $start = $firstDay;
         }
 
         $end = strtotime("last day of $year-$month");
-        $end = strtotime("sunday this week", $end);
+        $end = strtotime("saturday this week", $end); // Akhiri di Sabtu
 
         while ($start <= $end) {
             $week = [];
-            for ($i = 0; $i < 7; $i++) {
+            for ($i = 0; $i < 6; $i++) { // Senin–Sabtu
                 $dayDate   = strtotime("+$i day", $start);
                 $isInMonth = date('n', $dayDate) == $month;
-                $week[]    = $isInMonth ? [
-                    'day'  => jddayofweek(date('w', $dayDate), 1),
-                    'date' => date('j/n', $dayDate),
-                    'full' => date('Y-m-d', $dayDate),
-                ] : null;
+
+                if ($isInMonth && date('w', $dayDate) != 0) { // Lewati Minggu
+                    $fullDate = date('Y-m-d', $dayDate);
+                    $isOff    = isset($offMap[$fullDate]);
+
+                    $week[] = [
+                        'day'           => jddayofweek(date('w', $dayDate), 1),
+                        'date'          => date('j/n', $dayDate),
+                        'full'          => $fullDate,
+                        'off'           => $isOff,
+                        'keteranganOff' => $isOff ? $offMap[$fullDate] : null,
+                    ];
+                } else {
+                    $week[] = null; // Placeholder
+                }
             }
             $weeks[] = $week;
             $start   = strtotime("+7 days", $start);
@@ -122,4 +147,5 @@ class DashboardReportController extends Controller
 
         return $weeks;
     }
+
 }
