@@ -71,6 +71,7 @@
                             <li><a href="{{ route('distributor.index') }}">@lang('Master Distributor')</a></li>
                             <li><a href="{{ route('area.index') }}">@lang('Master Area')</a></li>
                             <li><a href="{{ route('cabang.index') }}">@lang('Master Cabang')</a></li>
+                            <li><a href="{{ route('libur.index') }}">@lang('Hari Libur')</a></li>
 
                             {{-- <li><a href="#">@lang('Master Harga')</a></li> --}}
                         </ul>
