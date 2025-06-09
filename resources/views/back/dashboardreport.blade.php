@@ -55,8 +55,6 @@
         .bg-sda {
             background-color: #8a2432;
         }
-
-
     </style>
 @endsection
 
@@ -131,7 +129,7 @@
                     <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="agendaModalLabel{{ $sale->id }}">
+                                <h5 class="modal-title text-capitalize" id="agendaModalLabel{{ $sale->id }}">
                                     Agenda Bulanan - {{ $sale->name }}
                                 </h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
@@ -140,10 +138,25 @@
                             <div class="modal-body">
                                 @php
                                     $totalmonthproductivity = 0;
-
+                                    $totalweeks = 0;
                                 @endphp
                                 @foreach ($weeks as $i => $week)
-                                    {{-- @dump($week) --}}
+                                    @php
+                                        $activeDays = 0;
+                                        $totalProductivity = 0;
+                                        $monthStart = \Carbon\Carbon::createFromFormat(
+                                            'm',
+                                            date('m', strtotime('2025-' . ($i + 1) . '-01')),
+                                        )
+                                            ->startOfMonth()
+                                            ->format('d');
+                                        $monthEnd = \Carbon\Carbon::createFromFormat(
+                                            'm',
+                                            date('m', strtotime('2025-' . ($i + 1) . '-01')),
+                                        )
+                                            ->endOfMonth()
+                                            ->format('d');
+                                    @endphp
                                     <div class="table-responsive mb-4">
                                         <table class="table table-bordered text-center align-middle bg-white"
                                             style="table-layout: fixed;">
@@ -151,16 +164,22 @@
                                                 <tr>
                                                     <th class="week-label">W{{ $i + 1 }}</th>
                                                     @foreach ($week as $day)
-                                                        {{-- @dump($day) --}}
                                                         @if ($day)
+                                                        {{-- @dump($day) --}}
                                                             @php
                                                                 $carbonDate = \Carbon\Carbon::createFromFormat(
                                                                     'd/m/Y',
                                                                     $day['date'] . '/2025',
                                                                 );
+                                                                $isProductive =
+                                                                    $carbonDate->dayOfWeek < 6 &&
+                                                                    $carbonDate->dayOfWeek > 0; // Senin-Jumat
+                                                                $isInMonth =
+                                                                    $carbonDate->day >= $monthStart &&
+                                                                    $carbonDate->day <= $monthEnd;
                                                             @endphp
                                                             <th>
-                                                                {{ $carbonDate->translatedFormat('l') }}<br>({{ $carbonDate->format('Y-m-d') }})
+                                                                {{ $isInMonth ? $carbonDate->translatedFormat('l') : '-' }}<br>({{ $isInMonth ? $carbonDate->format('Y-m-d') : '-' }})
                                                             </th>
                                                         @else
                                                             <th>-</th>
@@ -169,15 +188,13 @@
                                                     <th>Total</th>
                                                     <th>Productivity</th>
                                                 </tr>
-
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td class="week-label" style="vertical-align: middle">Agenda
-                                                        {{-- {{ $sale->id }} --}}
-                                                    </td>
-                                                    @php $activeCount = 0; @endphp
-
+                                                    <td class="week-label" style="vertical-align: middle">Agenda</td>
+                                                    @php
+                                                        $notActiveDays = 0;
+                                                    @endphp
                                                     @foreach ($week as $day)
                                                         @if ($day)
                                                             @php
@@ -186,50 +203,64 @@
                                                                     $day['date'] . '/2025',
                                                                 )->format('Y-m-d');
                                                                 $dayAgendas = $agendas[$sale->id][$dateFormatted] ?? [];
+                                                                $carbonDate = \Carbon\Carbon::createFromFormat(
+                                                                    'd/m/Y',
+                                                                    $day['date'] . '/2025',
+                                                                );
+                                                                $isProductive =
+                                                                    $carbonDate->dayOfWeek < 6 &&
+                                                                    $carbonDate->dayOfWeek > 0; // Senin-Jumat
+                                                                $isInMonth =
+                                                                    $carbonDate->day >= $monthStart &&
+                                                                    $carbonDate->day <= $monthEnd;
                                                             @endphp
-
                                                             <td>
-                                                                {{-- @dump($dayAgendas) --}}
-                                                                @foreach ($dayAgendas as $agenda)
-                                                                    <div class="agenda-entry text-start {{ $agenda->activity_type == 'Meeting' || $agenda->activity_type == 'Telepon Out' ? 'bg-info' : (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : ((empty($agenda->checkin_status) && !empty($agenda->checkout_status)) || (!empty($agenda->checkin_status) && empty($agenda->checkout_status)) ? 'bg-warning' : 'bg-danger')) }}"
-                                                                        onclick='modalInitial2("ModalReport", @json($agenda));'
-                                                                        {{-- onclick="modalInitial2('ModalReport', `{{ $agenda->laporan_kunjungan }}`,{{ $agenda->latitude }},{{ $agenda->longitude }},`{{ $agenda->customer }}`);" --}} style="cursor:pointer;">
-                                                                        <div><strong>Type:</strong>
-                                                                            {{-- {{ $agenda->longitude }}-{{ $agenda->latitude }} --}}
-
-                                                                            {{ $agenda->activity_type }}</div>
-                                                                        {{-- <div>
-                                                                    <strong>user id:</strong>
-                                                                    {{ $agenda->user_id }}
-                                                                    <br>
-                                                                    <strong>general id:</strong>
-                                                                    {{ $agenda->general_id }}
-                                                                    <br>
-                                                                    <strong>jadwal id:</strong>
-                                                                    {{ $agenda->jadwal_id }}
-                                                                    <br>
-                                                                    <strong>detail jadwal id:</strong>
-                                                                    {{ $agenda->dj_id }}
-                                                                    <br>
-                                                                    <strong>laporan id:</strong>
-                                                                    {{ $agenda->laporan_id }}
-                                                                </div> --}}
-                                                                        <div><strong>Customer:</strong>
-                                                                            {{ $agenda->customer }}</div>
-                                                                    </div>
-                                                                @endforeach
+                                                                @if ($day['off'])
+                                                                    <span class="text-danger fw-bolder">HARI LIBUR | {{ $day['keteranganOff'] }}</span>
+                                                                @elseif (!$isInMonth)
+                                                                    <span>-</span>
+                                                                @else
+                                                                    @if (count($dayAgendas) > 0)
+                                                                        @foreach ($dayAgendas as $agenda)
+                                                                            <div class="agenda-entry text-start {{ $agenda->activity_type == 'Meeting' || $agenda->activity_type == 'Telepon Out' ? 'bg-info' : (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) ? 'bg-success' : ((empty($agenda->checkin_status) && !empty($agenda->checkout_status)) || (!empty($agenda->checkin_status) && empty($agenda->checkout_status)) ? 'bg-warning' : 'bg-danger')) }}"
+                                                                                onclick='modalInitial2("ModalReport", @json($agenda));'
+                                                                                style="cursor:pointer;">
+                                                                                <div><strong>Type:</strong>
+                                                                                    {{ $agenda->activity_type }}</div>
+                                                                                <div><strong>Customer:</strong>
+                                                                                    {{ $agenda->customer }}</div>
+                                                                            </div>
+                                                                        @endforeach
+                                                                    @else
+                                                                        @if ($carbonDate->translatedFormat('l') == 'Saturday')
+                                                                            <span class="fw-bolder">REPORT WEEKLY</span>
+                                                                        @else
+                                                                        <span class="fw-bolder">TIDAK ADA AKTIVITAS</span>
+                                                                        @endif
+                                                                    @endif
+                                                                @endif
                                                             </td>
-                                                            @php $activeCount++; @endphp
+                                                            @php
+                                                                if ($isProductive && $isInMonth && !$day['off']) {
+                                                                    $activeDays++;
+                                                                }
+                                                            @endphp
                                                         @else
+                                                            @php
+                                                                $notActiveDays++;
+                                                            @endphp
                                                             <td>-</td>
                                                         @endif
                                                     @endforeach
-
                                                     <td rowspan="2" style="vertical-align: middle; font-weight:bold;">
                                                         @php
-                                                            $totalProductivity = 0;
+                                                            $productiveCount = 0;
                                                             foreach ($week as $day) {
-                                                                if ($day) {
+                                                                if (
+                                                                    $day &&
+                                                                    $carbonDate->day >= $monthStart &&
+                                                                    $carbonDate->day <= $monthEnd
+                                                                ) {
                                                                     $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
                                                                         $day['date'] . '/2025',
@@ -237,8 +268,7 @@
                                                                     $dayAgendas =
                                                                         $agendas[$sale->id][$dateFormatted] ?? [];
                                                                     $productivityCount = 0;
-                                                                    // $totalCount = count($dayAgendas);
-                                                                    $totalCount = 3; // minimum target 3 / day
+                                                                    $totalCount = 3; // Target minimum 3 per hari
                                                                     foreach ($dayAgendas as $agenda) {
                                                                         if (
                                                                             $agenda->activity_type == 'Visit' &&
@@ -248,20 +278,23 @@
                                                                             $productivityCount++;
                                                                         }
                                                                     }
-                                                                    $productivityPercentage = $productivityCount;
-                                                                    $totalProductivity += $productivityPercentage;
+                                                                    $productiveCount += $productivityCount;
                                                                 }
                                                             }
-                                                            echo number_format($totalProductivity, 0);
-
+                                                            // echo $notActiveDays . ' hari tidak aktif<br>';
+                                                            echo number_format($productiveCount, 0);
                                                         @endphp
                                                     </td>
                                                     <td rowspan="2" class="productivity-cell"
                                                         style="vertical-align: middle">
                                                         @php
-                                                            $totalProductivity = 0;
+                                                            $productiveCount = 0;
                                                             foreach ($week as $day) {
-                                                                if ($day) {
+                                                                if (
+                                                                    $day &&
+                                                                    $carbonDate->day >= $monthStart &&
+                                                                    $carbonDate->day <= $monthEnd
+                                                                ) {
                                                                     $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
                                                                         $day['date'] . '/2025',
@@ -269,8 +302,7 @@
                                                                     $dayAgendas =
                                                                         $agendas[$sale->id][$dateFormatted] ?? [];
                                                                     $productivityCount = 0;
-                                                                    // $totalCount = count($dayAgendas);
-                                                                    $totalCount = 3; // minimum target 3 / day
+                                                                    $totalCount = 3; // Target minimum 3 per hari
                                                                     foreach ($dayAgendas as $agenda) {
                                                                         if (
                                                                             $agenda->activity_type == 'Visit' &&
@@ -280,31 +312,29 @@
                                                                             $productivityCount++;
                                                                         }
                                                                     }
-                                                                    $productivityPercentage =
-                                                                        $totalCount > 0
-                                                                            ? ($productivityCount / $totalCount) * 100
-                                                                            : 0;
-                                                                    $totalProductivity += $productivityPercentage;
+                                                                    $effectiveCount = min(
+                                                                        $productivityCount,
+                                                                        $totalCount,
+                                                                    );
+                                                                    $productiveCount +=
+                                                                        ($effectiveCount / $totalCount) * 100;
                                                                 }
                                                             }
-                                                            echo number_format($totalProductivity / count($week), 1);
-                                                            echo ' %-';
-
+                                                            $productiveDays = $activeDays;
+                                                            if ($productiveDays > 0) {
+                                                                echo number_format(
+                                                                    $productiveCount / $productiveDays,
+                                                                    1,
+                                                                );
+                                                            } else {
+                                                                echo '0';
+                                                            }
+                                                            echo ' %';
                                                         @endphp
-
-
-                                                        @php
-                                                            $totalmonthproductivity += number_format($totalProductivity / count($week), 1);
-                                                            // echo $totalmonthproductivity;
-                                                        @endphp
-
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
-                                                        Productivity
-                                                    </td>
-
+                                                    <td>Productivity</td>
                                                     @foreach ($week as $day)
                                                         @if ($day)
                                                             @php
@@ -312,14 +342,23 @@
                                                                     'd/m/Y',
                                                                     $day['date'] . '/2025',
                                                                 )->format('Y-m-d');
-                                                                $dayAgendas = $agendas[$sale->id][$dateFormatted] ?? [];
-                                                            @endphp
 
-                                                            <td>
-                                                                @php
+                                                                $dayAgendas = $agendas[$sale->id][$dateFormatted] ?? [];
+                                                                $carbonDate = \Carbon\Carbon::createFromFormat(
+                                                                    'd/m/Y',
+                                                                    $day['date'] . '/2025',
+                                                                );
+                                                                $isSaturday = $carbonDate->dayOfWeek < 6;
+                                                                $dayOrNo = '-';
+                                                                if ($isSaturday) {
+                                                                    $isProductive =
+                                                                        $carbonDate->dayOfWeek < 6 &&
+                                                                        $carbonDate->dayOfWeek > 0; // Senin-Jumat
+                                                                    $isInMonth =
+                                                                        $carbonDate->day >= $monthStart &&
+                                                                        $carbonDate->day <= $monthEnd;
                                                                     $productivityCount = 0;
-                                                                    // $totalCount = count($dayAgendas);
-                                                                    $totalCount = 3; // minimum target 3 / day
+                                                                    $totalCount = 3; // Target minimum 3 per hari
                                                                     foreach ($dayAgendas as $agenda) {
                                                                         if (
                                                                             $agenda->activity_type == 'Visit' &&
@@ -329,27 +368,22 @@
                                                                             $productivityCount++;
                                                                         }
                                                                     }
+                                                                    $effectiveCount = min(
+                                                                        $productivityCount,
+                                                                        $totalCount,
+                                                                    );
+                                                                    $productivityPercentage =
+                                                                        $isProductive && $isInMonth && !$day['off']
+                                                                            ? ($effectiveCount / $totalCount) * 100
+                                                                            : 0;
+                                                                    $dayOrNo = number_format(
+                                                                        $productivityPercentage,
+                                                                        1,
+                                                                    ).'%';
+                                                                }
 
-                                                                    if ($totalCount > 0) {
-                                                                        if ($productivityCount > 3) {
-                                                                            $productivityPercentage =
-                                                                                (3 / $totalCount) * 100;
-                                                                        } else {
-                                                                            # code...
-                                                                            $productivityPercentage =
-                                                                                ($productivityCount / $totalCount) *
-                                                                                100;
-                                                                        }
-                                                                        // ($productivityCount / $totalCount) * 100;
-                                                                        # code...
-                                                                    }
-                                                                    // $totalCount > 0
-                                                                    //     ? ($productivityCount / $totalCount) * 100
-                                                                    //     : 0;
-                                                                @endphp
-                                                                {{ number_format($productivityPercentage, 1) }}%
-                                                            </td>
-                                                            @php $activeCount++; @endphp
+                                                            @endphp
+                                                            <td>{{ $dayOrNo }}</td>
                                                         @else
                                                             <td>-</td>
                                                         @endif
@@ -357,20 +391,27 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-
                                     </div>
+                                    @php
+                                        if ($activeDays > 0) {
+                                            $totalmonthproductivity += $productiveCount / $activeDays;
+                                            $totalweeks++;
+                                        }
+                                    @endphp
                                 @endforeach
-
-
                             </div>
                             <div class="modal-footer">
-                                <h3>Month Productivity  @php
-                                    echo number_format($totalmonthproductivity / count($weeks), 1)
-                                   @endphp
-                                %
+                                <div class="mx-auto">
+                                <h3>Month Productivity @php
+                                    if ($totalweeks > 0) {
+                                        echo number_format($totalmonthproductivity / $totalweeks, 1);
+                                    } else {
+                                        echo '0';
+                                    }
+                                @endphp
+                                    %
                                 </h3>
-
-
+                                </div>
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                             </div>
                         </div>
