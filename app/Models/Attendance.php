@@ -15,4 +15,13 @@ class Attendance extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * [TAMBAHKAN INI]
+     * Relasi untuk mengambil informasi customer/usaha.
+     */
+    public function generalInformation()
+    {
+        return $this->belongsTo(General_model::class, 'general_id', 'id');
+    }
 }

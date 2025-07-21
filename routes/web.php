@@ -1,83 +1,71 @@
-    <?php
+<?php
 
-    use Illuminate\Support\Facades\Auth;
-    use Illuminate\Support\Facades\Route;
-    use Illuminate\Foundation\Auth\AuthenticatesUsers;
-
-    use App\Http\Controllers\Front\FrontLoginController;
-    use App\Http\Controllers\DashboardController;
-
-    use App\Http\Controllers\Front\FrontLandingController;
-    use App\Http\Controllers\Front\FrontNewsController;
-    use App\Http\Controllers\Front\FrontNewsCategoryController;
-    use App\Http\Controllers\Front\FrontProductController;
-
-
-    use App\Http\Controllers\HomeController;
-    use App\Http\Controllers\RoleController;
-    use App\Http\Controllers\UserController;
-    use App\Http\Controllers\PermissionController;
     use App\Http\Controllers\AccessController;
-    use App\Http\Controllers\WebsetupController;
-
-    use App\Http\Controllers\Auth\ForgotPasswordController;
-
-    // General
-    use App\Http\Controllers\GeneralController;
-
-    // Legal
-    use App\Http\Controllers\LegalController;
-
-    // Contact Person
-    use App\Http\Controllers\ContactPersonController;
-
-    // Account
     use App\Http\Controllers\AccountController;
-
-    // Attachment
+    use App\Http\Controllers\APi\Timer\TimerNotificationController;
+    use App\Http\Controllers\AreaController;
     use App\Http\Controllers\AttachmentController;
-
-    // Outlet
-    use App\Http\Controllers\OutletController;
-
-    // Type Outlet
-    use App\Http\Controllers\TypeOutletController;
-
-    // Bank
+    use App\Http\Controllers\Auth\ForgotPasswordController;
+    use App\Http\Controllers\Back\DashboardReportController;
     use App\Http\Controllers\BankController;
-
-    // Distributor
+    use App\Http\Controllers\BrandController;
+    use App\Http\Controllers\CabangController;
+    use App\Http\Controllers\CheckController;
+    use App\Http\Controllers\ContactPersonController;
+    use App\Http\Controllers\CrudBuilderController;
+    use App\Http\Controllers\DashboardController;
+    use App\Http\Controllers\DetailDistributorController;
     use App\Http\Controllers\DistributorController;
 
-    // Detail Distributor
-    use App\Http\Controllers\DetailDistributorController;
+    // General
+    use App\Http\Controllers\Front\FrontLandingController;
 
-    // Brand
-    use App\Http\Controllers\BrandController;
+    // Legal
 
-    // Maps
-    use App\Http\Controllers\MapsController;
+    // Contact Person
 
-    //Area
-    use App\Http\Controllers\AreaController;
+    // Account
+    // Attachment
+    use App\Http\Controllers\GeneralController;
 
-    //Jadwal Check IN/OUT
-    use App\Http\Controllers\CheckController;
+    // Outlet
+    use App\Http\Controllers\HariLiburController;
 
-    //kunjungan
-    use App\Http\Controllers\KunjunganController;
+    // Type Outlet
+    use App\Http\Controllers\HomeController;
 
-    //jadwal
+    // Bank
     use App\Http\Controllers\JadwalController;
 
-    //Report
+    // Distributor
+    use App\Http\Controllers\KunjunganController;
+
+    // Detail Distributor
+    use App\Http\Controllers\LegalController;
+
+    // Brand
+    use App\Http\Controllers\MapsController;
+
+    // Maps
+    use App\Http\Controllers\OutletController;
+
+    //Area
+    use App\Http\Controllers\PermissionController;
+
+    //Jadwal Check IN/OUT
     use App\Http\Controllers\ReportSalesController;
 
-    use App\Http\Controllers\Back\DashboardReportController;
-use App\Http\Controllers\CabangController;
-use App\Http\Controllers\CrudBuilderController;
-use App\Http\Controllers\HariLiburController;
-use App\Models\HariLibur;
+    //kunjungan
+    use App\Http\Controllers\RoleController;
+
+    //jadwal
+    use App\Http\Controllers\TypeOutletController;
+
+    //Report
+    use App\Http\Controllers\UserController;
+    use App\Http\Controllers\WebsetupController;
+    use Illuminate\Support\Facades\Auth;
+    use Illuminate\Support\Facades\Route;
 
     Route::get('forget-password', [ForgotPasswordController::class, 'showForgetPasswordForm'])->name('forget.password.get');
     Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPasswordForm'])->name('forget.password.post');
@@ -85,8 +73,6 @@ use App\Models\HariLibur;
     Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
 
     Route::get('/crudbuilder', [CrudBuilderController::class, 'index']);
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -99,7 +85,6 @@ use App\Models\HariLibur;
     |
     */
 
-
     Auth::routes();
 
     // Route::get('file', [FileController::class, 'create']);
@@ -107,7 +92,6 @@ use App\Models\HariLibur;
 
     //Route::get('/', [App\Http\Controllers\HomeController::class, 'root']);
     Route::get('/index', [App\Http\Controllers\HomeController::class, 'index']);
-
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/back/dashboardreport', [DashboardReportController::class, 'index'])->name('back.dashboardreport.index');
@@ -152,7 +136,6 @@ use App\Models\HariLibur;
         Route::get('checkin', [App\Http\Controllers\CheckController::class, 'checkin'])->name('check.checkin');
         Route::get('checkout', [App\Http\Controllers\CheckController::class, 'checkout'])->name('check.checkout');
 
-
         // General Informations
         Route::resource('admin/generals', GeneralController::class);
         Route::get('admin/generals/destroy/{id}', 'App\Http\Controllers\GeneralController@destroy');
@@ -195,9 +178,6 @@ use App\Models\HariLibur;
         Route::get('laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'index'])->name('laporan.index');
         Route::get('jarak', [App\Http\Controllers\JarakController::class, 'index'])->name('jarak');
 
-
-
-
         Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
         Route::get('getDetailByJadwal', [App\Http\Controllers\DetailJadwal\GetDetailJadwalController::class, 'index'])->name('index.getDetail');
         Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
@@ -214,6 +194,9 @@ use App\Models\HariLibur;
         Route::post('/location-times', [App\Http\Controllers\LocationTime\LocationTimeController::class, 'store'])->name('location.start');
 
         Route::get('/force-login/{id}', [UserController::class, 'loginById'])->name('loginbyid');
+
+        Route::get('/check-new-checkin', [TimerNotificationController::class, 'checkForNewCheckin'])->name('check.new.checkin');
+
     });
 
     Route::post('admin/cabang/update/{cabang}', [CabangController::class, 'update'])->name('cabang.updated');
@@ -332,6 +315,5 @@ use App\Models\HariLibur;
     Route::get('show_all_outlet_by_area/{id}', [App\Http\Controllers\MapsController::class, 'show_all_by_area']);
     Route::get('show_all_outlet_by_radius', [App\Http\Controllers\MapsController::class, 'show_all_by_radius']);
 
-
     // route index
-    Route::get('/', [FrontLandingController::class, 'index'])->name('landing');
+Route::get('/', [FrontLandingController::class, 'index'])->name('landing');

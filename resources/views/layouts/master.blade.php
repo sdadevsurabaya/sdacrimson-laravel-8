@@ -8,7 +8,7 @@
 
 @section('body')
 
-<body>
+    <body>
     @show
 
     <!-- Begin page -->
@@ -32,7 +32,7 @@
         <!-- end main content-->
     </div>
     <!-- END layout-wrapper -->
-
+    @include('layouts._notification_toast')
     <!-- Right Sidebar -->
     @include('layouts.right-sidebar')
     @include('layouts.navdown')
