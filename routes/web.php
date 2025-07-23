@@ -2,7 +2,7 @@
 
     use App\Http\Controllers\AccessController;
     use App\Http\Controllers\AccountController;
-    use App\Http\Controllers\APi\Timer\TimerNotificationController;
+    use App\Http\Controllers\Api\Timer\TimerNotificationController;
     use App\Http\Controllers\AreaController;
     use App\Http\Controllers\AttachmentController;
     use App\Http\Controllers\Auth\ForgotPasswordController;

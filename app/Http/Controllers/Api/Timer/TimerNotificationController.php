@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\APi\Timer;
+namespace App\Http\Controllers\Api\Timer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
