@@ -59,6 +59,13 @@
                         <strong>Cabang:</strong>
                         {!! Form::select('cabang_id', $cabang, null, ['class' => 'form-select']) !!}
                     </div>
+                    <div class="form-group mb-3">
+                        <strong>Status:</strong>
+                        {!! Form::select('status', [1 => 'Active', 0 => 'Nonaktif'], old('status', $user->status ?? null), [
+                            'class' => 'form-select',
+                            'placeholder' => 'Pilih Status',
+                        ]) !!}
+                    </div>
 
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">

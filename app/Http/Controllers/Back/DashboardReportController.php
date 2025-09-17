@@ -59,7 +59,7 @@ class DashboardReportController extends Controller
             FROM users u
             INNER JOIN model_has_roles mhr ON mhr.model_id = u.id
             INNER JOIN roles r ON mhr.role_id = r.id
-            WHERE r.id IN ($roleList) AND u.id $idManagerExclude
+            WHERE r.id IN ($roleList) AND u.id $idManagerExclude AND u.status = 1
         ");
         }
 
