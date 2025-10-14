@@ -88,7 +88,7 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Lengkap</label>
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Lengkap <span class="text-danger">*</span> </label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('nama_lengkap') border border-danger @enderror"
                                 name="nama_lengkap" id="formrow-nama-input" placeholder="Contoh : Budi Utomo"
@@ -96,7 +96,7 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Jabatan</label>
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Jabatan  <span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('jabatan') border border-danger @enderror"
                                 name="jabatan" id="formrow-nama-input" placeholder="Contoh : Pemilik / Owner"
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Area</label>
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Area  <span class="text-danger">*</span> </label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('area') border border-danger @enderror"
                                 name="area" id="formrow-nama-input" placeholder="Contoh: Surabaya Barat "
@@ -129,7 +129,7 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-mobile-input" class="col-md-2 col-form-label">Mobile</label>
+                        <label for="formrow-mobile-input" class="col-md-2 col-form-label">Mobile  <span class="text-danger">*</span> </label>
                         <div class="col-md-10">
                             <input type="Number"
                                 class="form-control @error('mobile_phone') border border-danger @enderror"
