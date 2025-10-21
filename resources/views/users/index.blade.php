@@ -44,6 +44,7 @@
                                     <th>Email</th>
                                     <th>Roles</th>
                                     <th>Cabang</th>
+                                    <th>Status</th>
                                     <th width="280px">Aksi</th>
 
                                 </tr>
@@ -65,6 +66,9 @@
                                         </td>
 
                                         <td> {{ !empty($user->cabang) ? $user->cabang->cabang : '' }} </td>
+                                        <td class="text-center">{!! $user->status
+                                            ? '<span class="badge bg-success">Active</span>'
+                                            : '<span class="badge bg-danger">Nonaktif</span>' !!}</td>
 
                                         <td>
                                             <a class="btn btn-info" href="{{ route('users.show', $user->id) }}">Show</a>
@@ -119,7 +123,7 @@
                                 'success'
                             ).then(() => {
                                 window.location.href =
-                                '/admin/dashboard'; // Redirect ke halaman yang diinginkan
+                                    '/admin/dashboard'; // Redirect ke halaman yang diinginkan
                             });
                         },
                         error: function() {
