@@ -63,10 +63,10 @@
 
                                     <th>Nama Usaha</th>
                                     <th>Tanggal</th>
-                                    <th>Type Aktifitas</th>
+                                    {{-- <th>Type Aktifitas</th>
                                     <th>Nama Pemilik</th>
                                     <th>Alamat</th>
-                                    <th>AR</th>
+                                    <th>AR</th> --}}
                                     <th width="280px">Aksi</th>
 
                                 </tr>
@@ -75,29 +75,29 @@
                                 @foreach($formattedData as $i => $item)
                                 <tr>
                                     <td>{{ $i + 1 }}</td>
-                                    <td>{{ $item['general']->nama_usaha }} 
-                                       
+                                    <td>{{ $item['general']->nama_usaha }}
+
                                         @php
                                             $laporanSales = $item['general']->laporanSales->where('jadwal_id', $item['jadwal']->id)->first();
                                         @endphp
                                         @if($laporanSales)
-                                            ✅ 
+                                            ✅
                                         @endif
                                     </td>
                                     <td>{{ $item['jadwal']->date }}</td>
-                                    <td>
+                                    {{-- <td>
                                         {{ $item['activityType'] ?? 'Tidak Ada Aktivitas' }}
                                     </td>
                                     <td>{{ $item['general']->nama_lengkap }}</td>
                                     <td>{{ $item['general']->alamat_kantor }}</td>
-                                    <td>{{ $item['jadwal']->user->name }}</td>
+                                    <td>{{ $item['jadwal']->user->name }}</td> --}}
                                     <td>
                                         <a href="{{ route('kunjungan.laporan', ['general_id' => $item['general']->id, 'jadwal_id' => $item['jadwal']->id, 'tanggal' => $item['jadwal']->date]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
                                     </td>
                                 </tr>
                             @endforeach
-                            
-                            
+
+
 
                             </tbody>
                         </table>

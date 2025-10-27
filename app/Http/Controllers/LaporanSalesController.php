@@ -26,8 +26,8 @@ class LaporanSalesController extends Controller
         'contact_person' => 'required|string',
         'no_hp' => 'required|numeric',
         'tanggal_jadwal' => 'required|string',
-        'latitude' => 'required|numeric',
-        'longitude' => 'required|numeric',
+        // 'latitude' => 'required|numeric',
+        // 'longitude' => 'required|numeric',
     ], [
         'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
         'latitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
@@ -39,8 +39,8 @@ class LaporanSalesController extends Controller
     $laporanSales->general_id = $validatedLaporan['general_id'];
     $laporanSales->user_id = $validatedLaporan['user_id'];
     $laporanSales->pesan = $validatedLaporan['laporan'];
-    $laporanSales->latitude = $validatedLaporan['latitude'];
-    $laporanSales->longitude = $validatedLaporan['longitude'];
+    // $laporanSales->latitude = $validatedLaporan['latitude'];
+    // $laporanSales->longitude = $validatedLaporan['longitude'];
     $laporanSales->jadwal_id = $validatedLaporan['jadwal_id'];
     $laporanSales->contact_person = $validatedLaporan['contact_person'];
     $laporanSales->no_hp = $validatedLaporan['no_hp'];

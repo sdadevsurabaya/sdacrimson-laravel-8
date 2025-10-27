@@ -87,8 +87,7 @@
                                             </label>
                                             <div class="form-floating">
                                                 <input type="text" name="contact_person" id="contactPerson"
-                                                    value="{{ $laporan->contact_person }}" class="form-control"
-                                                    placeholder="Contact Person">
+                                                    value="{{ $laporan->contact_person }}" class="form-control">
                                                 <label for="contactPerson">Contact Person</label>
                                             </div>
                                         </div>
@@ -99,7 +98,7 @@
                                             </label>
                                             <div class="form-floating">
                                                 <input type="number" name="no_hp" id="noHp" class="form-control"
-                                                    value="{{ $laporan->no_hp }}" placeholder="No HP">
+                                                    value="{{ $laporan->no_hp }}">
                                                 <label for="noHp">No HP</label>
                                             </div>
                                         </div>
@@ -107,7 +106,7 @@
                                             <label class="form-label" for="alamat_kantor">
                                                 <span style="color: crimson;">*</span> Laporan</label>
                                             <div class="form-floating">
-                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                                <textarea name="laporan" class="form-control" id="floatingTextarea2"
                                                     style="height: 100px">{{ $laporan->pesan }}</textarea>
                                                 <label for="floatingTextarea2">Masukan catatan..</label>
                                             </div>
@@ -149,7 +148,7 @@
                                                         </div>
                                                         <div class="col-5 col-md-3 p-1" style="align-self: center">
                                                             <input type="text" class="form-control namafoto"
-                                                                name="namafoto[]" id="namafoto" placeholder="Nama foto"">
+                                                                name="namafoto[]" id="namafoto" placeholder="Nama foto">
                                                         </div>
                                                         <div class="col-1 col-md-1 p-1 btn btn-danger btn-block"
                                                             id="remove-member-fieldss" style="align-self:center; opacity:0;">
@@ -193,7 +192,7 @@
                                             <div class="form-floating">
                                                 <input type="text" name="contact_person" id="contactPerson"
                                                     value="{{ $general->nama_lengkap ?? ($Contact->contact_person ?? '') }}"
-                                                    class="form-control" placeholder="Contact Person" required>
+                                                    class="form-control" required>
                                                 <label for="contactPerson">Contact Person</label>
                                             </div>
                                         </div>
@@ -205,7 +204,7 @@
                                             <div class="form-floating">
                                                 <input type="text" name="no_hp" id="noHp"
                                                     value="{{ str_replace(' ', '', $general->mobile_phone == '-' || empty($general->mobile_phone) ? $Contact->no_hp ?? '' : $general->mobile_phone) }}"
-                                                    class="form-control" placeholder="No HP" required>
+                                                    class="form-control" required>
 
                                                 <label for="noHp">No HP</label>
                                             </div>
@@ -216,7 +215,7 @@
                                                 <span style="color: crimson;">*</span> Laporan
                                             </label>
                                             <div class="form-floating">
-                                                <textarea name="laporan" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
+                                                <textarea name="laporan" class="form-control" id="floatingTextarea2"
                                                     style="height: 100px" required>{{ old('laporan') }}</textarea>
                                                 <label for="floatingTextarea2">Masukan catatan..</label>
                                             </div>
@@ -257,7 +256,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                        <div class="col-xl-5 col-md-6">
+                                        {{-- <div class="col-xl-5 col-md-6">
                                             <div class="mb-3">
                                                 <label class="form-label" for="formrow-email-input">
                                                     <span style="color: crimson;">*</span> GPS</label>
@@ -268,7 +267,7 @@
                                                 <iframe id="location" src="about:blank" width="100%" height="500"
                                                     frameborder="0" style="border:0"></iframe>
                                             </div>
-                                        </div>
+                                        </div> --}}
 
                                         <input type="hidden" name="general_id" value="{{ request()->segment(2) }}">
                                         <input type="hidden" name="user_id" value="{{ Auth::id() }}">
@@ -361,7 +360,7 @@
 
             $(".js-select2-multi").select2();
 
-            handlePermission(this);
+            // handlePermission(this);
 
         });
 
@@ -525,55 +524,55 @@
         });
 
         // get lat and long location
-        function handlePermission(geoBtn) {
-            navigator.permissions.query({
-                name: 'geolocation'
-            }).then(function(result) {
-                if (result.state == 'prompt' || result.state == 'granted') {
-                    navigator.geolocation.getCurrentPosition(revealPosition, showErrorLocation);
-                } else {
-                    console.log(result.state);
-                }
+        // function handlePermission(geoBtn) {
+        //     navigator.permissions.query({
+        //         name: 'geolocation'
+        //     }).then(function(result) {
+        //         if (result.state == 'prompt' || result.state == 'granted') {
+        //             navigator.geolocation.getCurrentPosition(revealPosition, showErrorLocation);
+        //         } else {
+        //             console.log(result.state);
+        //         }
 
-                result.onchange = function() {
-                    console.log(result.state);
-                }
-            });
-        }
+        //         result.onchange = function() {
+        //             console.log(result.state);
+        //         }
+        //     });
+        // }
 
-        function revealPosition(position) {
-            var data = position.coords;
-            var lat = data.latitude;
-            var long = data.longitude;
+        // function revealPosition(position) {
+        //     var data = position.coords;
+        //     var lat = data.latitude;
+        //     var long = data.longitude;
 
-            // alert("Lat : " + lat + ", Long: " + long );
-            // console.log(lat);
-            // console.log(long);
-            $("#latitude").val(lat);
-            $("#longitude").val(long);
+        //     // alert("Lat : " + lat + ", Long: " + long );
+        //     // console.log(lat);
+        //     // console.log(long);
+        //     $("#latitude").val(lat);
+        //     $("#longitude").val(long);
 
-            $('#location').attr('src', "https://maps.google.com/maps?q=" + lat + "," + long + "&z=15&output=embed");
+        //     $('#location').attr('src', "https://maps.google.com/maps?q=" + lat + "," + long + "&z=15&output=embed");
 
-        }
+        // }
 
-        function showErrorLocation(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    var err = "User denied the request for Geolocation."
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    var err = "Location information is unavailable."
-                    break;
-                case error.TIMEOUT:
-                    var err = "The request to get user location timed out."
-                    break;
-                case error.UNKNOWN_ERROR:
-                    var err = "An unknown error occurred."
-                    break;
-            }
+        // function showErrorLocation(error) {
+        //     switch (error.code) {
+        //         case error.PERMISSION_DENIED:
+        //             var err = "User denied the request for Geolocation."
+        //             break;
+        //         case error.POSITION_UNAVAILABLE:
+        //             var err = "Location information is unavailable."
+        //             break;
+        //         case error.TIMEOUT:
+        //             var err = "The request to get user location timed out."
+        //             break;
+        //         case error.UNKNOWN_ERROR:
+        //             var err = "An unknown error occurred."
+        //             break;
+        //     }
 
-            console.log(err);
-        }
+        //     console.log(err);
+        // }
 
 
         // show div on error validation
