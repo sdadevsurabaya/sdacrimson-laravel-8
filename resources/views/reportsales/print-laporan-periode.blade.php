@@ -35,20 +35,65 @@
         </style>
 
 
-<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+        <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 
-<script>
-    function exportToExcel() {
-      // Ambil data dari tabel
-      var table = document.getElementById('data-excel');
+        <script>
+            function exportToExcel() {
+                // Ambil referensi tabel
+                var table = document.getElementById('data-excel');
 
-      // Ubah data tabel ke dalam bentuk yang dapat diexport ke Excel
-      var wb = XLSX.utils.table_to_book(table, {sheet:"Sheet JS"});
+                // Ambil semua baris data (skip header)
+                var rows = Array.from(table.querySelectorAll('tbody tr'));
 
-      // Tulis data ke file Excel
-      XLSX.writeFile(wb, 'Rekap-Visit-Sales.xlsx');
-    }
-  </script>
+                // Ambil data ke dalam array 2D sesuai kolom
+                var data = [];
+                var headers = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText.trim());
+                data.push(headers);
+
+                // Ambil isi setiap baris
+                rows.forEach(row => {
+                    var cols = Array.from(row.querySelectorAll('td')).map(td => td.innerText.trim());
+                    data.push(cols);
+                });
+
+                // --- Format tanggal dan urut manual berdasarkan kolom pertama ---
+                // Urut berdasarkan tanggal (kolom pertama, format dd-mm-yyyy atau yyyy-mm-dd)
+                data = [data[0]].concat(
+                    data.slice(1).sort((a, b) => {
+                        const dateA = parseDate(a[0]);
+                        const dateB = parseDate(b[0]);
+                        return dateA - dateB;
+                    })
+                );
+
+                // Ubah ke worksheet
+                var ws = XLSX.utils.aoa_to_sheet(data);
+
+                // Buat workbook baru dan tambahkan worksheet
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Rekap Visit");
+
+                // Simpan file Excel
+                XLSX.writeFile(wb, "Rekap-Visit-Sales.xlsx");
+            }
+
+            // Fungsi bantu: parsing tanggal ke objek Date
+            function parseDate(str) {
+                // Terima format 2025-10-04 atau 04-10-2025
+                if (str.includes('-')) {
+                    let parts = str.split('-');
+                    if (parts[0].length === 4) {
+                        // yyyy-mm-dd
+                        return new Date(parts[0], parts[1] - 1, parts[2]);
+                    } else {
+                        // dd-mm-yyyy
+                        return new Date(parts[2], parts[1] - 1, parts[0]);
+                    }
+                }
+                return new Date(str);
+            }
+        </script>
+
     </head>
 
     <body>
@@ -81,30 +126,32 @@
                     @php
                         // dd($laporan)
                     @endphp
-                    @foreach($laporan as $item)
-                    <tr>
-                        <td>{{ $item->created_at }}</td>
-                        <td>{{ $item->user->name }}</td>
-                        <td>@if(isset($item->general->nama_usaha))
-                            {{ $item->general->nama_usaha }}
-                          @else
-                          @endif
-                        </td>
-                        <td>{{ $item->general->alamat_kantor }}</td>
-                        <td>{{ $item->general->area }}</td>
-                        <td>{{ $item->contact_person }}</td>
-                        <td>{{ $item->no_hp }}</td>
-                        <td>{{ $item->pesan }}</td>
-                        <td>
-                            @foreach($item->detailJadwal as $detail)
-                            @if($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
-                                {{ $detail->activity_type }}
-                                @break
-                            @endif
-                        @endforeach
-                        </td>
-                        <td>{{ $item->general->email }}</td>
-                    </tr>
+                    @foreach ($laporan as $item)
+                        <tr>
+                            {{-- <td>{{ $item->created_at }}</td> --}}
+                            <td>{{ \Carbon\Carbon::parse($item->tanggal_jadwal)->format('d-m-Y') }}</td>
+                            <td>{{ $item->user->name }}</td>
+                            <td>
+                                @if (isset($item->general->nama_usaha))
+                                    {{ $item->general->nama_usaha }}
+                                @else
+                                @endif
+                            </td>
+                            <td>{{ $item->general->alamat_kantor }}</td>
+                            <td>{{ $item->general->area }}</td>
+                            <td>{{ $item->contact_person }}</td>
+                            <td>{{ $item->no_hp }}</td>
+                            <td>{{ $item->pesan }}</td>
+                            <td>
+                                @foreach ($item->detailJadwal as $detail)
+                                    @if ($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
+                                        {{ $detail->activity_type }}
+                                        @break
+                                    @endif
+                                @endforeach
+                            </td>
+                            <td>{{ $item->general->email }}</td>
+                        </tr>
                     @endforeach
 
                 </tbody>
