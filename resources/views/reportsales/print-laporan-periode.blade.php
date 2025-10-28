@@ -37,7 +37,7 @@
 
         <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
 
-        <script>
+        {{-- <script>
             function exportToExcel() {
                 // Ambil referensi tabel
                 var table = document.getElementById('data-excel');
@@ -80,6 +80,80 @@
             // Fungsi bantu: parsing tanggal ke objek Date
             function parseDate(str) {
                 // Terima format 2025-10-04 atau 04-10-2025
+                if (str.includes('-')) {
+                    let parts = str.split('-');
+                    if (parts[0].length === 4) {
+                        // yyyy-mm-dd
+                        return new Date(parts[0], parts[1] - 1, parts[2]);
+                    } else {
+                        // dd-mm-yyyy
+                        return new Date(parts[2], parts[1] - 1, parts[0]);
+                    }
+                }
+                return new Date(str);
+            }
+        </script> --}}
+
+        <script>
+            function exportToExcel() {
+                // Ambil referensi tabel
+                var table = document.getElementById('data-excel');
+
+                // Ambil semua baris data (skip header)
+                var rows = Array.from(table.querySelectorAll('tbody tr'));
+
+                // Ambil header kolom
+                var headers = Array.from(table.querySelectorAll('thead th')).map(th => th.innerText.trim());
+
+                // Simpan data ke array 2D
+                var data = [];
+                data.push(headers);
+
+                rows.forEach(row => {
+                    var cols = Array.from(row.querySelectorAll('td')).map(td => td.innerText.trim());
+                    data.push(cols);
+                });
+
+                // --- Urutkan berdasarkan tanggal di kolom pertama ---
+                data = [data[0]].concat(
+                    data.slice(1).sort((a, b) => {
+                        const dateA = parseDate(a[0]);
+                        const dateB = parseDate(b[0]);
+                        return dateA - dateB;
+                    })
+                );
+
+                // --- Konversi kolom pertama (Tanggal) ke objek Date JS ---
+                for (let i = 1; i < data.length; i++) {
+                    const d = parseDate(data[i][0]);
+                    if (!isNaN(d)) {
+                        data[i][0] = d;
+                    }
+                }
+
+                // Buat worksheet dari data
+                var ws = XLSX.utils.aoa_to_sheet(data);
+
+                // --- Terapkan format date Excel untuk kolom A ---
+                for (let i = 2; i <= data.length; i++) {
+                    const cell = ws[`A${i}`];
+                    if (cell && cell.v instanceof Date) {
+                        cell.t = 'd'; // tipe date
+                        cell.z = 'dd-mm-yyyy'; // format tampilan Excel
+                    }
+                }
+
+                // Buat workbook dan tambahkan sheet
+                var wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, "Rekap Visit");
+
+                // Simpan file Excel
+                XLSX.writeFile(wb, "Rekap-Visit-Sales.xlsx");
+            }
+
+            // Fungsi bantu parsing tanggal
+            function parseDate(str) {
+                if (!str) return new Date('');
                 if (str.includes('-')) {
                     let parts = str.split('-');
                     if (parts[0].length === 4) {
