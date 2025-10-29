@@ -55,11 +55,11 @@
                                 <button id="generateLeadBtn" class="btn btn-primary btn-sm">Generate Lead</button>
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Customer Baru</button>
-                            @elseif (Str::ucfirst(Auth::user()->hasAnyRole('Sales','Manager Sales')) == 1)
+                            @elseif (Str::ucfirst(Auth::user()->hasAnyRole('Sales', 'Manager Sales')) == 1)
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Customer Baru</button>
                             @endif
-                            
+
                         </div>
                     </div>
                     <div class="row">
@@ -93,6 +93,12 @@
                                         </select>
                                     </div>
 
+                                    <div class="col-12 col-md-6 mb-3">
+                                        <label for="alamat_kantor" class="col-form-label">Alamat Customer</label>
+                                        <input type="text" class="form-control" id="alamat_kantor"
+                                            name="alamat_kantor" readonly placeholder="Alamat akan muncul otomatis">
+                                    </div>
+
                                     <input type="hidden" name="jadwal_id" id="jadwal_id" value="{{ $jadwal_id }}">
                                     <div class="col-12 col-md-6 mb-3">
                                         <label for="floatingSelectGrid" class="col-form-label">Type Aktifitas</label>
@@ -108,12 +114,12 @@
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-6 mb-3" id="plant_date">
-                                        <label class="form-label" for="alamat_kantor">Jam Kunjungan</label>
+                                        <label class="form-label" for="plant_date">Jam Kunjungan</label>
                                         <input type="time" class="form-control" name="plant_date"
                                             placeholder="Jam Kunjungan">
                                     </div>
                                     <div class="col-12 col-md-6 mb-3">
-                                        <label class="form-label" for="alamat_kantor">
+                                        <label class="form-label" for="note">
                                             </span>Note</label>
                                         <div class="form-floating">
                                             <textarea name="note" class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"
@@ -232,7 +238,31 @@
                 });
 
             });
+
+            $('.js-select2').on('change', function() {
+                var customerId = $(this).val();
+
+                if (customerId) {
+                    $.ajax({
+                        url: '{{ route('get.customer', '') }}/' +
+                        customerId, // otomatis generate URL
+                        type: 'GET',
+                        success: function(response) {
+                            $('#alamat_kantor').val(response.alamat);
+                        },
+                        error: function(xhr) {
+                            $('#alamat_kantor').val('');
+                            console.log(xhr.responseText);
+                        }
+                    });
+                } else {
+                    $('#alamat_kantor').val('');
+                }
+            });
         });
+
+
+
 
         // dinamis tambah foto
         var i = 0;

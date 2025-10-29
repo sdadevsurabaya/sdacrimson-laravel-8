@@ -169,6 +169,9 @@
 
         Route::post('/update-detail-jadwal', [App\Http\Controllers\DetailJadwal\EditDetailJadwalController::class, 'store'])->name('update.detail.jadwal');
 
+        Route::get('/get-customer/{id}', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getCustomer'])->name('get.customer');
+
+
         //Report Sales
         Route::get('report-sales', [App\Http\Controllers\ReportSalesController::class, 'index'])->name('reportsales.index');
         // Route::get('Export-Report-Visit', [App\Http\Controllers\ReportSalesController::class, 'exportrekapvisit'])->name('reportsales.rekapvisit');

@@ -10,23 +10,24 @@ use App\Http\Controllers\Controller;
 
 class DetailJadwalController extends Controller
 {
-    public function index(Request $request, $id){
-       
-        $general = General_model::pluck('nama_usaha', 'id');
-       $jadwal_id = $id;
+    public function index(Request $request, $id)
+    {
 
-       $jadwal = Jadwal::find($id);
+        $general = General_model::pluck('nama_usaha', 'id');
+        $jadwal_id = $id;
+
+        $jadwal = Jadwal::find($id);
         return view('jadwal.addJadwal', compact('general', 'jadwal_id', 'jadwal'));
     }
 
-    
+
     public function getDataById(Request $request)
     {
         $id = $request->get('id');
         // Ambil data berdasarkan ID
         // $data = DetailJadwal::with(['customer', 'laporanSales'])->where('jadwal_id', $id)->get();
 
-        $data = DetailJadwal::with(['customer', 'laporanSales' => function($query) use ($id) {
+        $data = DetailJadwal::with(['customer', 'laporanSales' => function ($query) use ($id) {
             $query->where('jadwal_id', $id);
         }])->where('jadwal_id', $id)->get();
 
@@ -35,7 +36,7 @@ class DetailJadwalController extends Controller
 
     public function destroy($id)
     {
-        
+
         $jadwal = DetailJadwal::find($id);
 
         if ($jadwal) {
@@ -46,7 +47,19 @@ class DetailJadwalController extends Controller
         }
     }
 
+    public function getCustomer($id)
+    {
+        $customer = \App\Models\General_model::select('id', 'nama_usaha', 'alamat_kantor')
+            ->find($id);
 
-    
+        if (!$customer) {
+            return response()->json(['error' => 'Customer tidak ditemukan'], 404);
+        }
 
+        return response()->json([
+            'id' => $customer->id,
+            'nama_usaha' => $customer->nama_usaha,
+            'alamat' => $customer->alamat_kantor, // ubah key agar cocok dengan JS
+        ]);
+    }
 }
