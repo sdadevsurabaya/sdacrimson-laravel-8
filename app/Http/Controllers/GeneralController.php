@@ -349,7 +349,7 @@ class GeneralController extends Controller
     {
         $validator = Validator::make($request->all(), [
             // 'id_customer'   => 'required',
-            'type_usaha'    => 'required',
+            'type_usaha'    => 'nullable',
             'nama_usaha'    => 'required',
             'nama_lengkap'  => 'required',
             'jabatan'       => 'required',
@@ -389,7 +389,7 @@ class GeneralController extends Controller
         // dd($input);
 
         Alert::error('Update Gagal', 'Update data general gagal');
-        return back();
+        return back()->withInput(); // <--- tambahkan ini
 
         // echo '<script>
         //     alert("Maaf data kurang lengkap");
