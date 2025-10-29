@@ -58,7 +58,7 @@
                                     @csrf
 
                                     <div class="row">
-                                        <div class="col-xl-6 col-md-12">
+                                        <div class="col-xl-4 col-md-12">
                                             @php
                                                 date_default_timezone_set('Asia/Jakarta');
                                             @endphp
@@ -76,25 +76,35 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-xl-6 col-md-12">
+                                        <div class="col-xl-4 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="alamat_kantor"><span style="color: crimson;">*</span> Alamat Kantor</label>
-                                                <input type="text" class="form-control @error('alamat_kantor') border border-danger @enderror" name="alamat_kantor" id="alamat_kantor" placeholder="Contoh : Jl. Sungai Bahari No 5 Pontianak Kalimantan Barat" value="{{ old('alamat_kantor') }}" >
+                                                <input type="text" class="form-control @error('alamat_kantor') border border-danger @enderror" name="alamat_kantor" id="alamat_kantor"  value="{{ old('alamat_kantor') }}" >
                                             </div>
                                         </div>
+
+                                        <div class="col-xl-4 col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="area"><span style="color: crimson;">*</span>Kota</label>
+                                                <input type="text" class="form-control @error('area') border border-danger @enderror" name="area" id="area" value="{{ old('area') }}"style="text-transform:uppercase;" >
+                                            </div>
+                                        </div>
+
                                     </div>
+
+
 
                                     <div class="row">
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="nama_usaha"><span style="color: crimson;">*</span> Nama Usaha</label>
-                                                <input type="text" class="form-control @error('nama_usaha') border border-danger @enderror" name="nama_usaha" id="nama_usaha" placeholder="Contoh : SUKA CERIA ABADI" value="{{ old('nama_usaha') }}"style="text-transform:uppercase;" >
+                                                <input type="text" class="form-control @error('nama_usaha') border border-danger @enderror" name="nama_usaha" id="nama_usaha"  value="{{ old('nama_usaha') }}"style="text-transform:uppercase;" >
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="nama_lengkap"><span style="color: crimson;">*</span> Nama Lengkap</label>
-                                                <input type="text" class="form-control @error('nama_lengkap') border border-danger @enderror" name="nama_lengkap" id="nama_lengkap" placeholder="Contoh : Budi Utomo" value="{{ old('nama_lengkap') }}">
+                                                <input type="text" class="form-control @error('nama_lengkap') border border-danger @enderror" name="nama_lengkap" id="nama_lengkap"  value="{{ old('nama_lengkap') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -112,7 +122,7 @@
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="mobile_phone"><span style="color: crimson;">*</span> Mobile</label>
-                                                <input type="Number" class="form-control @error('mobile_phone') border border-danger @enderror" name="mobile_phone" id="mobile_phone" placeholder="Contoh : 081123456789" value="{{ old('mobile_phone') }}">
+                                                <input type="Number" class="form-control @error('mobile_phone') border border-danger @enderror" name="mobile_phone" id="mobile_phone" value="{{ old('mobile_phone') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -121,13 +131,13 @@
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="telepon">Telepon</label>
-                                                <input type="number" class="form-control @error('telepon') border border-danger @enderror" name="telepon" id="telepon" placeholder="Contoh : (031)123456" value="{{ old('telepon') }}">
+                                                <input type="number" class="form-control @error('telepon') border border-danger @enderror" name="telepon" id="telepon"  value="{{ old('telepon') }}">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="email">Email</label>
-                                                <input type="email" class="form-control @error('email') border border-danger @enderror" name="email" id="email" placeholder="Contoh : ceriaabadi@gmail.com" value="{{ old('email') }}">
+                                                <input type="email" class="form-control @error('email') border border-danger @enderror" name="email" id="email" value="{{ old('email') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -136,13 +146,13 @@
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="web_site">Website</label>
-                                                <input type="text" class="form-control @error('web_site') border border-danger @enderror" name="web_site" id="web_site" placeholder="Contoh : www.ceriabadi.com" value="{{ old('web_site') }}">
+                                                <input type="text" class="form-control @error('web_site') border border-danger @enderror" name="web_site" id="web_site"  value="{{ old('web_site') }}">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="formrow-password-input">NO NPWP</label>
-                                                <input type="Number" class="form-control @error('no_npwp') border border-danger @enderror" name="no_npwp" id="no_npwp" placeholder="Masukan nomor NPWP " value="{{ old('no_npwp') }}">
+                                                <input type="Number" class="form-control @error('no_npwp') border border-danger @enderror" name="no_npwp" id="no_npwp"  value="{{ old('no_npwp') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -150,13 +160,13 @@
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="nama_npwp">Nama NPWP</label>
-                                                <input type="text" class="form-control @error('nama_npwp') border border-danger @enderror" name="nama_npwp" id="nama_npwp" placeholder="Masukan nama NPWP" value="{{ old('nama_npwp') }}">
+                                                <input type="text" class="form-control @error('nama_npwp') border border-danger @enderror" name="nama_npwp" id="nama_npwp"  value="{{ old('nama_npwp') }}">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="alamat_npwp">Alamat NPWP</label>
-                                                <input type="text" class="form-control @error('alamat_npwp') border border-danger @enderror" name="alamat_npwp" id="alamat_npwp" placeholder="Masukan alamat NPWP" value="{{ old('alamat_npwp') }}">
+                                                <input type="text" class="form-control @error('alamat_npwp') border border-danger @enderror" name="alamat_npwp" id="alamat_npwp"  value="{{ old('alamat_npwp') }}">
                                             </div>
                                         </div>
                                     </div>
@@ -165,7 +175,7 @@
                                         <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="nik">NIK</label>
-                                                <input type="number" class="form-control @error('nik') border border-danger @enderror" name="nik" id="nik" placeholder="Masukan nomor induk kependudukan" value="{{ old('nik') }}">
+                                                <input type="number" class="form-control @error('nik') border border-danger @enderror" name="nik" id="nik"  value="{{ old('nik') }}">
                                             </div>
                                         </div>
                                         <div class="col-xl-6 col-md-12">

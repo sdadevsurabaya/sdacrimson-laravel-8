@@ -62,10 +62,10 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="floatingSelectGrid" class="col-md-2 col-form-label">Type Usaha</label>
+                        <label for="floatingSelectGrid" class="col-md-2 col-form-label">Type Usaha <span class="text-danger">*</label>
                         <div class="col-md-10">
                              <select class="form-select @error('type_usaha') border border-danger @enderror"
-                                name="type_usaha" id="floatingSelectGrid" aria-label="Floating label select example" disabled>
+                                name="type_usaha" id="floatingSelectGrid" aria-label="Floating label select example" >
                                 <option value="">-- Pilih Type Usaha --</option>
                                 <option value="TK" @if (old('type_usaha') == 'TK') selected="selected" @endif
                                     {{ $general[0]->type_usaha == 'TK' ? 'selected' : '' }}>TK</option>
@@ -79,11 +79,10 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Usaha</label>
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Usaha <span class="text-danger">*</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control  @error('nama_usaha') border border-danger @enderror"
-                                name="nama_usaha" id="formrow-nama-input" disabled
-                                placeholder="Contoh : SUKA CERIA ABADI (*Wajib kapital)"
+                                name="nama_usaha" id="formrow-nama-input"
                                 value="{{ old('nama_usaha', $general[0]->nama_usaha) }}">
                         </div>
                     </div>
@@ -91,7 +90,7 @@
                         <label for="formrow-nama-input" class="col-md-2 col-form-label">Nama Lengkap <span class="text-danger">*</span> </label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('nama_lengkap') border border-danger @enderror"
-                                name="nama_lengkap" id="formrow-nama-input" placeholder="Contoh : Budi Utomo"
+                                name="nama_lengkap" id="formrow-nama-input"
                                 value="{{ old('nama_lengkap', $general[0]->nama_lengkap) }}">
                         </div>
                     </div>
@@ -99,8 +98,7 @@
                         <label for="formrow-nama-input" class="col-md-2 col-form-label">Jabatan  <span class="text-danger">*</span></label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('jabatan') border border-danger @enderror"
-                                name="jabatan" id="formrow-nama-input" placeholder="Contoh : Pemilik / Owner"
-                                value="{{ old('jabatan', $general[0]->jabatan) }}">
+                                name="jabatan" id="formrow-nama-input" value="{{ old('jabatan', $general[0]->jabatan) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
@@ -108,24 +106,21 @@
                         <div class="col-md-10">
                             <input type="text"
                                 class="form-control @error('alamat_kantor') border border-danger @enderror"
-                                name="alamat_kantor" id="formrow-nama-input" placeholder="Contoh : Pemilik / Owner"
-                                value="{{ old('alamat_kantor', $general[0]->alamat_kantor) }}">
+                                name="alamat_kantor" id="formrow-nama-input" value="{{ old('alamat_kantor', $general[0]->alamat_kantor) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Area  <span class="text-danger">*</span> </label>
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Kota  <span class="text-danger">*</span> </label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('area') border border-danger @enderror"
-                                name="area" id="formrow-nama-input" placeholder="Contoh: Surabaya Barat "
-                                value="{{ old('area', $general[0]->area) }}">
+                                name="area" id="formrow-nama-input" value="{{ old('area', $general[0]->area) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-telepon-input" class="col-md-2 col-form-label">Telepon</label>
                         <div class="col-md-10">
                             <input type="Number" class="form-control @error('telepon') border border-danger @enderror"
-                                name="telepon" id="formrow-telepon-input" placeholder="Contoh : (031)123456"
-                                value="{{ old('telepon', $general[0]->telepon) }}">
+                                name="telepon" id="formrow-telepon-input" value="{{ old('telepon', $general[0]->telepon) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
@@ -133,39 +128,35 @@
                         <div class="col-md-10">
                             <input type="Number"
                                 class="form-control @error('mobile_phone') border border-danger @enderror"
-                                name="mobile_phone" id="formrow-mobile-input" placeholder="Contoh : 081123456789"
-                                value="{{ old('mobile_phone', $general[0]->mobile_phone) }}">
+                                name="mobile_phone" id="formrow-mobile-input" value="{{ old('mobile_phone', $general[0]->mobile_phone) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-email-input" class="col-md-2 col-form-label">Email</label>
                         <div class="col-md-10">
                             <input type="email" class="form-control @error('email') border border-danger @enderror"
-                                name="email" id="formrow-email-input" placeholder="Contoh : ceriaabadi@gmail.com"
-                                value="{{ old('email', $general[0]->emails) }}" disabled>
+                                name="email" id="formrow-email-input" value="{{ old('email', $general[0]->emails) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-web-input" class="col-md-2 col-form-label">Website</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('web_site') border border-danger @enderror"
-                                name="web_site" id="formrow-web-input" placeholder="Contoh : www.ceriabadi.com"
-                                value="{{ old('web_site', $general[0]->web_site) }}">
+                                name="web_site" id="formrow-web-input" value="{{ old('web_site', $general[0]->web_site) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-nonpwp-input" class="col-md-2 col-form-label">NO NPWP</label>
                         <div class="col-md-10">
                             <input type="Number" class="form-control @error('no_npwp') border border-danger @enderror"
-                                name="no_npwp" id="formrow-nonpwp-input" placeholder="nomor NPWP "
-                                value="{{ old('no_npwp', $general[0]->no_npwp) }}">
+                                name="no_npwp" id="formrow-nonpwp-input" value="{{ old('no_npwp', $general[0]->no_npwp) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-namanpwp-input" class="col-md-2 col-form-label">Nama NPWP</label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('nama_npwp') border border-danger @enderror"
-                                name="nama_npwp" id="formrow-namanpwp-input" placeholder="Masukan nama NPWP"
+                                name="nama_npwp" id="formrow-namanpwp-input"
                                 value="{{ old('nama_npwp', $general[0]->nama_npwp) }}">
                         </div>
                     </div>
@@ -174,7 +165,7 @@
                         <div class="col-md-10">
                             <input type="text"
                                 class="form-control @error('alamat_npwp') border border-danger @enderror"
-                                name="alamat_npwp" id="formrow-alamatnpwp-input" placeholder="Masukan alamat NPWP"
+                                name="alamat_npwp" id="formrow-alamatnpwp-input"
                                 value="{{ old('alamat_npwp', $general[0]->alamat_npwp) }}">
                         </div>
                     </div>
@@ -182,7 +173,7 @@
                         <label for="formrow-nik-input" class="col-md-2 col-form-label">NIK</label>
                         <div class="col-md-10">
                             <input type="number" class="form-control @error('nik') border border-danger @enderror"
-                                name="nik" id="formrow-nik-input" placeholder="Masukan nomor induk kependudukan"
+                                name="nik" id="formrow-nik-input"
                                 value="{{ old('nik', $general[0]->nik) }}">
                         </div>
                     </div>
