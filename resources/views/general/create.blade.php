@@ -58,7 +58,7 @@
                                     @csrf
 
                                     <div class="row">
-                                        <div class="col-xl-4 col-md-12">
+                                        <div class="col-xl-6 col-md-12">
                                             @php
                                                 date_default_timezone_set('Asia/Jakarta');
                                             @endphp
@@ -76,23 +76,13 @@
                                                 </select>
                                             </div>
                                         </div>
-                                        <div class="col-xl-4 col-md-12">
+                                        <div class="col-xl-6 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="alamat_kantor"><span style="color: crimson;">*</span> Alamat Kantor</label>
                                                 <input type="text" class="form-control @error('alamat_kantor') border border-danger @enderror" name="alamat_kantor" id="alamat_kantor"  value="{{ old('alamat_kantor') }}" >
                                             </div>
                                         </div>
-
-                                        <div class="col-xl-4 col-md-12">
-                                            <div class="mb-3">
-                                                <label class="form-label" for="area"><span style="color: crimson;">*</span>Kota</label>
-                                                <input type="text" class="form-control @error('area') border border-danger @enderror" name="area" id="area" value="{{ old('area') }}"style="text-transform:uppercase;" >
-                                            </div>
-                                        </div>
-
                                     </div>
-
-
 
                                     <div class="row">
                                         <div class="col-xl-6 col-md-12">
@@ -105,6 +95,21 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="nama_lengkap"><span style="color: crimson;">*</span> Nama Lengkap</label>
                                                 <input type="text" class="form-control @error('nama_lengkap') border border-danger @enderror" name="nama_lengkap" id="nama_lengkap"  value="{{ old('nama_lengkap') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                          <div class="col-xl-6 col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="area"><span style="color: crimson;">*</span>Area</label>
+                                                <input type="text" class="form-control @error('area') border border-danger @enderror" name="area" id="area" value="{{ old('area') }}"style="text-transform:uppercase;" >
+                                            </div>
+                                        </div>
+                                          <div class="col-xl-6 col-md-12">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="kota"><span style="color: crimson;">*</span>Kota</label>
+                                                <input type="text" class="form-control @error('kota') border border-danger @enderror" name="kota" id="kota" value="{{ old('kota') }}"style="text-transform:uppercase;" >
                                             </div>
                                         </div>
                                     </div>

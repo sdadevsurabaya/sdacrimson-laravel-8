@@ -110,10 +110,17 @@
                         </div>
                     </div>
                     <div class="mb-3 row">
-                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Kota  <span class="text-danger">*</span> </label>
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Area  <span class="text-danger">*</span> </label>
                         <div class="col-md-10">
                             <input type="text" class="form-control @error('area') border border-danger @enderror"
-                                name="area" id="formrow-nama-input" value="{{ old('area', $general[0]->area) }}">
+                                name="area" id="formrow-area-input" value="{{ old('area', $general[0]->area) }}">
+                        </div>
+                    </div>
+                     <div class="mb-3 row">
+                        <label for="formrow-nama-input" class="col-md-2 col-form-label">Kota<span class="text-danger">*</span> </label>
+                        <div class="col-md-10">
+                            <input type="text" class="form-control @error('kota') border border-danger @enderror"
+                                name="kota" id="formrow-kota-input" value="{{ old('kota', $general[0]->kota) }}">
                         </div>
                     </div>
                     <div class="mb-3 row">
