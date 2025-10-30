@@ -164,6 +164,12 @@
                                 placeholder="Jl. Balongsari Indah No. 22">
                         </div>
                     </div>
+                     <div class="mb-3 row">
+                        <label for="formrow-nama-input" class="col-form-label">Kota</label>
+                        <div class="">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="kota">
+                        </div>
+                    </div>
                     <div class="mb-3 row d-none">
                         <label for="formrow-nama-input" class="col-form-label">Email</label>
                         <div class="">
@@ -196,6 +202,7 @@
                 // console.log('eko');
                 var nama_customer = $('#nama_customer').val();
                 var alamat = $('#alamat').val();
+                var kota = $('#kota').val();
 
                 $.ajax({
                     type: 'POST',
@@ -203,7 +210,8 @@
                     data: {
                         _token: '{{ csrf_token() }}',
                         nama_customer: nama_customer,
-                        alamat: alamat
+                        alamat: alamat,
+                        kota: kota
                     },
                     success: function(response) {
                         // Tampilkan SweetAlert berhasil

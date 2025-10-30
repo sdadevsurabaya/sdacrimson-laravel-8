@@ -15,6 +15,7 @@ class LeadController extends Controller
         $request->validate([
             'nama_customer' => 'required|string|max:255',
             'alamat' => 'required|string|max:255',
+            'kota' => 'required|string|max:255',
         ]);
 
         $covert_huruf_besar = strtoupper($request->nama_customer);
@@ -38,6 +39,7 @@ class LeadController extends Controller
         // Set nilai-nilai untuk model
         $lead->nama_usaha = $covert_huruf_besar;
         $lead->alamat_kantor = $request->alamat;
+        $lead->kota = $request->kota; // ← tambahkan ini
         $lead->id_customer = $id_customer; // Gunakan strtoupper untuk memastikan huruf kapital
         $lead->status = 'Lead'; // Gunakan strtoupper untuk memastikan huruf kapital
         $lead->ar = Auth::id(); // Gunakan strtoupper untuk memastikan huruf kapital

@@ -31,6 +31,9 @@ use Illuminate\Support\Facades\Session;
 use RealRashid\SweetAlert\Facades\Alert;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
+use App\Models\User;
+
+
 class GeneralController extends Controller
 {
     /**
@@ -332,17 +335,21 @@ class GeneralController extends Controller
             ->where('general_informations.id', $id)
             ->get(['*', 'general_informations.id as id_general', 'general_informations.email as emails']);
 
-            $checkin = Attendance::where('general_id', $id)
+        $checkin = Attendance::where('general_id', $id)
             ->where('status', 'check in')
             ->whereDate('created_at', now()->toDateString())
             ->first();
 
-            $checkout = Attendance::where('general_id', $id)
-                        ->where('status', 'check out')
-                        ->whereDate('created_at', now()->toDateString())
-                        ->first();
+        $checkout = Attendance::where('general_id', $id)
+            ->where('status', 'check out')
+            ->whereDate('created_at', now()->toDateString())
+            ->first();
 
-        return view('general.edit_customer', compact('general', 'checkin', 'checkout'));
+
+        // ambil semua user untuk dropdown
+        $users = User::all();
+
+        return view('general.edit_customer', compact('general', 'checkin', 'checkout','users'));
     }
 
     public function update(Request $request, $id)
@@ -565,13 +572,13 @@ class GeneralController extends Controller
         $general = General_model::find($id);
 
         $jadwal = $request->jadwal_id;
-        if( $jadwal){
+        if ($jadwal) {
 
-            $attendance = Attendance::with(['user'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at','desc')->get();
-            $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at','desc')->get();
+            $attendance = Attendance::with(['user'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at', 'desc')->get();
+            $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->where('jadwal_id',  $jadwal)->orderBy('created_at', 'desc')->get();
         } else {
-            $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at','desc')->get();
-            $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->orderBy('created_at','desc')->get();
+            $attendance = Attendance::with(['user'])->where('general_id', $id)->orderBy('created_at', 'desc')->get();
+            $laporan = LaporanSales::with(['user', 'gambar'])->where('general_id', $id)->orderBy('created_at', 'desc')->get();
         }
 
 

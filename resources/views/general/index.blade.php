@@ -55,17 +55,15 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"
-                        style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                      <table id="datatable-home" class="table table-striped table-bordered table-hover w-100">
                             <thead>
                                 <tr>
                                     <th>NO</th>
                                     <th>ID Customer</th>
-                                    <th>Nama Usaha</th>
-                                    <th>Type Usaha</th>
-                                    <th>Nama Pemilik</th>
+                                    <th>Perusahaan</th>
+                                    <th>Contact</th>
                                     <th>Alamat</th>
-                                    <th>Jumlah Outlet</th>
+                                    <th>Kota</th>
                                     <th>AR</th>
                                     <th width="280px">Aksi</th>
 
@@ -77,18 +75,9 @@
                                         <td>{{ ++$i }}</td>
                                         <td>{{ $general->id_customer }}</td>
                                         <td>{{ $general->nama_usaha }}</td>
-                                        <td>{{ $general->type_usaha }}</td>
                                         <td>{{ $general->nama_lengkap }}</td>
                                         <td>{{ $general->alamat_kantor }}</td>
-
-                                        @php
-                                            $get_outlet = DB::table('outlet')
-                                                            ->where('id_customer', $general->id_customer)
-                                                            ->get();
-                                            $jumlah_outlet = $get_outlet->count();
-                                        @endphp
-
-                                        <td>{{ $jumlah_outlet }}</td>
+                                        <td>{{ $general->kota }}</td>
                                         <td>{{ $general->name }}</td>
 
                                         <td>

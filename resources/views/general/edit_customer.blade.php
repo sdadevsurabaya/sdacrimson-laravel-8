@@ -197,15 +197,21 @@
                     <div class="mb-3 row">
                         <label for="formrow-ar-input" class="col-md-2 col-form-label">AR</label>
                         <div class="col-md-10">
-                            <input type="text" class="form-control" name="" id="formrow-ar-input"
-                                value="{{ $general[0]->name }}" disabled>
-                            <input type="hidden" class="form-control" name="ar" id="formrow-ar-input"
-                                value="{{ $general[0]->ar }}">
-                            <input type="hidden" class="form-control" name="update_by" id="formrow-ar-input"
-                                value="{{ Str::ucfirst(Auth::user()->id) }}
-                            ">
+                            <select name="ar" id="formrow-ar-input" class="form-control">
+                                <option value="">-- Pilih AR --</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}"
+                                        {{ old('ar', $general[0]->ar) == $user->id ? 'selected' : '' }}>
+                                        {{ $user->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+
+                            <input type="hidden" name="update_by" value="{{ Auth::user()->id }}">
                         </div>
                     </div>
+
+
                 </div>
             </div>
             <div class="col-12 text-center">
