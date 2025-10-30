@@ -239,9 +239,13 @@ class GeneralController extends Controller
         // } else {
 
         $get_general = General_model::join("users as ar", "ar.id", "=", "general_informations.ar")
-            ->join("users as created_by", "created_by.id", "=", "general_informations.created_by")
+            // ->join("users as created_by", "created_by.id", "=", "general_informations.created_by")
             ->where('general_informations.id', $id)
-            ->get(['*', 'general_informations.email as email_general', 'ar.name as ar', 'created_by.name as created_by']);
+            ->get(['*', 'general_informations.email as email_general', 'ar.name as ar',
+            // 'created_by.name as created_by'
+        ]);
+
+// dd($get_general);
 
         $get_legal = General_model::join("legal", "legal.id_customer", "=", "general_informations.id_customer")
             ->join("users as ar", "ar.id", "=", "legal.ar")
@@ -277,45 +281,47 @@ class GeneralController extends Controller
         $get_statusData = StatusData_model::where('status_data.id_customer', $id)
             ->get(['status_data.id as id_status_data']);
         // }
-
+        // dd($get_outlet);
         // if (count($get_legal) > 0 ){
-        if (count($get_outlet) > 0) {
-            // if (count($get_account) > 0) {
-            // if (count($get_attachment) > 0) {
-            $attachment = $get_attachment;
-            $general = $get_general;
-            $legal = $get_legal;
-            $kontak = $get_kontak;
-            $account = $get_account;
-            $outlet = $get_outlet;
-            $status_data = $get_statusData;
-            // } else {
-            //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Attachment pada menu berkas")->autoClose(20000);
-            //     return back();
+        // if (count($get_outlet) > 0) {
+        //     dd("outlet > 0");
+        //     // if (count($get_account) > 0) {
+        //     // if (count($get_attachment) > 0) {
+        //     $attachment = $get_attachment;
+        //     $general = $get_general;
+        //     $legal = $get_legal;
+        //     $kontak = $get_kontak;
+        //     $account = $get_account;
+        //     $outlet = $get_outlet;
+        //     $status_data = $get_statusData;
+        //     // } else {
+        //     //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Attachment pada menu berkas")->autoClose(20000);
+        //     //     return back();
 
-            // echo '<script>
-            //     alert("Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Attachment pada menu berkas");
-            //     window.location.href="'. url('admin/generals') .'";
-            //     </script>' ;
-            // }
-            // } else {
-            //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Account pada menu berkas")->autoClose(20000);
-            //     return back();
+        //     // echo '<script>
+        //     //     alert("Maaf tidak dapat menampilkan detail customer karena Data Attachment pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Attachment pada menu berkas");
+        //     //     window.location.href="'. url('admin/generals') .'";
+        //     //     </script>' ;
+        //     // }
+        //     // } else {
+        //     //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Account pada menu berkas")->autoClose(20000);
+        //     //     return back();
 
-            // echo '<script>
-            //     alert("Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Account pada menu berkas");
-            //     window.location.href="'. url('admin/generals') .'";
-            //     </script>' ;
-            // }
-        } else {
-            Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer " . $cek_general->id_customer . " belum ada, silahkan tambahkan Data Outlet pada menu berkas")->autoClose(20000);
-            return back();
+        //     // echo '<script>
+        //     //     alert("Maaf tidak dapat menampilkan detail customer karena Data Account pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Account pada menu berkas");
+        //     //     window.location.href="'. url('admin/generals') .'";
+        //     //     </script>' ;
+        //     // }
+        // } else {
+        //     dd("outlet = 0");
+        //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer " . $cek_general->id_customer . " belum ada, silahkan tambahkan Data Outlet pada menu berkas")->autoClose(20000);
+        //     return back();
 
-            // echo '<script>
-            //   alert("Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Outlet pada menu berkas");
-            //   window.location.href="'. url('admin/generals') .'";
-            //   </script>' ;
-        }
+        //     // echo '<script>
+        //     //   alert("Maaf tidak dapat menampilkan detail customer karena Data Outlet pada ID Customer '.$cek_general->id_customer.' belum ada, silahkan tambahkan Data Outlet pada menu berkas");
+        //     //   window.location.href="'. url('admin/generals') .'";
+        //     //   </script>' ;
+        // }
         // } else {
         //     Alert::error("Tampil Detail Gagal", "Maaf tidak dapat menampilkan detail customer karena Data Legal pada ID Customer ".$cek_general->id_customer." belum ada, silahkan tambahkan Data Legal pada menu berkas")->autoClose(20000);
         //     return back();
@@ -326,7 +332,20 @@ class GeneralController extends Controller
         //       </script>' ;
         // }
 
-        return view('general.detail_customer', compact('general', 'legal', 'kontak', 'account', 'attachment', 'outlet', 'status_data'));
+        // Semua data sudah diambil di atas
+        $attachment  = $get_attachment;
+        $general     = $get_general;
+        $legal       = $get_legal;
+        $kontak      = $get_kontak;
+        $account     = $get_account;
+        $outlet      = $get_outlet;
+        $status_data = $get_statusData;
+
+        // flag untuk view
+        $hasOutlets = $outlet->count() > 0;
+        // dd($general);
+
+        return view('general.detail_customer', compact('general', 'legal', 'kontak', 'account', 'attachment', 'outlet', 'status_data','hasOutlets'));
     }
 
     public function edit($id)
@@ -349,7 +368,7 @@ class GeneralController extends Controller
         // ambil semua user untuk dropdown
         $users = User::all();
 
-        return view('general.edit_customer', compact('general', 'checkin', 'checkout','users'));
+        return view('general.edit_customer', compact('general', 'checkin', 'checkout', 'users'));
     }
 
     public function update(Request $request, $id)

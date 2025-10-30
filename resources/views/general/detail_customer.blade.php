@@ -432,7 +432,7 @@
                     <div class="row">
                         {{-- looping start --}}
 
-                        <div class="col-md-12">
+                        {{-- <div class="col-md-12">
                             <div id="addproduct-accordion" class="custom-accordion">
                                 <div class="row">
                                     @for ($i = 0; $i < count($outlet); $i++)
@@ -692,7 +692,22 @@
                                     @endfor
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
+                        <div class="col-md-12">
+    @if (!$hasOutlets)
+        <div class="alert alert-warning mb-0">
+            Belum ada data Outlet untuk customer ini.
+        </div>
+    @else
+        <div id="addproduct-accordion" class="custom-accordion">
+            <div class="row">
+                @for ($i = 0; $i < count($outlet); $i++)
+                    {{-- semua kode outlet card kamu di sini tetap seperti semula --}}
+                @endfor
+            </div>
+        </div>
+    @endif
+</div>
                     </div>
                 </div>
             </div>
