@@ -69,7 +69,7 @@
                                                 <label class="form-label" for="formrow-Fullname-input"><span style="color: crimson;">*</span> Usaha</label>
                                                 <select class="form-select @error('type_usaha') border border-danger @enderror" name="type_usaha" id="floatingSelectGrid type_usaha" aria-label="Floating label select example">
                                                     <option value="">-- Pilih Type Usaha --</option>
-                                                    <option value="TK" @if (old('type_usaha') == 'TK') selected="selected" @endif>TK</option>
+                                                    <option value="TK" @if (old('type_usaha') == 'TK') selected="selected" @endif>Toko</option>
                                                     <option value="UD" @if (old('type_usaha') == 'UD') selected="selected" @endif>UD</option>
                                                     <option value="CV" @if (old('type_usaha') == 'CV') selected="selected" @endif>CV</option>
                                                     <option value="PT" @if (old('type_usaha') == 'PT') selected="selected" @endif>PT</option>
