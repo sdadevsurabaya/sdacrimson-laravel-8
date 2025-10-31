@@ -272,6 +272,7 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('#datatable-home').DataTable();
+            order: [[1, 'desc']] // kolom ke-2 (ID Customer) descending
             cekLocalStorage();
         });
 
