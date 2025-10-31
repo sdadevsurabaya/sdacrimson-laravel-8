@@ -17,6 +17,12 @@
         @endslot
     @endcomponent
 
+    <style>
+        td.control {
+         cursor: pointer;
+        }
+    </style>
+
     @if(session()->has('success'))
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Successfully!</strong> {{ session('success') }}.
@@ -55,30 +61,35 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                      <table id="datatable-home" class="table table-striped table-bordered table-hover w-100">
+                      {{-- <table id="datatable-home" class="table table-striped table-bordered table-hover w-100 dt-responsive nowrap" style="style="border-collapse: collapse; border-spacing: 0; width: 100%;> --}}
+                      <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-                                    <th>NO</th>
-                                    <th>ID Customer</th>
-                                    <th>Perusahaan</th>
-                                    <th>Contact</th>
-                                    <th>Alamat</th>
-                                    <th>Kota</th>
-                                    <th>AR</th>
-                                    <th width="280px">Aksi</th>
+
+                                    {{-- <th>NO</th> --}}
+                                    {{-- <th width="2%"></th> --}}
+                                    <th width="2%">ID Customer</th>
+                                    <th width="2%">Perusahaan</th>
+                                    <th width="2%">Kota</th>
+                                    <th width="2%" >Alamat</th>
+                                    <th width="2%">Contact</th>
+                                    <th width="2%">AR</th>
+                                    <th width="20px">Aksi</th>
 
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($data as $key => $general)
                                     <tr>
-                                        <td>{{ ++$i }}</td>
-                                        <td>{{ $general->id_customer }}</td>
-                                        <td>{{ $general->nama_usaha }}</td>
-                                        <td>{{ $general->nama_lengkap }}</td>
-                                        <td>{{ $general->alamat_kantor }}</td>
-                                        <td>{{ $general->kota }}</td>
-                                        <td>{{ $general->name }}</td>
+
+                                        {{-- <td>{{ ++$i }}</td> --}}
+                                        {{-- <th width="2%"></th> --}}
+                                        <td width="2%">{{ $general->id_customer }}</td>
+                                        <td width="2%">{{ $general->nama_usaha }}</td>
+                                        <td width="2%">{{ $general->kota }}</td>
+                                        <td width="2%">{{ $general->alamat_kantor }}</td>
+                                        <td width="2%">{{ $general->nama_lengkap }}</td>
+                                        <td width="2%">{{ $general->name }}</td>
 
                                         <td>
                                             @if (Auth::user()->hasRole("Admin") == 1)
@@ -263,6 +274,56 @@
             $('#datatable-home').DataTable();
             cekLocalStorage();
         });
+
+
+        // $(document).ready(function() {
+        //     $('#datatable-home').DataTable({
+        //         responsive: {
+        //             details: {
+        //                 type: 'column',      // collapse ditrigger oleh kolom (bukan row)
+        //                 target: 0            // kolom pertama (depan) jadi tombol "+"
+        //             }
+        //         },
+        //         columnDefs: [
+        //             {
+        //                 className: 'control', // tambahkan class control di kolom pertama
+        //                 orderable: false,
+        //                 targets: 0
+        //             },
+        //             {
+        //                 responsivePriority: 1,
+        //                 targets: 1 // kolom ID Customer biar prioritas tinggi
+        //             },
+        //             {
+        //                 responsivePriority: 2,
+        //                 targets: 2 // kolom Perusahaan
+        //             },
+        //             {
+        //                 responsivePriority: 3,
+        //                 targets: 3 // kolom Kota
+        //             },
+        //             {
+        //                 responsivePriority: 4,
+        //                 targets: 4 // kolom Alamat
+        //             },
+        //             {
+        //                 responsivePriority: 5,
+        //                 targets: 5 // kolom Contact
+        //             },
+        //             {
+        //                 responsivePriority: 6,
+        //                 targets: 6 // kolom AR
+        //             },
+        //             {
+        //                 responsivePriority: 10000, // sangat rendah → akan di-collapse duluan
+        //                 targets: -1 // kolom terakhir (Aksi)
+        //             }
+        //         ],
+        //         order: [[1, 'asc']]
+        //     });
+        // });
+
+
 
         let button = document.querySelector(".button");
         var dataGeneral = JSON.parse(localStorage.getItem('daftar_general'))
