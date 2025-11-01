@@ -5,6 +5,7 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    {{-- <link rel="stylesheet" href="https://cdn.datatables.net/responsive/3.0.2/css/responsive.dataTables.min.css"> --}}
 @endsection
 
 @section('content')
@@ -65,9 +66,8 @@
                       <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-
                                     {{-- <th>NO</th> --}}
-                                    {{-- <th width="2%"></th> --}}
+                                    <th width="2%"></th>
                                     <th width="2%">ID Customer</th>
                                     <th width="2%">Perusahaan</th>
                                     <th width="2%">Kota</th>
@@ -80,37 +80,36 @@
                             </thead>
                             <tbody>
                                 @foreach ($data as $key => $general)
-                                    <tr>
+                                <tr>
+                                    {{-- <td>{{ ++$i }}</td> --}}
+                                    <th width="2%"></th>
+                                    <td width="2%">{{ $general->id_customer }}</td>
+                                    <td width="2%">{{ $general->nama_usaha }}</td>
+                                    <td width="2%">{{ $general->kota }}</td>
+                                    <td width="2%">{{ $general->alamat_kantor }}</td>
+                                    <td width="2%">{{ $general->nama_lengkap }}</td>
+                                    <td width="2%">{{ $general->name }}</td>
 
-                                        {{-- <td>{{ ++$i }}</td> --}}
-                                        {{-- <th width="2%"></th> --}}
-                                        <td width="2%">{{ $general->id_customer }}</td>
-                                        <td width="2%">{{ $general->nama_usaha }}</td>
-                                        <td width="2%">{{ $general->kota }}</td>
-                                        <td width="2%">{{ $general->alamat_kantor }}</td>
-                                        <td width="2%">{{ $general->nama_lengkap }}</td>
-                                        <td width="2%">{{ $general->name }}</td>
-
-                                        <td>
-                                            @if (Auth::user()->hasRole("Admin") == 1)
-                                                <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-sm  btn-success m-1">Edit</a>
-                                                <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-sm btn-primary m-1">Detail</a>
-                                                <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-sm btn-warning m-1">Berkas</a>
-                                                <a href="{{ route('generals.visit', ['id' => $general->id_general])}}" class="btn btn-sm btn-secondary">Visit</a>
-                                                <button class="btn btn-sm btn-danger m-1" onclick="destroyGeneral({{ $general->id_general }})">Hapus</button>
-                                            @elseif (Auth::user()->hasRole("Sales") == 1)
-                                                <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a>
-                                                <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a>
-                                                <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a>
-                                                {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
-                                            @elseif (Auth::user()->hasRole("Verifikator") == 1)
-                                                <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a>
-                                                {{-- <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a> --}}
-                                                {{-- <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a> --}}
-                                                {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
-                                            @endif
-                                        </td>
-                                    </tr>
+                                    <td>
+                                        @if (Auth::user()->hasRole("Admin") == 1)
+                                            <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-sm  btn-success m-1">Edit</a>
+                                            <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-sm btn-primary m-1">Detail</a>
+                                            <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-sm btn-warning m-1">Berkas</a>
+                                            <a href="{{ route('generals.visit', ['id' => $general->id_general])}}" class="btn btn-sm btn-secondary">Visit</a>
+                                            <button class="btn btn-sm btn-danger m-1" onclick="destroyGeneral({{ $general->id_general }})">Hapus</button>
+                                        @elseif (Auth::user()->hasRole("Sales") == 1)
+                                            <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a>
+                                            <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a>
+                                            <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a>
+                                            {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
+                                        @elseif (Auth::user()->hasRole("Verifikator") == 1)
+                                            <a href="{{ route('generals.edit',$general->id_general) }}" class="btn btn-medium btn-success">Edit</a>
+                                            {{-- <a href="{{ route('generals.show',$general->id_general) }}" class="btn btn-medium btn-primary">Detail</a> --}}
+                                            {{-- <a href="{{URL('admin/generals/atribut', $general->id_general)}}" class="btn btn-medium btn-warning">Berkas</a> --}}
+                                            {{-- <a href="{{URL('admin/generals/destroy', $general->id_general)}}" class="btn btn-xs btn-danger" onclick="return confirm('yakin?');">Delete</a> --}}
+                                        @endif
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
@@ -270,9 +269,13 @@
     {{-- <script src="https://unpkg.com/html5-qrcode"></script> --}}
     <script src="{{ URL::asset('/assets/libs/html5-qrcode/html5-qrcode.min.js') }}"></script>
     <script type="text/javascript">
+
         $(document).ready(function() {
-            $('#datatable-home').DataTable();
-            order: [[1, 'desc']] // kolom ke-2 (ID Customer) descending
+            // $('#datatable-home').DataTable();
+            $('#datatable-home').DataTable({
+                order: [], // biarkan urutan hasil query dari controller
+                responsive: true
+            });
             cekLocalStorage();
         });
 
@@ -890,6 +893,7 @@
     </script>
 
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
+    {{-- <script src="https://cdn.datatables.net/responsive/3.0.2/js/dataTables.responsive.min.js"></script> --}}
     <script src="{{ URL::asset('/assets/libs/jszip/jszip.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/libs/pdfmake/pdfmake.min.js') }}"></script>
     <script src="{{ URL::asset('/assets/js/pages/datatables.init.js') }}"></script>

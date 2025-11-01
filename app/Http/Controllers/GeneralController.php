@@ -241,16 +241,21 @@ class GeneralController extends Controller
         $get_general = General_model::join("users as ar", "ar.id", "=", "general_informations.ar")
             // ->join("users as created_by", "created_by.id", "=", "general_informations.created_by")
             ->where('general_informations.id', $id)
-            ->get(['*', 'general_informations.email as email_general', 'ar.name as ar',
-            // 'created_by.name as created_by'
-        ]);
+            ->orderBy('general_informations.updated_at', 'desc')
+            ->get([
+                '*',
+                'general_informations.email as email_general',
+                'ar.name as ar',
+                // 'created_by.name as created_by'
+            ]);
 
-// dd($get_general);
+        // dd($get_general);
 
         $get_legal = General_model::join("legal", "legal.id_customer", "=", "general_informations.id_customer")
             ->join("users as ar", "ar.id", "=", "legal.ar")
             ->join("users as created_by", "created_by.id", "=", "legal.created_by")
             ->where('general_informations.id', $id)
+            ->orderBy('legal.updated_at', 'desc')
             ->get(['*', 'legal.status as status_legal', 'legal.remarks as remarks_legal']);
 
         $get_kontak = General_model::join("outlet", "outlet.id_customer", "=", "general_informations.id_customer")
@@ -258,16 +263,19 @@ class GeneralController extends Controller
             ->join("users as ar", "ar.id", "=", "contact_person.ar")
             ->join("users as created_by", "created_by.id", "=", "contact_person.created_by")
             ->where('general_informations.id', $id)
+            ->orderBy('contact_person.updated_at', 'desc')
             ->get(['*', 'contact_person.email as email_kontak', 'contact_person.status as status_kontak']);
 
         $get_account = General_model::join("account", "account.id_customer", "=", "general_informations.id_customer")
             ->join("users as ar", "ar.id", "=", "account.ar")
             ->join("users as created_by", "created_by.id", "=", "account.created_by")
             ->where('general_informations.id', $id)
+            ->orderBy('account.updated_at', 'desc')
             ->get(['*', 'account.status as status_account', 'account.remarks as remarks_account']);
 
         $get_attachment = General_model::join("attachment", "attachment.id_customer", "=", "general_informations.id_customer")
             ->where('general_informations.id', $id)
+            ->orderBy('attachment.updated_at', 'desc')
             ->get(['*']);
 
         $get_outlet = General_model::join("outlet", "outlet.id_customer", "=", "general_informations.id_customer")
@@ -275,10 +283,12 @@ class GeneralController extends Controller
             ->join("users as created_by", "created_by.id", "=", "outlet.created_by")
             ->leftJoin("area", "area.id", "=", "outlet.id_area")
             ->where('general_informations.id', $id)
+            ->orderBy('outlet.updated_at', 'desc')
             ->get(['*', 'area.area as area', 'outlet.id as id', 'outlet.status as status_outlet', 'outlet.remarks as remarks_outlet']);
 
 
         $get_statusData = StatusData_model::where('status_data.id_customer', $id)
+            ->orderBy('status_data.updated_at', 'desc')
             ->get(['status_data.id as id_status_data']);
         // }
         // dd($get_outlet);
@@ -345,7 +355,7 @@ class GeneralController extends Controller
         $hasOutlets = $outlet->count() > 0;
         // dd($general);
 
-        return view('general.detail_customer', compact('general', 'legal', 'kontak', 'account', 'attachment', 'outlet', 'status_data','hasOutlets'));
+        return view('general.detail_customer', compact('general', 'legal', 'kontak', 'account', 'attachment', 'outlet', 'status_data', 'hasOutlets'));
     }
 
     public function edit($id)
