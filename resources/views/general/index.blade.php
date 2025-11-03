@@ -66,14 +66,14 @@
                       <table id="datatable-home" class="table table-striped table-bordered dt-responsive nowrap"style="border-collapse: collapse; border-spacing: 0; width: 100%;">
                             <thead>
                                 <tr>
-                                    {{-- <th>NO</th> --}}
-                                    <th width="2%"></th>
-                                    <th width="2%">ID Customer</th>
-                                    <th width="2%">Perusahaan</th>
-                                    <th width="2%">Kota</th>
-                                    <th width="2%" >Alamat</th>
-                                    <th width="2%">Contact</th>
-                                    <th width="2%">AR</th>
+                                    <th ></th>
+                                    <th>NO</th>
+                                    <th>ID Customer</th>
+                                    <th>Perusahaan</th>
+                                    <th>Kota</th>
+                                    <th>Alamat</th>
+                                    <th>Contact</th>
+                                    {{-- <th width="5%">AR</th> --}}
                                     <th width="20px">Aksi</th>
 
                                 </tr>
@@ -81,14 +81,14 @@
                             <tbody>
                                 @foreach ($data as $key => $general)
                                 <tr>
-                                    {{-- <td>{{ ++$i }}</td> --}}
-                                    <th width="2%"></th>
-                                    <td width="2%">{{ $general->id_customer }}</td>
-                                    <td width="2%">{{ $general->nama_usaha }}</td>
-                                    <td width="2%">{{ $general->kota }}</td>
-                                    <td width="2%">{{ $general->alamat_kantor }}</td>
-                                    <td width="2%">{{ $general->nama_lengkap }}</td>
-                                    <td width="2%">{{ $general->name }}</td>
+                                    <th style="width=10%"></th>
+                                    <td>{{ ++$i }}</td>
+                                    <td>{{ $general->id_customer }}</td>
+                                    <td>{{ $general->nama_usaha }}</td>
+                                    <td>{{ $general->kota }}</td>
+                                    <td>{{ $general->alamat_kantor }}</td>
+                                    <td>{{ $general->nama_lengkap }}</td>
+                                    {{-- <td width="2%">{{ $general->name }}</td> --}}
 
                                     <td>
                                         @if (Auth::user()->hasRole("Admin") == 1)

@@ -77,11 +77,11 @@
                         </ul>
                     </li>
 
-                    <li class="menu-title">@lang('General Information')</li>
+                    <li class="menu-title">@lang('Master Customer')</li>
                     <li>
                         <a href="{{ route('generals.index') }}">
                             <i class="uil-dashboard"></i>
-                            <span>@lang('General')</span>
+                            <span>@lang('Customer')</span>
                         </a>
                     </li>
 

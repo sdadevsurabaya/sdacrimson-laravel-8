@@ -68,7 +68,7 @@
                                 name="type_usaha" id="floatingSelectGrid" aria-label="Floating label select example">
                                 <option value="">-- Pilih Type Usaha --</option>
                                 <option value="TK" @if (old('type_usaha') == 'TK') selected="selected" @endif
-                                    {{ $general[0]->type_usaha == 'TK' ? 'selected' : '' }}>TK</option>
+                                    {{ $general[0]->type_usaha == 'TK' ? 'selected' : '' }}>Toko</option>
                                 <option value="UD" @if (old('type_usaha') == 'UD') selected="selected" @endif
                                     {{ $general[0]->type_usaha == 'UD' ? 'selected' : '' }}>UD</option>
                                 <option value="CV" @if (old('type_usaha') == 'CV') selected="selected" @endif
