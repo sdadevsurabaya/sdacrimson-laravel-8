@@ -141,7 +141,7 @@
                         <label for="formrow-mobile-input" class="col-md-2 col-form-label">Mobile <span
                                 class="text-danger">*</span> </label>
                         <div class="col-md-10">
-                            <input type="Number"
+                            <input type="text"
                                 class="form-control @error('mobile_phone') border border-danger @enderror"
                                 name="mobile_phone" id="formrow-mobile-input"
                                 value="{{ old('mobile_phone', $general[0]->mobile_phone) }}">

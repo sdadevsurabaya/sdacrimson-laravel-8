@@ -153,15 +153,13 @@
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-form-label">Nama Customer</label>
                         <div class="">
-                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer"
-                                placeholder="ABCD PT">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer">
                         </div>
                     </div>
                     <div class="mb-3 row">
                         <label for="formrow-nama-input" class="col-form-label">Alamat</label>
                         <div class="">
-                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="alamat"
-                                placeholder="Jl. Balongsari Indah No. 22">
+                            <input type="text" class="form-control form-control-solid mb-3 mb-lg-0" id="alamat">
                         </div>
                     </div>
                      <div class="mb-3 row">
@@ -173,15 +171,13 @@
                     <div class="mb-3 row d-none">
                         <label for="formrow-nama-input" class="col-form-label">Email</label>
                         <div class="">
-                            <input type="email" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer"
-                                placeholder="abcda@gmail.com">
+                            <input type="email" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer">
                         </div>
                     </div>
                     <div class="mb-3 row d-none">
                         <label for="formrow-nama-input" class="col-form-label">No HP</label>
                         <div class="">
-                            <input type="number" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer"
-                                placeholder="ABCD PT">
+                            <input type="number" class="form-control form-control-solid mb-3 mb-lg-0" id="nama_customer">
                         </div>
                     </div>
                 </div>
