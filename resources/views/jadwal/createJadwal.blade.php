@@ -90,12 +90,12 @@
                         <div class="mb-3">
                             <label class="form-label">
 
-                            <input type="hidden" class="form-control" name="latitude" id="latitude"
-                                placeholder="Masukan gps">
-                            <input type="hidden" class="form-control" name="longitude" id="longitude"
-                                placeholder="Masukan gps">
-                            <input type="hidden" class="form-control" name="user_id" id="user_id" value="{{ Auth::id()}}"
-                                placeholder="Masukan gps">
+                                <input type="hidden" class="form-control" name="latitude" id="latitude"
+                                    placeholder="Masukan gps">
+                                <input type="hidden" class="form-control" name="longitude" id="longitude"
+                                    placeholder="Masukan gps">
+                                <input type="hidden" class="form-control" name="user_id" id="current_user_id"
+                                    value="{{ Auth::id() }}" placeholder="Masukan gps">
 
                         </div>
                     </div>
@@ -114,14 +114,17 @@
                 </div>
 
                 <div class="modal-body">
-                    @role('Sales')
-                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
+                    @php
+                        $user = Auth::user();
+                    @endphp
+
+                    @if ($user->roles->count() == 1 && $user->hasRole('Sales'))
+                        <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
                     @else
                         <div class="mb-3">
-                            <label for="floatingSelectGrid" class="col-form-label">Sales / PIC</label>
-                            <div class="">
-                                <select class="form-select" name="user_id" id="user_id" id="floatingSelectGrid"
-                                    aria-label="Floating label select example">
+                            <label for="user_id" class="col-form-label">Sales / PIC</label>
+                            <div>
+                                <select class="form-select" name="user_id" id="user_id" aria-label="Pilih user">
                                     <option value="">-- Pilih User --</option>
                                     @foreach ($users as $id => $name)
                                         <option value="{{ $id }}">{{ $name }}</option>
@@ -129,7 +132,23 @@
                                 </select>
                             </div>
                         </div>
-                    @endrole
+                    @endif
+
+                    {{-- @role('Sales')
+                        <input type="hidden" name="user_id" id="user_id" value="{{ Auth::id() }}">
+                    @else
+                        <div class="mb-3">
+                            <label for="user_id" class="col-form-label">Sales / PIC</label>
+                            <div>
+                                <select class="form-select" name="user_id" id="user_id" aria-label="Pilih user">
+                                    <option value="">-- Pilih User --</option>
+                                    @foreach ($users as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    @endrole --}}
                     <div class="mb-3 row">
                         <label for="floatingSelectGrid" class="col-form-label">Tanggal Kunjungan</label>
                         <div class="">
@@ -489,9 +508,14 @@
 
 
             $('#saveButton').click(function() {
-                var user_id = $('#user_id').val();
+                // Ambil dari dropdown di modal (bukan dari hidden input)
+                var user_id = $('#exampleModal #user_id').val();
                 var date = $('#date').val();
-                @if (!$start) LupaStart(); @endif
+
+                @if (!$start)
+                    LupaStart();
+                @endif
+
                 $.ajax({
                     url: "{{ route('save.jadwal') }}",
                     type: "POST",
@@ -524,108 +548,110 @@
                 });
             });
 
-            function LupaStart(){
+
+            function LupaStart() {
                 var latitude = $('#latitude').val();
-                    var longitude = $('#longitude').val();
-                    var userId = $('#user_id').val();
+                var longitude = $('#longitude').val();
+                var userId = $('#user_id').val();
 
 
-                    var data = {
-                        user_id: userId,
-                        type: 'start',
-                        latitude: latitude,
-                        longitude: longitude,
-                        _token: "{{ csrf_token() }}",
-                    };
+                var data = {
+                    user_id: userId,
+                    type: 'start',
+                    latitude: latitude,
+                    longitude: longitude,
+                    _token: "{{ csrf_token() }}",
+                };
 
 
-                    $.ajax({
-                        url: '/location-times',
-                        type: 'POST',
-                        data: data,
-                        success: function(response) {
-                            console.log('Location recorded successfully');
+                $.ajax({
+                    url: '/location-times',
+                    type: 'POST',
+                    data: data,
+                    success: function(response) {
+                        console.log('Location recorded successfully');
 
-                            $('#startBtn').prop('disabled', true);
-                            $('#buatJadwalBtn').prop('disabled', false);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error:', error);
-                            console.log('An error occurred');
-                        }
-                    });
+                        $('#startBtn').prop('disabled', true);
+                        $('#buatJadwalBtn').prop('disabled', false);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error:', error);
+                        console.log('An error occurred');
+                    }
+                });
             }
 
             document.getElementById('endBtn').addEventListener('click', function() {
-            $.ajax({
-                url: '/getDetailByJadwal',
-                method: 'GET',
-                success: function(response) {
-                    const customerData = response;
+                $.ajax({
+                    url: '/getDetailByJadwal',
+                    method: 'GET',
+                    success: function(response) {
+                        const customerData = response;
 
 
-                    let selectOptions = '';
-                    for (const [key, value] of Object.entries(customerData)) {
+                        let selectOptions = '';
+                        for (const [key, value] of Object.entries(customerData)) {
 
-                        const isSelected = key === '470' ? 'selected' : '';
-                        selectOptions += `<option value="${key}" ${isSelected}>${value}</option>`;
+                            const isSelected = key === '470' ? 'selected' : '';
+                            selectOptions +=
+                                `<option value="${key}" ${isSelected}>${value}</option>`;
+                        }
+
+                        const selectHtml =
+                            `<select id="customerSelect" class="swal2-select">${selectOptions}</select>`;
+
+
+                        Swal.fire({
+                            title: 'Select Customer',
+                            html: selectHtml,
+                            focusConfirm: false,
+                            showCancelButton: true,
+                            confirmButtonText: 'Ok',
+                            preConfirm: () => {
+                                return document.getElementById('customerSelect')
+                                    .value;
+                            }
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                const selectedCustomerId = result.value;
+
+                                var latitude = $('#latitude').val();
+                                var longitude = $('#longitude').val();
+                                var userId = $('#user_id').val();
+
+
+                                var data = {
+                                    user_id: userId,
+                                    type: 'stop',
+                                    latitude: latitude,
+                                    longitude: longitude,
+                                    customer: selectedCustomerId,
+                                    _token: "{{ csrf_token() }}",
+                                };
+
+
+                                $.ajax({
+                                    url: '/location-times',
+                                    type: 'POST',
+                                    data: data,
+                                    success: function(response) {
+                                        //    window.location.reload();
+                                    },
+                                    error: function(xhr, status, error) {
+                                        console.error('Error:', error);
+                                        alert('An error occurred');
+                                    }
+                                });
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('AJAX Error: ', status, error);
                     }
-
-                    const selectHtml = `<select id="customerSelect" class="swal2-select">${selectOptions}</select>`;
-
-
-                    Swal.fire({
-                        title: 'Select Customer',
-                        html: selectHtml,
-                        focusConfirm: false,
-                        showCancelButton: true,
-                        confirmButtonText: 'Ok',
-                        preConfirm: () => {
-                            return document.getElementById('customerSelect').value;
-                        }
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            const selectedCustomerId = result.value;
-
-                            var latitude = $('#latitude').val();
-                            var longitude = $('#longitude').val();
-                            var userId = $('#user_id').val();
-
-
-                            var data = {
-                                user_id: userId,
-                                type: 'stop',
-                                latitude: latitude,
-                                longitude: longitude,
-                                customer: selectedCustomerId,
-                                _token: "{{ csrf_token() }}",
-                            };
-
-
-                            $.ajax({
-                                url: '/location-times',
-                                type: 'POST',
-                                data: data,
-                                success: function(response) {
-                                //    window.location.reload();
-                                },
-                                error: function(xhr, status, error) {
-                                    console.error('Error:', error);
-                                    alert('An error occurred');
-                                }
-                            });
-                        }
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Error: ', status, error);
-                }
+                });
             });
-        });
 
         });
-
-
     </script>
 
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>

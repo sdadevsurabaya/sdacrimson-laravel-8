@@ -16,110 +16,129 @@ use Illuminate\Support\Facades\Auth;
 
 class JadwalController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         return view('jadwal.index');
     }
 
-    public function create(){
+    public function create()
+    {
+        // dd(Auth::user()->getRoleNames());
+
 
         $users = User::pluck('name', 'id');
 
         $hasRole = auth()->user()->hasRole('Sales');
 
-        if( $hasRole){
-            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at','desc')->withTrashed()->whereNull('deleted_at')->get();
-        }else {
+        if ($hasRole) {
+            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+        } else {
             $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
-
         }
 
         $start = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
-        ->where('type', 'start')
-        ->orderBy('id', 'desc')
-        ->first();
-        
+            ->where('type', 'start')
+            ->orderBy('id', 'desc')
+            ->first();
+
         $stop = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
-        ->where('type', 'stop')
-        ->orderBy('id', 'desc')
-        ->first();
+            ->where('type', 'stop')
+            ->orderBy('id', 'desc')
+            ->first();
 
         return view('jadwal.createJadwal', compact('users', 'jadwals', 'start', 'stop'));
     }
 
-    public function exportJadwal(){
+    public function exportJadwal()
+    {
 
         $users = User::pluck('name', 'id');
         return view('jadwal.exportJadwal', compact('users'));
     }
 
-    public function previewJadwal(Request $request){
+    public function previewJadwal(Request $request)
+    {
         $year =  Carbon::now()->year;
         $month = $request->month;
         $user = $request->user_id;
-    
-     
-            $jadwals = Jadwal::whereYear('date', $year)
-                                 ->whereMonth('date',  $month)
-                                 ->where('user_id', $user)
-                                 ->with(['detailJadwals.generalInformation'])
-                                 ->get();
-                                
-        
-                                 $result = [];
-        
-                    // Buat daftar semua tanggal dalam bulan yang diberikan
-                $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
-                for ($day = 1; $day <= $daysInMonth; $day++) {
-                    $date = Carbon::create($year, $month, $day);
-                    $formattedDate = $date->format('d-m-Y');
-                    $dayOfWeek = $date->format('l');
-                    $result[$formattedDate] = [
-                        'day' => $dayOfWeek,
-                        'businesses' => []
-                    ];
+
+
+        $jadwals = Jadwal::whereYear('date', $year)
+            ->whereMonth('date',  $month)
+            ->where('user_id', $user)
+            ->with(['detailJadwals.generalInformation'])
+            ->get();
+
+
+        $result = [];
+
+        // Buat daftar semua tanggal dalam bulan yang diberikan
+        $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = Carbon::create($year, $month, $day);
+            $formattedDate = $date->format('d-m-Y');
+            $dayOfWeek = $date->format('l');
+            $result[$formattedDate] = [
+                'day' => $dayOfWeek,
+                'businesses' => []
+            ];
+        }
+
+        // Loop melalui setiap jadwal
+        foreach ($jadwals as $jadwal) {
+            $date = Carbon::parse($jadwal->date);
+            $formattedDate = $date->format('d-m-Y');
+
+            // Loop melalui setiap detail jadwal
+            foreach ($jadwal->detailJadwals as $detailJadwal) {
+                if ($detailJadwal->generalInformation) {
+                    $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
                 }
-        
-                // Loop melalui setiap jadwal
-                foreach ($jadwals as $jadwal) {
-                    $date = Carbon::parse($jadwal->date);
-                    $formattedDate = $date->format('d-m-Y');
-        
-                    // Loop melalui setiap detail jadwal
-                    foreach ($jadwal->detailJadwals as $detailJadwal) {
-                        if ($detailJadwal->generalInformation) {
-                            $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
-                        }
-                    }
-                }
-    
-              
-                // dd($result);
+            }
+        }
+
+
+        // dd($result);
         return view('jadwal.previewJadwal', compact('result'));
     }
 
     public function store(Request $request)
     {
-        // Validate the incoming request data
+
+
+        $user = auth()->user();
+
+        // 🔹 Kalau Sales → paksa user_id = dirinya sendiri
+        // 🔹 Kalau Admin → biarkan user_id dari request
+        if ($user->hasRole('Sales')) {
+            $request->merge(['user_id' => $user->id]);
+        } elseif ($user->hasRole('Admin')) {
+            // biarkan user_id dari form (Admin bisa buat untuk siapa pun)
+        } else {
+            // Jika role lain (misalnya Marketing), sesuaikan logika di sini
+            $request->merge(['user_id' => $user->id]);
+        }
+
+        // Validasi
         $validatedData = $request->validate([
-            'user_id' => 'required',
+            'user_id' => 'required|exists:users,id',
             'date' => 'required|date',
         ]);
 
+        // Generate kode unik
         $randomString = strtoupper(Str::random(5));
-        // Generate INV (Invoice)
-        $randomInvoice = 'JD-' . now()->format('Y/m/d') . '-' . $randomString;
-        $validatedData['kode'] = $randomInvoice;
-        $validatedData['created_by_id'] = Auth::id();
+        $validatedData['kode'] = 'JD-' . now()->format('Y/m/d') . '-' . $randomString;
+        $validatedData['created_by_id'] = $user->id;
 
-        // Create a new Jadwal record
+        // Simpan ke database
         $jadwal = Jadwal::create($validatedData);
 
-        // Return a response
         return response()->json([
             'message' => 'Jadwal created successfully',
             'jadwal' => $jadwal,
         ], 200);
     }
+
 
     public function edit($id)
     {
@@ -169,44 +188,41 @@ class JadwalController extends Controller
 
     public function getGeneralInformationsByMonth()
     {
-    
-    $year = 2024;
-    $month = 6;
+
+        $year = 2024;
+        $month = 6;
         $jadwals = Jadwal::whereYear('date', 2024)
-                             ->whereMonth('date', 6)
-                             ->with(['detailJadwals.generalInformation'])
-                             ->get();
-    
-                             $result = [];
-    
-                // Buat daftar semua tanggal dalam bulan yang diberikan
-            $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
-            for ($day = 1; $day <= $daysInMonth; $day++) {
-                $date = Carbon::create($year, $month, $day);
-                $formattedDate = $date->format('Y-m-d');
-                $dayOfWeek = $date->format('l');
-                $result[$formattedDate] = [
-                    'day' => $dayOfWeek,
-                    'businesses' => []
-                ];
-            }
-    
-            // Loop melalui setiap jadwal
-            foreach ($jadwals as $jadwal) {
-                $date = Carbon::parse($jadwal->date);
-                $formattedDate = $date->format('Y-m-d');
-    
-                // Loop melalui setiap detail jadwal
-                foreach ($jadwal->detailJadwals as $detailJadwal) {
-                    if ($detailJadwal->generalInformation) {
-                        $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
-                    }
+            ->whereMonth('date', 6)
+            ->with(['detailJadwals.generalInformation'])
+            ->get();
+
+        $result = [];
+
+        // Buat daftar semua tanggal dalam bulan yang diberikan
+        $daysInMonth = Carbon::create($year, $month, 1)->daysInMonth;
+        for ($day = 1; $day <= $daysInMonth; $day++) {
+            $date = Carbon::create($year, $month, $day);
+            $formattedDate = $date->format('Y-m-d');
+            $dayOfWeek = $date->format('l');
+            $result[$formattedDate] = [
+                'day' => $dayOfWeek,
+                'businesses' => []
+            ];
+        }
+
+        // Loop melalui setiap jadwal
+        foreach ($jadwals as $jadwal) {
+            $date = Carbon::parse($jadwal->date);
+            $formattedDate = $date->format('Y-m-d');
+
+            // Loop melalui setiap detail jadwal
+            foreach ($jadwal->detailJadwals as $detailJadwal) {
+                if ($detailJadwal->generalInformation) {
+                    $result[$formattedDate]['businesses'][] = $detailJadwal->generalInformation->nama_usaha;
                 }
             }
-    
-            return $result;
-                             
-                            }
+        }
 
-
+        return $result;
+    }
 }
