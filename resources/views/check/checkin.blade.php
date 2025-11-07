@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
+    <title>Checkin</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
@@ -91,7 +91,7 @@
         style="padding-top: .75rem; padding-bottom: 7rem;">
         <div class="container-fluid">
             <a href="#" class="navbar-brand">
-                <img src="/assets/images/logo-sda-hitam.png" class="img-fluid" width="160" alt="">
+                <img src="/assets/images/logo-sda-global-24.svg" class="img-fluid" width="160" alt="" style="filter: invert(1) brightness(3);">
             </a>
             <div class="text-light">Checkin</div>
             <button class="btn text-light p-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -103,7 +103,7 @@
             $tanggal = request('tanggal');
             $newUrl = url("/laporan/{$id_general}/{$id_jadwal}") . "?tanggal={$tanggal}";
         @endphp
-        
+
         <a href="{{ $newUrl }}" class="btn-close btn-close-white"></a>
         </div>
     </nav>
@@ -387,8 +387,8 @@
 
             var url = "{{ url('/') }}";
             var urlPost = url + '/api/attendance';
-         
-           
+
+
             $.ajax({
                 type: 'POST',
                 url: urlPost,
@@ -406,7 +406,7 @@
                     // Ambil pesan error dari response JSON
                     var response = JSON.parse(xhr.responseText);
                     var errorMessage = "Error occurred:";
-                    
+
                     // Uraikan objek pesan error dan gabungkan menjadi satu string
                     for (var key in response.message) {
                         if (response.message.hasOwnProperty(key)) {
@@ -415,7 +415,7 @@
                             });
                         }
                     }
-                    
+
                     // Tampilkan pesan error dalam alert
                     alert(errorMessage);
 

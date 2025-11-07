@@ -91,7 +91,7 @@
         style="padding-top: .75rem; padding-bottom: 7rem;">
         <div class="container-fluid">
             <a href="#" class="navbar-brand">
-                <img src="/assets/images/logo-sda-hitam.png" class="img-fluid" width="160" alt="">
+                <img src="/assets/images/logo-sda-global-24.svg" class="img-fluid" width="160" alt="" style="filter: invert(1) brightness(3);">
             </a>
             <div class="text-light">Checkout</div>
             <button class="btn text-light p-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -222,6 +222,7 @@
 
         </div>
     </nav>
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
@@ -406,7 +407,7 @@
                     // Ambil pesan error dari response JSON
                     var response = JSON.parse(xhr.responseText);
                     var errorMessage = "Error occurred:";
-                    
+
                     // Uraikan objek pesan error dan gabungkan menjadi satu string
                     for (var key in response.message) {
                         if (response.message.hasOwnProperty(key)) {
@@ -415,7 +416,7 @@
                             });
                         }
                     }
-                    
+
                     // Tampilkan pesan error dalam alert
                     alert(errorMessage);
 
