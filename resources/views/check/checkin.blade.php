@@ -82,6 +82,7 @@
             }
         }
     </style>
+
 </head>
 
 <body class="position-relative">
@@ -91,20 +92,21 @@
         style="padding-top: .75rem; padding-bottom: 7rem;">
         <div class="container-fluid">
             <a href="#" class="navbar-brand">
-                <img src="/assets/images/logo-sda-global-24.svg" class="img-fluid" width="160" alt="" style="filter: invert(1) brightness(3);">
+                <img src="/assets/images/logo-sda-global-24.svg" class="img-fluid" width="160" alt=""
+                    style="filter: invert(1) brightness(3);">
             </a>
             <div class="text-light">Checkin</div>
             <button class="btn text-light p-0" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                 <i class="bi bi-chat-square-text fs-5"></i>
             </button>
             @php
-            $id_general = request('id_general');
-            $id_jadwal = request('id_jadwal');
-            $tanggal = request('tanggal');
-            $newUrl = url("/laporan/{$id_general}/{$id_jadwal}") . "?tanggal={$tanggal}";
-        @endphp
+                $id_general = request('id_general');
+                $id_jadwal = request('id_jadwal');
+                $tanggal = request('tanggal');
+                $newUrl = url("/laporan/{$id_general}/{$id_jadwal}") . "?tanggal={$tanggal}";
+            @endphp
 
-        <a href="{{ $newUrl }}" class="btn-close btn-close-white"></a>
+            <a href="{{ $newUrl }}" class="btn-close btn-close-white"></a>
         </div>
     </nav>
 
@@ -199,7 +201,7 @@
     </div> --}}
 
     <!-- navdown -->
-    <nav id="navdown" class="navbar position-absolute start-0 bottom-0 end-0"
+    {{-- <nav id="navdown" class="navbar position-absolute start-0 bottom-0 end-0"
         style="padding-bottom: .75rem; padding-top: 10rem;">
         <div class="container-fluid d-block">
             <div class="row row-cols-2 g-2">
@@ -217,6 +219,20 @@
                 </div>
             </div>
 
+        </div>
+    </nav> --}}
+
+    <nav id="navdown" class="navbar position-absolute start-0 bottom-0 end-0"
+        style="padding-bottom:.75rem; padding-top:10rem;">
+        <div class="container-fluid d-flex justify-content-center gap-2">
+            <button class="btn btn-secondary py-2" id="take-photo" data-bs-toggle="collapse"
+                data-bs-target=".collapse">
+                <i class="bi bi-camera me-2"></i> TAKE PHOTO
+            </button>
+
+            <button class="btn btn-primary py-2" id="sendbut" onclick="sendabsence()" style="display: none;">
+                <i class="bi bi-send me-2"></i> SEND
+            </button>
         </div>
     </nav>
 
@@ -254,7 +270,9 @@
                 navigator.geolocation.getCurrentPosition(showPosition);
                 // console.log("Geolocation is not supported by this browser.");
             } else {
-                alert('Geolocation tidak didukung oleh browser ini. Silakan gunakan browser yang mendukung geolocation. Aktifkan Lokasi Anda');
+                alert(
+                    'Geolocation tidak didukung oleh browser ini. Silakan gunakan browser yang mendukung geolocation. Aktifkan Lokasi Anda'
+                );
             }
         }
 
@@ -397,7 +415,8 @@
                 contentType: false, // Jangan set tipe konten
                 success: function(response) {
                     // console.log(response);
-                    window.location.href = "{{ 'laporan/' }}" + idGeneral + '/' + idJadwal + '?' + 'tanggal=' + tanggalParam ;
+                    window.location.href = "{{ 'laporan/' }}" + idGeneral + '/' + idJadwal + '?' +
+                        'tanggal=' + tanggalParam;
                 },
                 error: function(xhr, status, error) {
                     console.error('Error: ' + error);
