@@ -148,7 +148,7 @@
             <canvas id="canvas" class="d-none"></canvas>
 
             <button id="resume-camera" class="btn btn-outline-light d-flex align-items-center" data-bs-toggle="collapse"
-                data-bs-target=".collapse" style="position: absolute; z-index: 1032; bottom: 13px; left: 15px;">
+                data-bs-target=".collapse" style="position: absolute; z-index: 1032; bottom: 45px; left: 15px;">
                 <small style="font-size: 12px;">Retake Photo</small> <i class="bi bi-x-circle fs-4 ms-2"></i>
             </button>
 
@@ -160,14 +160,14 @@
 
 
         <!-- maps area -->
-        <div class="position-absolute w-100" style="z-index: 1032; left: 0; bottom: 52px;">
+        {{-- <div class="position-absolute w-100" style="z-index: 1032; left: 0; bottom: 52px;">
             <div class="container-fluid w-100">
                 <iframe class="border-0 rounded overflow-hidden" id="gmapsx" width="40%" height="auto"
                     allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 <p id="mapinfo" class="small text-light">
                 </p>
             </div>
-        </div>
+        </div> --}}
         {{-- src="https://maps.google.com/maps?q=-7.4016,112.5929&z=12&output=embed" --}}
     </main>
 
@@ -225,7 +225,7 @@
     </nav> --}}
 
     <nav id="navdown" class="navbar position-absolute start-0 bottom-0 end-0"
-        style="padding-bottom:.75rem; padding-top:10rem;">
+        style="padding-bottom:4rem; padding-top:10rem;">
         <div class="container-fluid d-flex justify-content-center gap-2">
             <button class="btn btn-secondary py-2" id="take-photo" data-bs-toggle="collapse"
                 data-bs-target=".collapse">
