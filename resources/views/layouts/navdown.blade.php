@@ -4,7 +4,7 @@
         <div class="container-fluid">
             <div class="row flex-nowrap justify-content-around justify-content-md-around">
                 <div class="col-auto">
-                    <a href="{{ route('generals.index') }}" class="btn lh-1">
+                    <a href="{{url('admin/dashboard')}}" class="btn lh-1">
                         <i class="uil-dashboard fs-3"></i>
                         <br>
                         <medium>Dashboard</medium>
