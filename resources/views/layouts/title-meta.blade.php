@@ -4,4 +4,4 @@
 <meta content="Register Outlet | SDA Indonesia" name="description" />
 <meta content="Indraco Webdev" name="author" />
 <!-- App favicon -->
-<link rel="shortcut icon" href="{{ URL::asset('assets/images/simbol-sda.ico')}}">
+<link rel="shortcut icon" href="{{ URL::asset('assets/images/SDA1.ico')}}">
