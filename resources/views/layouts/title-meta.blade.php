@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<title>@yield('title') | RO</title>
+<title>@yield('title') | SDA Crimson</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta content="Register Outlet | SDA Indonesia" name="description" />
 <meta content="Indraco Webdev" name="author" />

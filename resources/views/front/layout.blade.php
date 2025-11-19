@@ -5,9 +5,10 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	@if (!empty($title))
-	<title>RO &bull; {{ $title }}</title>
+	{{-- <title>RO &bull; {{ $title }}</title> --}}
+  	<title>SDA Crimson</title>
 	@else
-	<title>RO</title>
+	<title>SDA Crimson</title>
 	@endif
 
 
