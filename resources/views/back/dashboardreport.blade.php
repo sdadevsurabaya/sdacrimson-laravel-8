@@ -232,13 +232,13 @@
                                             $totalProductivity = 0;
                                             $monthStart = \Carbon\Carbon::createFromFormat(
                                                 'm',
-                                                date('m', strtotime('2025-' . ($i + 1) . '-01')),
+                                                date('m', strtotime($year . '-' . ($i + 1) . '-01')),
                                             )
                                                 ->startOfMonth()
                                                 ->format('d');
                                             $monthEnd = \Carbon\Carbon::createFromFormat(
                                                 'm',
-                                                date('m', strtotime('2025-' . ($i + 1) . '-01')),
+                                                date('m', strtotime($year . '-' . ($i + 1) . '-01')),
                                             )
                                                 ->endOfMonth()
                                                 ->format('d');
@@ -254,7 +254,7 @@
                                                                 @php
                                                                     $carbonDate = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
-                                                                        $day['date'] . '/2025',
+                                                                        $day['date'] . '/' . $year,
                                                                     );
                                                                     $isProductive =
                                                                         $carbonDate->dayOfWeek < 6 &&
@@ -283,13 +283,13 @@
                                                                 @php
                                                                     $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
-                                                                        $day['date'] . '/2025',
+                                                                        $day['date'] . '/' . $year,
                                                                     )->format('Y-m-d');
                                                                     $dayAgendas =
                                                                         $agendas[$sale->id][$dateFormatted] ?? [];
                                                                     $carbonDate = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
-                                                                        $day['date'] . '/2025',
+                                                                        $day['date'] . '/' . $year,
                                                                     );
                                                                     $isProductive =
                                                                         $carbonDate->dayOfWeek < 6 &&
@@ -432,11 +432,11 @@
                                                                     if ($day && $isInMonth) {
                                                                         $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                             'd/m/Y',
-                                                                            $day['date'] . '/2025',
+                                                                            $day['date'] . '/' . $year,
                                                                         )->format('Y-m-d');
                                                                         $carbonDate = \Carbon\Carbon::createFromFormat(
                                                                             'd/m/Y',
-                                                                            $day['date'] . '/2025',
+                                                                            $day['date'] . '/' . $year,
                                                                         );
                                                                         $isProductive =
                                                                             $carbonDate->dayOfWeek < 6 &&
@@ -498,11 +498,11 @@
                                                                     if ($day && $isInMonth) {
                                                                         $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                             'd/m/Y',
-                                                                            $day['date'] . '/2025',
+                                                                            $day['date'] . '/' . $year,
                                                                         )->format('Y-m-d');
                                                                         $carbonDate = \Carbon\Carbon::createFromFormat(
                                                                             'd/m/Y',
-                                                                            $day['date'] . '/2025',
+                                                                            $day['date'] . '/' . $year,
                                                                         );
                                                                         $isProductive =
                                                                             $carbonDate->dayOfWeek < 6 &&
@@ -576,11 +576,11 @@
                                                                 @php
                                                                     $dateFormatted = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
-                                                                        $day['date'] . '/2025',
+                                                                        $day['date'] . '/' . $year,
                                                                     )->format('Y-m-d');
                                                                     $carbonDate = \Carbon\Carbon::createFromFormat(
                                                                         'd/m/Y',
-                                                                        $day['date'] . '/2025',
+                                                                        $day['date'] . '/' . $year,
                                                                     );
                                                                     $isProductive =
                                                                         $carbonDate->dayOfWeek < 6 &&
