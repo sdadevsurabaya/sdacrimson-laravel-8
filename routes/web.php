@@ -95,6 +95,7 @@
 
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/back/dashboardreport', [DashboardReportController::class, 'index'])->name('back.dashboardreport.index');
+        Route::get('/back/report-yearly', [DashboardReportController::class, 'yearly'])->name('back.report.yearly');
         Route::resource('admin/dashboard', DashboardController::class);
         Route::resource('admin/websetup', WebsetupController::class);
         // Route::resource('member/board', MemberBoardController::class);

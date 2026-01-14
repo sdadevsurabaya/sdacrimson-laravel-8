@@ -113,6 +113,7 @@
                             <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
                             <li><a href="{{ route('laporan.index') }}">@lang('Report Periode Visit')</a></li>
                             <li><a href="{{ route('back.dashboardreport.index') }}">@lang('Report Weekly')</a></li>
+                            <li><a href="{{ route('back.report.yearly') }}">@lang('Report Yearly')</a></li>
                         </ul>
                     </li>
 
@@ -306,6 +307,8 @@
                                 <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
                                 <li><a href="{{ route('laporan.index') }}">@lang('Report Periode Visit')</a></li>
                                 <li><a href="{{ route('back.dashboardreport.index') }}">@lang('Report Weekly')</a></li>
+                                    <li><a href="{{ route('back.report.yearly') }}">@lang('Report Yearly')</a></li>
+
                             </ul>
                         </li>
 
