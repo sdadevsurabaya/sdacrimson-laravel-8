@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Back;
 
 use App\Http\Controllers\Controller;
@@ -118,7 +119,14 @@ class DashboardReportController extends Controller
         }
 
         return view('back.dashboardreport', compact(
-            'month', 'year', 'weeks', 'sales', 'agendas', 'arrayDateOff', 'cabangs', 'role'
+            'month',
+            'year',
+            'weeks',
+            'sales',
+            'agendas',
+            'arrayDateOff',
+            'cabangs',
+            'role'
         ));
     }
 
@@ -234,12 +242,14 @@ class DashboardReportController extends Controller
         $end = strtotime("saturday this week", $end); // Akhiri di Sabtu
 
         while ($start <= $end) {
-            $week = [];
+            $week    = [];
+            $hasDays = false;
             for ($i = 0; $i < 6; $i++) { // Senin–Sabtu
                 $dayDate   = strtotime("+$i day", $start);
                 $isInMonth = date('n', $dayDate) == $month;
 
                 if ($isInMonth && date('w', $dayDate) != 0) { // Lewati Minggu
+                    $hasDays  = true;
                     $fullDate = date('Y-m-d', $dayDate);
                     $isOff    = isset($offMap[$fullDate]);
 
@@ -254,8 +264,12 @@ class DashboardReportController extends Controller
                     $week[] = null; // Placeholder
                 }
             }
-            $weeks[] = $week;
-            $start   = strtotime("+7 days", $start);
+
+            if ($hasDays) {
+                $weeks[] = $week;
+            }
+
+            $start = strtotime("+7 days", $start);
         }
 
         return $weeks;
@@ -275,7 +289,7 @@ class DashboardReportController extends Controller
             ->orderBy('year', 'DESC')
             ->pluck('year')
             ->toArray();
-        
+
         // If no years in database, use current year
         if (empty($years)) {
             $years = [date('Y')];
@@ -349,12 +363,12 @@ class DashboardReportController extends Controller
                     while ($currentDate <= $endDateTimestamp) {
                         $dayOfWeek = date('N', $currentDate); // 1 (Senin) - 7 (Minggu)
                         $dateStr = date('Y-m-d', $currentDate);
-                        
+
                         // Senin-Jumat (1-5) dan bukan hari libur
                         if ($dayOfWeek >= 1 && $dayOfWeek <= 5 && !in_array($dateStr, $arrayDateOff)) {
                             $workDays++;
                         }
-                        
+
                         $currentDate = strtotime('+1 day', $currentDate);
                     }
 
@@ -380,20 +394,22 @@ class DashboardReportController extends Controller
                     $dailyProductivity = [];
                     foreach ($result as $visit) {
                         $date = $visit->date;
-                        
+
                         if (!isset($dailyProductivity[$date])) {
                             $dailyProductivity[$date] = 0;
                         }
 
                         // Hitung hanya visit yang valid
-                        if ($visit->activity_type === 'Visit' && 
-                            !empty($visit->checkin_time) && 
-                            !empty($visit->checkout_time)) {
-                            
+                        if (
+                            $visit->activity_type === 'Visit' &&
+                            !empty($visit->checkin_time) &&
+                            !empty($visit->checkout_time)
+                        ) {
+
                             $checkin = \Carbon\Carbon::parse($visit->checkin_time);
                             $checkout = \Carbon\Carbon::parse($visit->checkout_time);
                             $minutes = $checkin->diffInMinutes($checkout);
-                            
+
                             // Valid visit: durasi >= 20 menit
                             if ($minutes >= 20 && $dailyProductivity[$date] < 3) {
                                 $dailyProductivity[$date]++;
@@ -404,10 +420,10 @@ class DashboardReportController extends Controller
                     // Hitung percentage productivity per hari
                     $totalProductivity = 0;
                     $productiveDaysCount = 0;
-                    
+
                     foreach ($dailyProductivity as $date => $visitCount) {
                         $dayOfWeek = date('N', strtotime($date));
-                        
+
                         // Hanya hitung hari kerja (Senin-Jumat)
                         if ($dayOfWeek >= 1 && $dayOfWeek <= 5 && !in_array($date, $arrayDateOff)) {
                             $effectiveCount = min($visitCount, 3); // Max 3
@@ -445,7 +461,7 @@ class DashboardReportController extends Controller
                 // Hitung yearly average
                 $yearlyTotal = 0;
                 $monthsWithData = 0;
-                
+
                 for ($month = 1; $month <= 12; $month++) {
                     if (isset($monthlyData[$sale->id]['months'][$month])) {
                         $yearlyTotal += $monthlyData[$sale->id]['months'][$month]['productivity'];
@@ -453,14 +469,19 @@ class DashboardReportController extends Controller
                     }
                 }
 
-                $monthlyData[$sale->id]['yearly_avg'] = $monthsWithData > 0 
-                    ? round($yearlyTotal / $monthsWithData, 1) 
+                $monthlyData[$sale->id]['yearly_avg'] = $monthsWithData > 0
+                    ? round($yearlyTotal / $monthsWithData, 1)
                     : 0;
             }
         }
 
         return view('back.dashboardreportyearly', compact(
-            'year', 'sales', 'monthlyData', 'cabangs', 'role', 'years'
+            'year',
+            'sales',
+            'monthlyData',
+            'cabangs',
+            'role',
+            'years'
         ));
     }
 }
