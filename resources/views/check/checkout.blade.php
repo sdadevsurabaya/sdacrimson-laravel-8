@@ -179,10 +179,15 @@
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">
                         <i class="bi bi-chat"></i> <span>Write Message</span>
+                        <span id="noteRequiredBadge" class="badge bg-danger ms-2" style="display: none;">Required</span>
                     </h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <div id="noteWarning" class="alert alert-warning mb-3" style="display: none;">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <strong>Perhatian!</strong> Note wajib diisi karena durasi kunjungan kurang dari 20 menit.
+                    </div>
                     <textarea name="note" id="note" cols="30" rows="5" class="form-control border-0 rounded-0"
                         placeholder="Write your message here"></textarea>
                 </div>
@@ -361,9 +366,69 @@
                 .catch(err => {
                     displayError();
                 });
+
+            // Check duration and show note requirement if needed
+            checkDurationAndShowWarning();
         }
 
+        // Global variable to track if note is required
+        var isNoteRequired = false;
+        var visitDurationMinutes = 0;
+
+        // Function to check visit duration and show warning
+        function checkDurationAndShowWarning() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const idGeneral = urlParams.get('id_general');
+            const idJadwal = urlParams.get('id_jadwal');
+            const userId = $('#iduser').val();
+
+            // Fetch check-in time from API
+            $.ajax({
+                url: '{{ url("/") }}/api/attendance/checkin/' + userId + '/' + idGeneral + '/' + idJadwal,
+                type: 'GET',
+                success: function(response) {
+                    if (response.success) {
+                        visitDurationMinutes = response.duration_minutes;
+                        
+                        // If duration < 20 minutes, note is required
+                        if (visitDurationMinutes < 20) {
+                            isNoteRequired = true;
+                            $('#noteRequiredBadge').show();
+                            $('#noteWarning').show();
+                        } else {
+                            isNoteRequired = false;
+                            $('#noteRequiredBadge').hide();
+                            $('#noteWarning').hide();
+                        }
+                    }
+                },
+                error: function() {
+                    console.log('Could not fetch check-in time');
+                }
+            });
+        }
+
+        // Listen to modal show event to update warning
+        $('#staticBackdrop').on('show.bs.modal', function() {
+            checkDurationAndShowWarning();
+        });
+
+
         function sendabsence() {
+            // Validasi Note jika durasi < 20 menit
+            if (isNoteRequired) {
+                var noteValue = $('#note').val().trim();
+                if (noteValue === '') {
+                    alert('Note wajib diisi karena durasi kunjungan kurang dari 20 menit!\n\nDurasi kunjungan: ' + visitDurationMinutes + ' menit\n\nSilakan klik tombol chat dan isi note terlebih dahulu.');
+                    
+                    // Show the modal to prompt user
+                    var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+                    myModal.show();
+                    
+                    return; // Stop execution
+                }
+            }
+
             // Mulai: Hilangkan button send dan tampilkan loader
             $("#sendbut").hide();
             $(".loader").show(); // Menggunakan jQuery untuk menampilkan loader

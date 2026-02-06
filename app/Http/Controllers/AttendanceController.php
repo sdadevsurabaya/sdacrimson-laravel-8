@@ -177,6 +177,31 @@ class AttendanceController extends Controller
 
 
         }else{
+            // Checkout logic - validate note requirement for early checkout
+            
+            // Get check-in record for this visit
+            $checkin = Attendance::where('user_id', $request->input('iduser'))
+                ->where('general_id', $request->input('general_id'))
+                ->where('jadwal_id', $request->input('id_jadwal'))
+                ->where('status', 'check in')
+                ->whereDate('created_at', now())
+                ->first();
+            
+            if ($checkin) {
+                // Calculate duration in minutes
+                $duration = now()->diffInMinutes($checkin->created_at);
+                
+                // If duration < 20 minutes, note is required
+                if ($duration < 20 && empty($request->input('note'))) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => [
+                            'note' => ['Note wajib diisi karena durasi kunjungan kurang dari 20 menit (Durasi: ' . $duration . ' menit)']
+                        ]
+                    ], 422);
+                }
+            }
+            
             $updateJadwal->checkout = now(); 
             $updateJadwal->save(); 
         }
@@ -219,5 +244,25 @@ class AttendanceController extends Controller
 
         $attendance->foto = asset('attendance/' . $attendance->foto);
         return response()->json($attendance);
+    }
+
+    public function getCheckinTime($user_id, $general_id, $jadwal_id)
+    {
+        $checkin = Attendance::where('user_id', $user_id)
+            ->where('general_id', $general_id)
+            ->where('jadwal_id', $jadwal_id)
+            ->where('status', 'check in')
+            ->whereDate('created_at', now())
+            ->first();
+        
+        if ($checkin) {
+            return response()->json([
+                'success' => true,
+                'checkin_time' => $checkin->created_at->toIso8601String(),
+                'duration_minutes' => now()->diffInMinutes($checkin->created_at)
+            ]);
+        }
+        
+        return response()->json(['success' => false], 404);
     }
 }

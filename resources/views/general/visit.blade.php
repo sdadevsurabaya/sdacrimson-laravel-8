@@ -51,7 +51,7 @@
                                         <td>{{ $general->user->name }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
                                         <td>{{ \Carbon\Carbon::parse($general->created_at)->format('d-M-Y H:i') }}</td>
                                         {{-- Formatting the date --}}
-                                        <td>{{ $general->description }}</td> {{-- Assuming there's a 'description' field --}}
+                                        <td>{{ $general->note ?? '-' }}</td>
                                         <td>{{ $general->status }}</td> {{-- Assuming there's a 'status' field --}}
                                         <td>
                                             <a href="#" class="btn btn-sm btn-success m-1 detail-visit"

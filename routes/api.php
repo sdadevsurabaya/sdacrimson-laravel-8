@@ -101,6 +101,7 @@ Route::post('/attendance', [App\Http\Controllers\AttendanceController::class, 'i
 Route::post('/postLaporan', [App\Http\Controllers\LaporanSalesController::class, 'store'])->name('laporan');
 // routes/web.php
 Route::get('/attendance-id/{id}', [App\Http\Controllers\AttendanceController::class, 'getAttendanceDetails']);
+Route::get('/attendance/checkin/{user_id}/{general_id}/{jadwal_id}', [App\Http\Controllers\AttendanceController::class, 'getCheckinTime']);
 
 Route::post('/get-data-attendances',[GetAttendancesController::class, 'index'])->name('get.attendances');
 
