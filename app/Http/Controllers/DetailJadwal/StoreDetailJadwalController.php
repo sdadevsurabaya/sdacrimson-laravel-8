@@ -13,20 +13,38 @@ class StoreDetailJadwalController extends Controller
     {
         // Validasi input
         $request->validate([
-            'general_id' => 'required', // Sesuaikan dengan aturan validasi yang Anda butuhkan
+            'general_id' => 'required',
             'plant_date' => 'nullable',
             'note' => 'required',
-            'general_id' => 'required',
             'activity_type' => 'required',
             'jadwal_id' => 'required',
         ]);
+
+        // Validasi: Cek apakah user masih ada jadwal yang belum checkout untuk customer yang sama
+        $userId = Auth::id();
+        $generalId = $request->general_id;
+        
+        // Cari jadwal yang dibuat oleh user yang sama hari ini
+        $existingSchedule = DetailJadwal::whereHas('jadwal', function($query) use ($userId) {
+                $query->where('user_id', $userId)
+                      ->whereDate('date', now()->toDateString());
+            })
+            ->where('general_id', $generalId)
+            ->whereNotNull('checkin')  // Sudah check-in
+            ->whereNull('checkout')     // Belum checkout
+            ->first();
+
+        if ($existingSchedule) {
+            return redirect()
+                ->back()
+                ->with('error', 'Anda masih memiliki jadwal yang belum di-checkout untuk customer ini. Silakan checkout terlebih dahulu sebelum membuat jadwal baru.');
+        }
 
         // Simpan data ke dalam database
         DetailJadwal::create([
             'general_id' => $request->general_id,
             'plant_date' => $request->plant_date,
             'note' => $request->note,
-            'general_id' => $request->general_id,
             'jadwal_id' => $request->jadwal_id,
             'activity_type' => $request->activity_type,
             'status' => 'Pending',
@@ -34,6 +52,6 @@ class StoreDetailJadwalController extends Controller
         ]);
 
         // Redirect atau berikan respons sesuai kebutuhan Anda
-        return redirect()->route('jadwal.createJadwal'); // Gantikan 'route.name' dengan nama route yang sesuai
+        return redirect()->route('jadwal.createJadwal')->with('success', 'Jadwal berhasil ditambahkan');
     }
 }
