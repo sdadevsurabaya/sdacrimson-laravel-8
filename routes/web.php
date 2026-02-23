@@ -184,6 +184,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('PreviewRekapAbsen/{id}', [App\Http\Controllers\ReportSalesController::class, 'previewrekapAbsen'])->name('reportsales.rekapAbsen');
     Route::get('print-laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'laporanPeriode'])->name('laporan.periode');
     Route::get('laporan-periode', [App\Http\Controllers\Laporan\LaporanPeriodeController::class, 'index'])->name('laporan.index');
+    Route::get('report-journey-plan', [App\Http\Controllers\Laporan\ReportJourneyPlanController::class, 'index'])->name('laporan.journeyPlan');
+    Route::get('print-report-journey-plan', [App\Http\Controllers\Laporan\ReportJourneyPlanController::class, 'indexReport'])->name('laporan.journeyPlan.print');
     Route::get('jarak', [App\Http\Controllers\JarakController::class, 'index'])->name('jarak');
 
     Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
