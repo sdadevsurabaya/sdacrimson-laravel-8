@@ -127,7 +127,7 @@
                             <span>@lang('Maps')</span>
                         </a>
                     </li>
-                @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
+                @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1 || Str::ucfirst(Auth::user()->hasRole('Collector')) == 1 || Str::ucfirst(Auth::user()->hasRole('Driver')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
 
                     <li>

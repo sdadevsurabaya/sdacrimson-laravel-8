@@ -79,8 +79,8 @@
             <p class="analisa-title">Analisa :</p>
             <ul id="analisa-list">
                 <li>{{ $analysis['trend'] }}</li>
-                <li>ada {{ $analysis['new_cust_count'] }} customer yg baru di tambahkan selama periode ini</li>
-                <li>ada {{ $analysis['single_visit_count'] }} customer yg baru di visit 1 kali</li>
+                <li>ada {{ $analysis['new_cust_count'] }} customer baru di tambahkan selama periode ini</li>
+                <li>ada {{ $analysis['single_visit_count'] }} customer hanya di visit 1 kali</li>
                 <li>dalam {{ $analysis['period_months'] }} bulan dapat {{ $analysis['total_customers'] }} customer, rata2 perhari {{ $analysis['avg_new_cust'] }} customer baru</li>
                 <li>dalam {{ $analysis['period_months'] }} bulan visit {{ $analysis['total_visits'] }} kali, rata2 perhari {{ $analysis['avg_visits'] }} visit</li>
                 @if($analysis['avg_visits'] < 3)
@@ -96,15 +96,15 @@
         function exportToExcel() {
             // Get table
             var table = document.getElementById('report-table');
-            
+
             // Create a new workbook
             var wb = XLSX.utils.book_new();
-            
+
             // 1. Convert Table to Worksheet
-            // Using aoa to handle merging and custom headers if needed, 
+            // Using aoa to handle merging and custom headers if needed,
             // but table_to_sheet is simpler for standard tables.
             var ws = XLSX.utils.table_to_sheet(table);
-            
+
             // 2. Extract Analisa section as rows
             var salesName = "Sales : {{ $user->name }}";
             var range = "Periode : {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}";
@@ -114,18 +114,18 @@
                 [range],
                 ["Analisa :"]
             ];
-            
+
             var listItems = document.querySelectorAll('#analisa-list li');
             listItems.forEach(function(item) {
                 analysisData.push(["- " + item.innerText.trim()]);
             });
-            
+
             // Append analysis data to worksheet
             XLSX.utils.sheet_add_aoa(ws, analysisData, { origin: -1 }); // append to end
-            
+
             // Add worksheet to workbook
             XLSX.utils.book_append_sheet(wb, ws, "Journey Plan Report");
-            
+
             // Generate Excel file
             var filename = "Report-Journey-Plan-{{ $user->name }}-" + new Date().getTime() + ".xlsx";
             XLSX.writeFile(wb, filename);
