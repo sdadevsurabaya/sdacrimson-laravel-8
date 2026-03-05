@@ -5,6 +5,48 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        @media screen and (max-width: 767px) {
+            #datatable-kunjungan thead, #datatable-show thead {
+                display: none;
+            }
+            #datatable-kunjungan tbody tr, #datatable-show tbody tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 10px;
+            }
+            #datatable-kunjungan tbody td, #datatable-show tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 8px 0;
+                border-bottom: 1px solid #f1f5f7;
+                text-align: right;
+            }
+            #datatable-kunjungan tbody td:last-child, #datatable-show tbody td:last-child {
+                border-bottom: none;
+                display: block;
+                text-align: right;
+                margin-top: 10px;
+            }
+            #datatable-kunjungan tbody td::before, #datatable-show tbody td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                text-transform: uppercase;
+                color: #495057;
+                text-align: left;
+                margin-right: 10px;
+            }
+            #datatable-kunjungan tbody td:last-child > *, #datatable-show tbody td:last-child > * {
+                margin: 2px 0;
+                display: inline-block;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -54,8 +96,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="datatable-kunjungan" class="table table-striped table-bordered dt-responsive nowrap"
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable-kunjungan" class="table table-striped table-bordered w-100"
+                            style="border-collapse: collapse; border-spacing: 0;">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -68,25 +110,23 @@
 
                                 @foreach ($jadwals as $key => $jadwal)
                                     <tr>
-                                        <td>{{ $loop->iteration }}</td> {{-- This will give you the sequential number --}}
-                                        <td>{{ $jadwal->user->name ?? 'User Nonaktif' }}</td> {{-- Assuming 'user' relation has 'name' attribute --}}
-                                        <td>{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
-                                        {{-- Formatting the date --}}
+                                        <td data-label="NO">{{ $loop->iteration }}</td>
+                                        <td data-label="AR">{{ $jadwal->user->name ?? 'User Nonaktif' }}</td>
+                                        <td data-label="Tanggal">{{ \Carbon\Carbon::parse($jadwal->date)->format('d-M-Y') }}</td>
 
-                                        <td><button data-bs-toggle="modal" data-bs-target="#Show" type="button"
+                                        <td data-label="Aksi">
+                                            <button data-bs-toggle="modal" data-bs-target="#Show" type="button"
                                                 data-id="{{ $jadwal->id }}"
                                                 class="btn btn-sm btn-secondary show-jadwal">Show</button>
                                             <a href="{{ route('jadwal.addJadwal', ['id' => $jadwal->id]) }}">
                                                 <button type="button" class="btn btn-sm btn-success">Tambah</button>
                                             </a>
-
                                             <button data-bs-toggle="modal" data-bs-target="#Edit" type="button"
                                                 class="btn btn-sm btn-warning edit-jadwal"
                                                 data-id="{{ $jadwal->id }}">Edit</button>
                                             <button type="button" class="btn btn-sm btn-danger btn-cancel"
                                                 data-id="{{ $jadwal->id }}">Batal</button>
                                         </td>
-
                                     </tr>
                                 @endforeach
 
@@ -188,8 +228,8 @@
                 </div>
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table id="datatable-show" class="table table-striped table-bordered dt-responsive nowrap"
-                            style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <table id="datatable-show" class="table table-striped table-bordered w-100"
+                            style="border-collapse: collapse; border-spacing: 0;">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -433,12 +473,12 @@
                             var editUrl = `/edit-detailJadwal/${item.id}`;
 
                             var row = `<tr>
-                            <td>${index + 1}</td>
-                            <td>${item.customer.nama_usaha}</td>
-                            <td>${item.activity_type}</td>
+                            <td data-label="NO">${index + 1}</td>
+                            <td data-label="Customer">${item.customer.nama_usaha}</td>
+                            <td data-label="Type Aktifitas">${item.activity_type}</td>
 
-                            <td>${item.note}</td>
-                            <td>
+                            <td data-label="Note">${item.note}</td>
+                            <td data-label="Aksi">
                                 <a href="${editUrl}" class="btn btn-sm btn-warning">Edit</a>
                                 <button type="button" class="btn btn-sm btn-danger btn-cancel-detail" data-id="${item.id}">Batal</button>
                             </td>

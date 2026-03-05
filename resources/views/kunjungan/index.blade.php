@@ -5,6 +5,48 @@
 @section('css')
     <!-- DataTables -->
     <link href="{{ URL::asset('/assets/libs/datatables/datatables.min.css') }}" rel="stylesheet" type="text/css" />
+    <style>
+        @media screen and (max-width: 767px) {
+            #datatable-home thead {
+                display: none;
+            }
+            #datatable-home tbody tr {
+                display: block;
+                margin-bottom: 15px;
+                border: 1px solid #ced4da;
+                border-radius: 5px;
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                padding: 10px;
+            }
+            #datatable-home tbody td {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border: none;
+                padding: 8px 0;
+                border-bottom: 1px solid #f1f5f7;
+                text-align: right;
+            }
+            #datatable-home tbody td:last-child {
+                border-bottom: none;
+                display: block;
+                text-align: right;
+                margin-top: 10px;
+            }
+            #datatable-home tbody td::before {
+                content: attr(data-label);
+                font-weight: bold;
+                text-transform: uppercase;
+                color: #495057;
+                text-align: left;
+                margin-right: 10px;
+            }
+            #datatable-home tbody td:last-child > * {
+                margin: 2px 0;
+                display: inline-block;
+            }
+        }
+    </style>
 @endsection
 
 @section('content')
@@ -55,8 +97,8 @@
             <div class="card">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="datatable-home" class="table table-striped table-bordered nowrap"
-                        style="border-spacing: 0; width: 100%;">
+                        <table id="datatable-home" class="table table-striped table-bordered w-100"
+                        style="border-spacing: 0;">
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -74,8 +116,8 @@
                             <tbody>
                                 @foreach($formattedData as $i => $item)
                                 <tr>
-                                    <td>{{ $i + 1 }}</td>
-                                    <td>{{ $item['general']->nama_usaha }}
+                                    <td data-label="NO">{{ $i + 1 }}</td>
+                                    <td data-label="Nama Usaha">{{ $item['general']->nama_usaha }}
 
                                         @php
                                             $laporanSales = $item['general']->laporanSales->where('jadwal_id', $item['jadwal']->id)->first();
@@ -84,14 +126,8 @@
                                             ✅
                                         @endif
                                     </td>
-                                    <td>{{ $item['jadwal']->date }}</td>
-                                    {{-- <td>
-                                        {{ $item['activityType'] ?? 'Tidak Ada Aktivitas' }}
-                                    </td>
-                                    <td>{{ $item['general']->nama_lengkap }}</td>
-                                    <td>{{ $item['general']->alamat_kantor }}</td>
-                                    <td>{{ $item['jadwal']->user->name }}</td> --}}
-                                    <td>
+                                    <td data-label="Tanggal">{{ $item['jadwal']->date }}</td>
+                                    <td data-label="Aksi">
                                         <a href="{{ route('kunjungan.laporan', ['general_id' => $item['general']->id, 'jadwal_id' => $item['jadwal']->id, 'tanggal' => $item['jadwal']->date]) }}" class="btn btn-sm btn-success m-1">Kunjungi</a>
                                     </td>
                                 </tr>
