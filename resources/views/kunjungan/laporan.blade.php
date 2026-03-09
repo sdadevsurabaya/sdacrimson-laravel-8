@@ -81,6 +81,7 @@
                                     @csrf
                                     <div class="row">
 
+                                        @unless(Auth::user()->hasRole('Collector'))
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="contactPerson">
                                                 <span style="color: crimson;">*</span> Contact Person
@@ -102,6 +103,7 @@
                                                 <label for="noHp">No HP</label>
                                             </div>
                                         </div>
+                                        @endunless
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="alamat_kantor">
                                                 <span style="color: crimson;">*</span> Laporan</label>
@@ -185,6 +187,7 @@
                                     @csrf
                                     <div class="row">
 
+                                        @unless(Auth::user()->hasRole('Collector'))
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="contactPerson">
                                                 <span style="color: crimson;">*</span> Contact Person
@@ -209,6 +212,7 @@
                                                 <label for="noHp">No HP</label>
                                             </div>
                                         </div>
+                                        @endunless
 
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="laporan">

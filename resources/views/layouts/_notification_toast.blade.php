@@ -1,3 +1,4 @@
+@if (!(request()->routeIs('kunjungan.laporan') && Auth::check() && Auth::user()->hasRole('Collector')))
 <style>
     #realtime-notification {
         position: fixed;
@@ -168,14 +169,19 @@
         function startTimer(checkinTimeString) {
             clearInterval(timerInterval);
             const checkinTime = new Date(checkinTimeString);
-            const twentyMinutesInMs = 20 * 60 * 1000;
-            const targetTime = new Date(checkinTime.getTime() + twentyMinutesInMs);
+            
+            // [PERUBAHAN] Jika role Collector, tidak perlu menunggu 20 menit
+            const isCollector = {{ Auth::user()->hasRole('Collector') ? 'true' : 'false' }};
+            const waitMinutes = isCollector ? 0 : 20;
+            
+            const waitTimeInMs = waitMinutes * 60 * 1000;
+            const targetTime = new Date(checkinTime.getTime() + waitTimeInMs);
 
             timerInterval = setInterval(() => {
                 const now = new Date();
                 const diff = targetTime - now;
 
-                if (diff > 0) { // Jika masih dalam 20 menit (countdown)
+                if (diff > 0) { // Jika masih dalam masa tunggu (countdown)
                     notificationElement.classList.remove('is-late'); // Indikator Merah
                     timerLabel.textContent = 'Sisa Waktu: ';
                     const minutes = Math.floor(diff / 60000).toString().padStart(2, '0');
@@ -183,7 +189,7 @@
                     timerElement.textContent = `${minutes}:${seconds}`;
                     checkoutButton.style.display = 'none'; // Sembunyikan tombol checkout
 
-                } else { // Jika sudah lewat 20 menit
+                } else { // Jika sudah lewat masa tunggu
                     notificationElement.classList.add('is-late'); // Indikator Hijau
                     timerLabel.textContent = 'Selesai: ';
                     const overdueDiff = Math.abs(diff);
@@ -281,3 +287,4 @@
         pollingInterval = setInterval(checkForNotification, 60000);
     });
 </script>
+@endif

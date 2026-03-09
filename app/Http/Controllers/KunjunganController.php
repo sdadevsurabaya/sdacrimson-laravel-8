@@ -47,9 +47,8 @@ class KunjunganController extends Controller
         //         ->orderBy('general_informations.id', 'desc')
         //         ->get(['*', 'general_informations.id as id_general']);
         // }
-
-
         $today = Carbon::today();
+        $tenDaysAgo = Carbon::today()->subDays(10);
 
         $userId = auth()->user()->id; // atau sesuaikan dengan metode mendapatkan user_id
 
@@ -67,12 +66,15 @@ class KunjunganController extends Controller
         //     $query->select('id', 'name');
         // }])->get();
 
-        $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today) {
+        $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today, $tenDaysAgo) {
             $query->where('user_id', $userId)
-                  ->whereDate('date', '<=', $today);
+                  ->whereDate('date', '<=', $today)
+                  ->whereDate('date', '>=', $tenDaysAgo);
         })->with([
-            'jadwals' => function ($query) use ($userId) {
+            'jadwals' => function ($query) use ($userId, $today, $tenDaysAgo) {
                 $query->where('user_id', $userId)
+                      ->whereDate('date', '<=', $today)
+                      ->whereDate('date', '>=', $tenDaysAgo)
                       ->select('jadwals.*');
             },
             'jadwals.user' => function ($query) {

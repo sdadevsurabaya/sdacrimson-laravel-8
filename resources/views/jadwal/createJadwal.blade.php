@@ -165,9 +165,7 @@
                         $user = Auth::user();
                     @endphp
 
-                    @if ($user->roles->count() == 1 && $user->hasRole('Sales'))
-                        <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
-                    @else
+                    @if ($user->hasRole('Admin'))
                         <div class="mb-3">
                             <label for="user_id" class="col-form-label">Sales / PIC</label>
                             <div>
@@ -179,6 +177,8 @@
                                 </select>
                             </div>
                         </div>
+                    @else
+                        <input type="hidden" name="user_id" id="user_id" value="{{ $user->id }}">
                     @endif
 
                     {{-- @role('Sales')

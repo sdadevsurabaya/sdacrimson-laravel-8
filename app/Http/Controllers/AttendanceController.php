@@ -191,8 +191,11 @@ class AttendanceController extends Controller
                 // Calculate duration in minutes
                 $duration = now()->diffInMinutes($checkin->created_at);
                 
-                // If duration < 20 minutes, note is required
-                if ($duration < 20 && empty($request->input('note'))) {
+                // If duration < 20 minutes and not Collector, note is required
+                $user = \App\Models\User::find($request->input('iduser'));
+                $isCollector = $user ? $user->hasRole('Collector') : false;
+
+                if ($duration < 20 && empty($request->input('note')) && !$isCollector) {
                     return response()->json([
                         'success' => false,
                         'message' => [

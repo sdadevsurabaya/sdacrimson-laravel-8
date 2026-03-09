@@ -28,12 +28,12 @@ class JadwalController extends Controller
 
         $users = User::pluck('name', 'id');
 
-        $hasRole = auth()->user()->hasRole('Sales');
+        $isAdmin = auth()->user()->hasRole('Admin');
 
-        if ($hasRole) {
-            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
-        } else {
+        if ($isAdmin) {
             $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+        } else {
+            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
         }
 
         $start = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
