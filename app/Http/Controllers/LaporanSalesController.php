@@ -92,17 +92,23 @@ class LaporanSalesController extends Controller
     {
         try {
             // Validasi input untuk data laporan
-            $validatedLaporan = $request->validate([
+            $rules = [
                 'laporan' => 'required|string|min:30',
                 'user_id' => 'required|string',
                 'general_id' => 'required|string',
                 'jadwal_id' => 'required|string',
-                'contact_person' => 'required|string',
-                'no_hp' => 'required|numeric',
                 'tanggal_jadwal' => 'required|string',
-                // 'latitude' => 'required|numeric',
-                // 'longitude' => 'required|numeric',
-            ], [
+            ];
+
+            if (!Auth::user()->hasRole('Collector')) {
+                $rules['contact_person'] = 'required|string';
+                $rules['no_hp'] = 'required|numeric';
+            } else {
+                $rules['contact_person'] = 'nullable|string';
+                $rules['no_hp'] = 'nullable|numeric';
+            }
+
+            $validatedLaporan = $request->validate($rules, [
                 'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
                 'latitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
                 'longitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
@@ -114,25 +120,29 @@ class LaporanSalesController extends Controller
             $laporanSales->user_id = $validatedLaporan['user_id'];
             $laporanSales->pesan = $validatedLaporan['laporan'];
             $laporanSales->jadwal_id = $validatedLaporan['jadwal_id'];
-            $laporanSales->contact_person = $validatedLaporan['contact_person'];
-            $laporanSales->no_hp = $validatedLaporan['no_hp'];
+            if (!Auth::user()->hasRole('Collector')) {
+                $laporanSales->contact_person = $request->input('contact_person');
+                $laporanSales->no_hp = $request->input('no_hp');
+            }
             $laporanSales->save();
 
             // ✅ Sinkronisasi data customer ke general_information
-            $general = \App\Models\General_model::find($validatedLaporan['general_id']);
-
-            if ($general) {
-                // Jika sudah ada, update nama & no HP
-                $general->nama_lengkap = $validatedLaporan['contact_person'];
-                $general->mobile_phone = $validatedLaporan['no_hp'];
-                $general->save();
-            } else {
-                // Jika belum ada, buat baru
-                \App\Models\General_model::create([
-                    'id' => $validatedLaporan['general_id'],
-                    'nama_lengkap' => $validatedLaporan['contact_person'],
-                    'mobile_phone' => $validatedLaporan['no_hp'],
-                ]);
+            if (!Auth::user()->hasRole('Collector')) {
+                $general = \App\Models\General_model::find($validatedLaporan['general_id']);
+    
+                if ($general) {
+                    // Jika sudah ada, update nama & no HP
+                    $general->nama_lengkap = $request->input('contact_person');
+                    $general->mobile_phone = $request->input('no_hp');
+                    $general->save();
+                } else {
+                    // Jika belum ada, buat baru
+                    \App\Models\General_model::create([
+                        'id' => $validatedLaporan['general_id'],
+                        'nama_lengkap' => $request->input('contact_person'),
+                        'mobile_phone' => $request->input('no_hp'),
+                    ]);
+                }
             }
 
             // Validasi dan simpan foto (jika ada)
@@ -200,20 +210,25 @@ class LaporanSalesController extends Controller
     public function update(Request $request)
     {
         try {
-            $validatedLaporan = $request->validate(
-                [
-                    'laporan' => 'required|string|min:30',
-                    'laporan_id' => 'required|string',
-                    'general_id' => 'required|string',
-                    'jadwal_id' => 'required|string',
-                    'tanggal_jadwal' => 'required|string',
-                    'contact_person' => 'required|string',
-                    'no_hp' => 'required|numeric',
-                ],
-                [
-                    'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
-                ]
-            );
+            $rulesUpdate = [
+                'laporan' => 'required|string|min:30',
+                'laporan_id' => 'required|string',
+                'general_id' => 'required|string',
+                'jadwal_id' => 'required|string',
+                'tanggal_jadwal' => 'required|string',
+            ];
+
+            if (!Auth::user()->hasRole('Collector')) {
+                $rulesUpdate['contact_person'] = 'required|string';
+                $rulesUpdate['no_hp'] = 'required|numeric';
+            } else {
+                $rulesUpdate['contact_person'] = 'nullable|string';
+                $rulesUpdate['no_hp'] = 'nullable|numeric';
+            }
+
+            $validatedLaporan = $request->validate($rulesUpdate, [
+                'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
+            ]);
 
             $idLaporan = $validatedLaporan['laporan_id'];
 
@@ -224,24 +239,28 @@ class LaporanSalesController extends Controller
 
             // Update laporan
             $laporanSales->pesan = $validatedLaporan['laporan'];
-            $laporanSales->contact_person = $validatedLaporan['contact_person'];
-            $laporanSales->no_hp = $validatedLaporan['no_hp'];
+            if (!Auth::user()->hasRole('Collector')) {
+                $laporanSales->contact_person = $request->input('contact_person');
+                $laporanSales->no_hp = $request->input('no_hp');
+            }
             $laporanSales->save();
 
             /**
              * === Sinkronisasi ke tabel general_informations ===
              * update kalau sudah ada (berdasarkan general_id)
              */
-            $general = General_model::find($laporanSales->general_id);
-
-            if ($general) {
-                $general->update([
-                    'nama_lengkap' => $validatedLaporan['contact_person'],
-                    'mobile_phone' => $validatedLaporan['no_hp'],
-                    'update_date'  => now()->format('Y-m-d'),
-                    'update_time'  => now()->format('H:i:s'),
-                    'update_by'    => Auth::user()->id,
-                ]);
+            if (!Auth::user()->hasRole('Collector')) {
+                $general = General_model::find($laporanSales->general_id);
+    
+                if ($general) {
+                    $general->update([
+                        'nama_lengkap' => $request->input('contact_person'),
+                        'mobile_phone' => $request->input('no_hp'),
+                        'update_date'  => now()->format('Y-m-d'),
+                        'update_time'  => now()->format('H:i:s'),
+                        'update_by'    => Auth::user()->id,
+                    ]);
+                }
             }
 
             /**
