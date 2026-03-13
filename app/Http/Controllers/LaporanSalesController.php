@@ -100,7 +100,7 @@ class LaporanSalesController extends Controller
                 'tanggal_jadwal' => 'required|string',
             ];
 
-            if (!Auth::user()->hasRole('Collector')) {
+            if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $rules['contact_person'] = 'required|string';
                 $rules['no_hp'] = 'required|numeric';
             } else {
@@ -120,14 +120,14 @@ class LaporanSalesController extends Controller
             $laporanSales->user_id = $validatedLaporan['user_id'];
             $laporanSales->pesan = $validatedLaporan['laporan'];
             $laporanSales->jadwal_id = $validatedLaporan['jadwal_id'];
-            if (!Auth::user()->hasRole('Collector')) {
+            if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $laporanSales->contact_person = $request->input('contact_person');
                 $laporanSales->no_hp = $request->input('no_hp');
             }
             $laporanSales->save();
 
             // ✅ Sinkronisasi data customer ke general_information
-            if (!Auth::user()->hasRole('Collector')) {
+            if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $general = \App\Models\General_model::find($validatedLaporan['general_id']);
     
                 if ($general) {
@@ -218,7 +218,7 @@ class LaporanSalesController extends Controller
                 'tanggal_jadwal' => 'required|string',
             ];
 
-            if (!Auth::user()->hasRole('Collector')) {
+            if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $rulesUpdate['contact_person'] = 'required|string';
                 $rulesUpdate['no_hp'] = 'required|numeric';
             } else {
@@ -239,7 +239,7 @@ class LaporanSalesController extends Controller
 
             // Update laporan
             $laporanSales->pesan = $validatedLaporan['laporan'];
-            if (!Auth::user()->hasRole('Collector')) {
+            if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $laporanSales->contact_person = $request->input('contact_person');
                 $laporanSales->no_hp = $request->input('no_hp');
             }
@@ -249,7 +249,7 @@ class LaporanSalesController extends Controller
              * === Sinkronisasi ke tabel general_informations ===
              * update kalau sudah ada (berdasarkan general_id)
              */
-            if (!Auth::user()->hasRole('Collector')) {
+            if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $general = General_model::find($laporanSales->general_id);
     
                 if ($general) {

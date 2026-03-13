@@ -37,6 +37,9 @@ class ReportSalesController extends Controller
             // dump($user->cabang_id);
             $allowedUserIds = $users->where('cabang_id', $user->cabang_id)->pluck('id');
             $jadwalsQuery->whereIn('user_id', $allowedUserIds);
+        } elseif ($user->hasRole('Logistik')) {
+            $allowedUserIds = \App\Models\User::role('Driver')->pluck('id')->toArray();
+            $jadwalsQuery->whereIn('user_id', $allowedUserIds);
         }
         // Role lain bisa lihat semua data
 

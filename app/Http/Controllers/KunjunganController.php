@@ -50,30 +50,32 @@ class KunjunganController extends Controller
         $today = Carbon::today();
         $tenDaysAgo = Carbon::today()->subDays(10);
 
-        $userId = auth()->user()->id; // atau sesuaikan dengan metode mendapatkan user_id
+        $user = auth()->user();
+        $isLogistik = $user->hasRole('Logistik');
+        $userId = $user->id; // default if not Logistik
+        
+        // If Logistik, we want all schedules belonging to the "Driver" role
+        $driverIds = [];
+        if ($isLogistik) {
+            $driverIds = \App\Models\User::role('Driver')->pluck('id')->toArray();
+        }
 
-        // $generalInformations = General_model::whereHas('jadwal', function ($query) use ($userId, $today) {
-        //     $query->where('user_id', $userId)
-        //           ->whereDate('date', $today);
-        // })->get();
-
-        // $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today) {
-        //     $query->where('user_id', $userId)
-        //     ->whereDate('date', '<=', $today);
-        // })->with(['jadwals' => function ($query) {
-        //     $query->select('jadwals.*');
-        // }, 'jadwals.user' => function ($query) {
-        //     $query->select('id', 'name');
-        // }])->get();
-
-        $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today, $tenDaysAgo) {
-            $query->where('user_id', $userId)
-                  ->whereDate('date', '<=', $today)
+        $data = General_model::whereHas('jadwals', function ($query) use ($userId, $today, $tenDaysAgo, $isLogistik, $driverIds) {
+            if ($isLogistik) {
+                $query->whereIn('user_id', $driverIds);
+            } else {
+                $query->where('user_id', $userId);
+            }
+            $query->whereDate('date', '<=', $today)
                   ->whereDate('date', '>=', $tenDaysAgo);
         })->with([
-            'jadwals' => function ($query) use ($userId, $today, $tenDaysAgo) {
-                $query->where('user_id', $userId)
-                      ->whereDate('date', '<=', $today)
+            'jadwals' => function ($query) use ($userId, $today, $tenDaysAgo, $isLogistik, $driverIds) {
+                if ($isLogistik) {
+                    $query->whereIn('user_id', $driverIds);
+                } else {
+                    $query->where('user_id', $userId);
+                }
+                $query->whereDate('date', '<=', $today)
                       ->whereDate('date', '>=', $tenDaysAgo)
                       ->select('jadwals.*');
             },
@@ -83,10 +85,14 @@ class KunjunganController extends Controller
             'laporanSales' => function ($query) {
                 $query->select('laporan_sales.*');
             },
-            'detailJadwals' => function ($query) use ($userId) {
+            'detailJadwals' => function ($query) use ($userId, $isLogistik, $driverIds) {
                 $query->select('detail_jadwals.*')
-                      ->whereHas('jadwal', function ($query) use ($userId) {
-                          $query->where('user_id', $userId);
+                      ->whereHas('jadwal', function ($query) use ($userId, $isLogistik, $driverIds) {
+                          if ($isLogistik) {
+                              $query->whereIn('user_id', $driverIds);
+                          } else {
+                              $query->where('user_id', $userId);
+                          }
                       });
             }
         ])->get();
@@ -117,8 +123,13 @@ class KunjunganController extends Controller
 
     public function laporan($id, $jadwal){
      
-
-        $laporan = LaporanSales::with(['gambar'])->where('general_id', $id)->where('jadwal_id', $jadwal)->where('user_id', Auth::id())->first();
+        $queryLaporan = LaporanSales::with(['gambar'])->where('general_id', $id)->where('jadwal_id', $jadwal);
+        
+        if (!Auth::user()->hasRole('Logistik')) {
+            $queryLaporan->where('user_id', Auth::id());
+        }
+        
+        $laporan = $queryLaporan->first();
         $detailJadwal = DetailJadwal::where('general_id', $id)->where('jadwal_id', $jadwal)->first();
         $general = General_model::find($id);
       

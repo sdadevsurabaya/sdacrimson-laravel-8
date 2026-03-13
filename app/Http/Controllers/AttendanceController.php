@@ -193,9 +193,9 @@ class AttendanceController extends Controller
                 
                 // If duration < 20 minutes and not Collector, note is required
                 $user = \App\Models\User::find($request->input('iduser'));
-                $isCollector = $user ? $user->hasRole('Collector') : false;
+                $isCollectorOrDriver = $user ? ($user->hasRole('Collector') || $user->hasRole('Driver')) : false;
 
-                if ($duration < 20 && empty($request->input('note')) && !$isCollector) {
+                if ($duration < 20 && empty($request->input('note')) && !$isCollectorOrDriver) {
                     return response()->json([
                         'success' => false,
                         'message' => [

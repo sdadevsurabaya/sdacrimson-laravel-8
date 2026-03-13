@@ -273,7 +273,8 @@
                         </a>
                     </li>
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Manager Sales')) == 1 ||
-                        Str::ucfirst(Auth::user()->hasRole('Head Of Sales')) == 1)
+                        Str::ucfirst(Auth::user()->hasRole('Head Of Sales')) == 1 ||
+                        Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
                     <li>
                         {{-- <a href="{{url('index')}}"> --}}
@@ -283,6 +284,7 @@
                         </a>
                     </li>
 
+                    @unless (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
                     <li class="menu-title">@lang('Sales')</li>
                     <li>
                         <a href="#" class="has-arrow waves-effect">
@@ -301,6 +303,7 @@
                             <span>@lang('Kunjungan')</span>
                         </a>
                     </li>
+                    @endunless
 
                     <li>
                         <a href="#" class="has-arrow waves-effect">
@@ -310,15 +313,18 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('reportsales.index') }}">@lang('Report Visit')</a></li>
                             <li><a href="{{ route('laporan.index') }}">@lang('Report Periode Visit')</a></li>
+                            @unless (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
                             <li><a href="{{ route('back.dashboardreport.index') }}">@lang('Report Weekly')</a></li>
                             <li><a href="{{ route('back.monthlyreport.index') }}">@lang('Report Analisis')</a></li>
                             <li><a href="{{ route('laporan.journeyPlan') }}">@lang('Report Journey Plan')</a></li>
+                            @endunless
                             {{-- <li><a href="{{ route('back.report.yearly') }}">@lang('Report Yearly')</a></li> --}}
 
                         </ul>
                     </li>
 
 
+                    @unless (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
                     <li class="menu-title">@lang('Area Coverage')</li>
                     <li>
                         <a href="{{ route('maps.index') }}">
@@ -326,6 +332,7 @@
                             <span>@lang('Maps')</span>
                         </a>
                     </li>
+                    @endunless
                 @endif
             </ul>
         </div>

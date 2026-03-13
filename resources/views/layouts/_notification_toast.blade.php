@@ -1,4 +1,4 @@
-@if (!(request()->routeIs('kunjungan.laporan') && Auth::check() && Auth::user()->hasRole('Collector')))
+@if (!(request()->routeIs('kunjungan.laporan') && Auth::check() && (Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))))
 <style>
     #realtime-notification {
         position: fixed;
@@ -170,9 +170,9 @@
             clearInterval(timerInterval);
             const checkinTime = new Date(checkinTimeString);
             
-            // [PERUBAHAN] Jika role Collector, tidak perlu menunggu 20 menit
-            const isCollector = {{ Auth::user()->hasRole('Collector') ? 'true' : 'false' }};
-            const waitMinutes = isCollector ? 0 : 20;
+            // [PERUBAHAN] Jika role Collector atau Driver, tidak perlu menunggu 20 menit
+            const isCollectorOrDriver = {{ Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver') ? 'true' : 'false' }};
+            const waitMinutes = isCollectorOrDriver ? 0 : 20;
             
             const waitTimeInMs = waitMinutes * 60 * 1000;
             const targetTime = new Date(checkinTime.getTime() + waitTimeInMs);

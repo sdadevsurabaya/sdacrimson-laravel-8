@@ -15,7 +15,14 @@ class ReportJourneyPlanController extends Controller
 {
     public function index()
     {
-        $users = User::pluck('name', 'id');
+        $user = auth()->user();
+        
+        if ($user->hasRole('Logistik')) {
+            $users = User::role('Driver')->pluck('name', 'id');
+        } else {
+            $users = User::pluck('name', 'id');
+        }
+
         return view('reportsales.journey-plan', compact('users'));
     }
 

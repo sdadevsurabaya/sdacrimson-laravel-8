@@ -382,8 +382,8 @@
             const idJadwal = urlParams.get('id_jadwal');
             const userId = $('#iduser').val();
 
-            // Check if user is Collector
-            var isCollector = {{ Auth::user()->hasRole('Collector') ? 'true' : 'false' }};
+            // Check if user is Collector or Driver
+            var isCollectorOrDriver = {{ Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver') ? 'true' : 'false' }};
 
             // Fetch check-in time from API
             $.ajax({
@@ -393,8 +393,8 @@
                     if (response.success) {
                         visitDurationMinutes = response.duration_minutes;
                         
-                        // If duration < 20 minutes and user is not Collector, note is required
-                        if (visitDurationMinutes < 20 && !isCollector) {
+                        // If duration < 20 minutes and user is not Collector or Driver, note is required
+                        if (visitDurationMinutes < 20 && !isCollectorOrDriver) {
                             isNoteRequired = true;
                             $('#noteRequiredBadge').show();
                             $('#noteWarning').show();

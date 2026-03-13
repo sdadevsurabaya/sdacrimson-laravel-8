@@ -81,7 +81,7 @@
                                     @csrf
                                     <div class="row">
 
-                                        @unless(Auth::user()->hasRole('Collector'))
+                                        @unless(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="contactPerson">
                                                 <span style="color: crimson;">*</span> Contact Person
@@ -187,7 +187,7 @@
                                     @csrf
                                     <div class="row">
 
-                                        @unless(Auth::user()->hasRole('Collector'))
+                                        @unless(Auth::user()->hasRole('Collector')|| Auth::user()->hasRole('Driver'))
                                         <div class="col-md-12 mb-3">
                                             <label class="form-label" for="contactPerson">
                                                 <span style="color: crimson;">*</span> Contact Person

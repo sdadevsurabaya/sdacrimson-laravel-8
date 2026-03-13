@@ -11,7 +11,12 @@ class GetDetailJadwalController extends Controller
     public function index()
 
     {
-        $Jadwal = DetailJadwal::with('customer')->whereDate('created_at', now())->get();
+        $Jadwal = DetailJadwal::with('customer')
+            ->whereHas('jadwal', function ($query) {
+                $query->whereDate('date', now())
+                      ->where('user_id', auth()->id());
+            })
+            ->get();
         $customerDetails = $Jadwal->pluck('customer.nama_usaha', 'customer.id')->toArray();
         $newCustomer = [553 => 'SDA GLOBAL INDONESIA'];
 

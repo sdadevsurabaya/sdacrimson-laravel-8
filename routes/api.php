@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\Type_outlet\GetTypeOutletController;
 #Outlet
 use App\Http\Controllers\Api\Outlet\GetOutletController;
 use App\Http\Controllers\Api\Outlet\PostOutletController;
+use App\Http\Controllers\Api\Outlet\PostImageController;
 
 #ContactPerson
 use App\Http\Controllers\Api\Contact_person\GetContactPersonController;

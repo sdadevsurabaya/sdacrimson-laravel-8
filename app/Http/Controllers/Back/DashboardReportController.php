@@ -30,7 +30,14 @@ class DashboardReportController extends Controller
         $weeks = $this->getCalendarWeeks($month, $year, $arrayDateOff);
 
         // Tentukan role yang dibolehkan
-        $getIdRolesSalesOrManager = in_array($role, [1, 9]) ? [5, 8] : [5];
+        // 1 = Admin, 9 = Manager Sales, 10 = Logistik, 5 = Sales, 8 = Driver
+        if (in_array($role, [1, 9])) {
+            $getIdRolesSalesOrManager = [5, 8];
+        } elseif ($role == 10) {
+            $getIdRolesSalesOrManager = [8]; // Logistik only sees Driver
+        } else {
+            $getIdRolesSalesOrManager = [5];
+        }
         $roleList                 = implode(',', $getIdRolesSalesOrManager);
 
         // Tentukan cabang target
@@ -38,13 +45,18 @@ class DashboardReportController extends Controller
 
         // Ambil semua user, filter sesuai cabang
         $users      = User::select('id', 'name', 'cabang_id')->get();
-        $getUsers   = $users->where('cabang_id', $targetCabangId)->pluck('id');
+        if ($role == 10) {
+            // Logistik sees all branches' drivers
+            $getUsers = $users->pluck('id');
+        } else {
+            $getUsers = $users->where('cabang_id', $targetCabangId)->pluck('id');
+        }
         $userIdsStr = $getUsers->implode(',');
 
         // Buat kondisi filter ID user
-        if ((in_array($role, [1, 9]) && $cabangId && $userIdsStr) || $role === 8) {
+        if ((in_array($role, [1, 9, 10]) && $cabangId && $userIdsStr) || $role === 8) {
             $idManagerExclude = "IN({$userIdsStr})";
-        } elseif (in_array($role, [1, 9]) && $cabangId && ! $userIdsStr) {
+        } elseif (in_array($role, [1, 9, 10]) && $cabangId && ! $userIdsStr) {
             $idManagerExclude = "";
         } else {
             $idManagerExclude = "NOT IN(1,13,36)";
@@ -54,7 +66,8 @@ class DashboardReportController extends Controller
         $sales = [];
 
         // Jika ada user yang valid atau mode exclude
-        if (! empty($userIdsStr) || $idManagerExclude === "NOT IN(1,13,36)") {
+        if ((! empty($userIdsStr) && in_array($role, [1, 9, 10, 8])) || $idManagerExclude === "NOT IN(1,13,36)") {
+            if (empty($idManagerExclude)) $idManagerExclude = "NOT IN(1,13,36)";
             $sales = DB::select("
             SELECT u.id, u.name, r.name as role
             FROM users u
@@ -298,7 +311,14 @@ class DashboardReportController extends Controller
         $role = optional($user->roles()->first())->id;
 
         // Tentukan role yang dibolehkan
-        $getIdRolesSalesOrManager = in_array($role, [1, 9]) ? [5, 8] : [5];
+        // 1 = Admin, 9 = Manager Sales, 10 = Logistik, 5 = Sales, 8 = Driver
+        if (in_array($role, [1, 9])) {
+            $getIdRolesSalesOrManager = [5, 8];
+        } elseif ($role == 10) {
+            $getIdRolesSalesOrManager = [8]; // Logistik only sees Driver
+        } else {
+            $getIdRolesSalesOrManager = [5];
+        }
         $roleList                 = implode(',', $getIdRolesSalesOrManager);
 
         // Tentukan cabang target
@@ -306,13 +326,18 @@ class DashboardReportController extends Controller
 
         // Ambil semua user, filter sesuai cabang
         $users      = User::select('id', 'name', 'cabang_id')->get();
-        $getUsers   = $users->where('cabang_id', $targetCabangId)->pluck('id');
+        if ($role == 10) {
+            // Logistik sees all branches' drivers
+            $getUsers = $users->pluck('id');
+        } else {
+            $getUsers   = $users->where('cabang_id', $targetCabangId)->pluck('id');
+        }
         $userIdsStr = $getUsers->implode(',');
 
         // Buat kondisi filter ID user
-        if ((in_array($role, [1, 9]) && $cabangId && $userIdsStr) || $role === 8) {
+        if ((in_array($role, [1, 9, 10]) && $cabangId && $userIdsStr) || $role === 8) {
             $idManagerExclude = "IN({$userIdsStr})";
-        } elseif (in_array($role, [1, 9]) && $cabangId && ! $userIdsStr) {
+        } elseif (in_array($role, [1, 9, 10]) && $cabangId && ! $userIdsStr) {
             $idManagerExclude = "";
         } else {
             $idManagerExclude = "NOT IN(1,13,36)";
@@ -322,7 +347,8 @@ class DashboardReportController extends Controller
         $sales = [];
 
         // Jika ada user yang valid atau mode exclude
-        if (! empty($userIdsStr) || $idManagerExclude === "NOT IN(1,13,36)") {
+        if ((! empty($userIdsStr) && in_array($role, [1, 9, 10, 8])) || $idManagerExclude === "NOT IN(1,13,36)") {
+            if (empty($idManagerExclude)) $idManagerExclude = "NOT IN(1,13,36)";
             $sales = DB::select("
             SELECT u.id, u.name, r.name as role
             FROM users u

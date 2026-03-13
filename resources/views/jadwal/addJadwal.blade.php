@@ -14,7 +14,7 @@
             Jadwal
         @endslot
         @slot('title')
-            Buat Jadwal Untuk Sales {{ $jadwal->user->name }}
+            Buat Jadwal Untuk {{ $jadwal->user->name }}
         @endslot
     @endcomponent
 
@@ -62,7 +62,7 @@
                                 <button id="generateLeadBtn" class="btn btn-primary btn-sm d-none">Generate Lead</button>
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Customer Baru</button>
-                            @elseif (Str::ucfirst(Auth::user()->hasAnyRole('Sales', 'Manager Sales','Collector')) == 1)
+                            @elseif (Str::ucfirst(Auth::user()->hasAnyRole('Sales', 'Manager Sales','Collector','Driver')) == 1)
                                 <button type="button" class="btn btn-warning btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#exampleModal">Customer Baru</button>
                             @endif
@@ -119,6 +119,7 @@
                                             <option value="Visit">Visit</option>
                                             <option value="Demo">Demo</option>
                                             <option value="Penagihan">Penagihan</option>
+                                            <option value="Pengiriman">Pengiriman</option>
                                         </select>
                                     </div>
                                     <div class="col-12 col-md-6 mb-3" id="plant_date">
@@ -353,7 +354,7 @@
 
         function hideInputJam(val) {
             var idInputJam = document.getElementById('plant_date');
-            if (val == 'Visit') {
+            if (val == 'Visit' || val == 'Pengiriman' || val == 'Penagihan') {
                 idInputJam.style.display = 'none';
             } else {
                 idInputJam.style.display = 'block';
