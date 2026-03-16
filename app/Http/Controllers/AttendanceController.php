@@ -90,12 +90,15 @@ class AttendanceController extends Controller
             $updateJadwal->save(); 
 
 
+            // Ambil checkout terakhir user ini pada hari ini (sebagai Titik A / Waktu Mulai Perjalanan)
             $getAttendance = Attendance::where('user_id',  $request->input('iduser'))
-            ->where('status', 'check in')
+            ->where('status', 'check out')
             ->whereDate('created_at', now())
             ->orderBy('id', 'desc')
             ->first();
 
+            // Aturan fallback: Kalau belum ada checkout hari ini sama sekali, berarti ini toko pertama.
+            // Maka kita ambil Start Time (Titik Start)
             $waktuStart = LocationTime::where('user_id',  $request->input('iduser'))->whereDate('created_at', now())
             ->where('type', 'start')
             ->orderBy('id', 'desc')

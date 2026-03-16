@@ -113,6 +113,19 @@
                                                 <label for="floatingTextarea2">Masukan catatan..</label>
                                             </div>
                                         </div>
+
+                                        @if(Auth::user()->hasRole('Driver'))
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="odoKm">
+                                                <span style="color: crimson;">*</span> Odo KM
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="number" name="odo_km" id="odoKm" class="form-control"
+                                                    value="{{ $laporan->odo_km }}" required>
+                                                <label for="odoKm">Odo KM</label>
+                                            </div>
+                                        </div>
+                                        @endif
                                         <div class="col-xl-12 col-md-12">
                                             <div class="mb-3">
                                                 <label class="form-label">
@@ -224,6 +237,19 @@
                                                 <label for="floatingTextarea2">Masukan catatan..</label>
                                             </div>
                                         </div>
+
+                                        @if(Auth::user()->hasRole('Driver'))
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="odoKm">
+                                                <span style="color: crimson;">*</span> Odo KM
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="number" name="odo_km" id="odoKm" class="form-control"
+                                                    value="{{ old('odo_km') }}" required>
+                                                <label for="odoKm">Odo KM</label>
+                                            </div>
+                                        </div>
+                                        @endif
 
                                         <div class="col-xl-12 col-md-12">
                                             <div class="mb-3">

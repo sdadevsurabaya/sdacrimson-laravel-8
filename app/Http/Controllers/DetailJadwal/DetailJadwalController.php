@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\DetailJadwal;
 
 use App\Models\Jadwal;
+use App\Models\Attendance;
 use App\Models\DetailJadwal;
 use Illuminate\Http\Request;
 use App\Models\General_model;
@@ -24,12 +25,23 @@ class DetailJadwalController extends Controller
     public function getDataById(Request $request)
     {
         $id = $request->get('id');
-        // Ambil data berdasarkan ID
-        // $data = DetailJadwal::with(['customer', 'laporanSales'])->where('jadwal_id', $id)->get();
 
         $data = DetailJadwal::with(['customer', 'laporanSales' => function ($query) use ($id) {
             $query->where('jadwal_id', $id);
         }])->where('jadwal_id', $id)->get();
+
+        // Ambil semua record attendance check-in untuk jadwal ini
+        $checkins = Attendance::where('jadwal_id', $id)
+            ->where('status', 'check in')
+            ->get()
+            ->keyBy('general_id');
+
+        // Tambahkan jam checkin ke setiap item
+        $data->transform(function ($item) use ($checkins) {
+            $attendance = $checkins->get($item->general_id);
+            $item->checkin_actual = $attendance ? $attendance->created_at->format('H:i') : null;
+            return $item;
+        });
 
         return response()->json($data);
     }

@@ -114,6 +114,14 @@ class LaporanSalesController extends Controller
                 'longitude.required' => 'Informasi lokasi Anda belum diizinkan. Silahkan izinkan dan aktifkan.',
             ]);
 
+            $odoKm = null;
+            if (Auth::user()->hasRole('Driver')) {
+                $odoRules = $request->validate([
+                    'odo_km' => 'required|numeric'
+                ]);
+                $odoKm = $odoRules['odo_km'];
+            }
+
             // Simpan ke tabel laporan_sales
             $laporanSales = new LaporanSales();
             $laporanSales->general_id = $validatedLaporan['general_id'];
@@ -123,6 +131,9 @@ class LaporanSalesController extends Controller
             if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $laporanSales->contact_person = $request->input('contact_person');
                 $laporanSales->no_hp = $request->input('no_hp');
+            }
+            if (Auth::user()->hasRole('Driver')) {
+                $laporanSales->odo_km = $odoKm;
             }
             $laporanSales->save();
 
@@ -230,6 +241,14 @@ class LaporanSalesController extends Controller
                 'laporan.min' => 'Tulis Laporan Yang Lengkap Dan Jelas!!!',
             ]);
 
+            $odoKm = null;
+            if (Auth::user()->hasRole('Driver')) {
+                $odoRules = $request->validate([
+                    'odo_km' => 'required|numeric'
+                ]);
+                $odoKm = $odoRules['odo_km'];
+            }
+
             $idLaporan = $validatedLaporan['laporan_id'];
 
             // Ambil data laporan
@@ -242,6 +261,9 @@ class LaporanSalesController extends Controller
             if (!(Auth::user()->hasRole('Collector') || Auth::user()->hasRole('Driver'))) {
                 $laporanSales->contact_person = $request->input('contact_person');
                 $laporanSales->no_hp = $request->input('no_hp');
+            }
+            if (Auth::user()->hasRole('Driver')) {
+                $laporanSales->odo_km = $odoKm;
             }
             $laporanSales->save();
 

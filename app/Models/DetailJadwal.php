@@ -30,4 +30,10 @@ class DetailJadwal extends Model
     {
         return $this->hasMany(LaporanSales::class, 'general_id', 'general_id');
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class, 'jadwal_id', 'jadwal_id')
+            ->where('general_id', $this->general_id);
+    }
 }

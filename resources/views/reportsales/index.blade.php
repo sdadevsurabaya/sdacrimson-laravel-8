@@ -170,26 +170,8 @@
 
 
                         response.forEach(function(item, index) {
-                            var waktucheckin = '00:00:00';
-                            if (item.activity_type == 'Visit') {
-                                if (item.checkin !== null) {
-                                    const dateTime = item.checkin; // String tanggal
-                                    const date = new Date(dateTime);
-
-                                    // Ambil jam dan menit secara manual
-                                    const hours = date.getHours().toString().padStart(2, '0');
-                                    const minutes = date.getMinutes().toString().padStart(2,
-                                        '0');
-
-                                    // Gabungkan
-                                    const timeOnly = `${hours}:${minutes}`;
-                                    waktucheckin = timeOnly;
-                                    console.log(timeOnly); // Output: "13:34"
-                                }
-                            }
-                            else{
-                                waktucheckin = item.plant_date;
-                            }
+                            // Gunakan waktu checkin aktual dari tabel attendances
+                            var waktucheckin = item.checkin_actual ? item.checkin_actual : '-';
 
 
                             var editUrl =

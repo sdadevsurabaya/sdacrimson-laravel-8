@@ -80,7 +80,7 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="10" style="border: none; text-transform:capitalize;">Rekap Absen
+                        <th colspan="8" style="border: none; text-transform:capitalize;">Rekap Absen
                             {{ $userJadwal->user->name }}</th>
                     </tr>
                     <tr>
@@ -91,9 +91,7 @@
                         <th>Alamat</th>
                         <th>Jarak</th>
                         <th>Durasi</th>
-                        <th>Area</th>
-                        <th>Type Aktifitas</th>
-                        <th>Email</th>
+                        <th>Odo KM</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -119,27 +117,22 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Start</td>
-                        <td></td>
                     </tr>
                     {{-- @dump(end($laporan)) --}}
                     @foreach ($laporan as $key => $item)
                         <tr>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>
                             <td>
-                                @if ($key == count($laporan) - 1)
-
-                                    @if (!empty($stop))
-                                        {{ $stop->created_at->format('H:i') }}
-                                    @endif
+                                @if ($key == count($laporan) - 1 && !empty($stop))
+                                    {{ $stop->created_at->format('H:i') }}
                                 @else
                                     @foreach ($item->attendance as $attendances)
                                         @if ($attendances->status == 'check in')
                                             {{ $attendances->created_at->format('H:i') }}
                                         @break
-                                    @endif
-                                @endforeach
-                            @endif
+                                        @endif
+                                    @endforeach
+                                @endif
                             </td>
                         <td>
                             @foreach ($item->attendance as $attendances)
@@ -171,29 +164,13 @@
                     @endif
                 @endforeach
             </td>
-            <td>{{ $item->general->area }}</td>
-            <td>
-                @if ($key == count($laporan) - 1)
-                @if (!empty($stop))
-                     End
-                 @endif
-                @else
-                @foreach ($item->detailJadwal as $detail)
-                @if ($detail->jadwal_id == $item->jadwal_id && $detail->general_id == $item->general_id)
-                    {{ $detail->activity_type }}
-                @break
-               @endif
-                @endforeach
-                @endif
-
-        </td>
-        <td>{{ $item->general->email }}</td>
+            <td>{{ $item->odo_km ?? '-' }}</td>
     </tr>
 @endforeach
 <tr>
     <td colspan="5" style="text-align: right; font-weight:bold;">TOTAL</td>
     <td style="font-weight:bold;">{{ number_format($total, 2, ',', '.') }} km</td>
-    <td colspan="4"></td>
+    <td colspan="2"></td>
 </tr>
 </tbody>
 </table>
