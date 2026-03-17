@@ -174,7 +174,54 @@
 </tr>
 </tbody>
 </table>
-</div>
+
+            {{-- Area Tanda Tangan --}}
+            <div style="margin-top: 40px; width: 100%;">
+                <table style="width: 100%; border: none; border-collapse: collapse;">
+                    <tr style="vertical-align: top;">
+                        {{-- Dibuat Oleh --}}
+                        <td style="border: none; text-align: center; width: 33%; padding: 0 10px;">
+                            <div style="font-weight: bold; margin-bottom: 10px;">Dibuat Oleh,</div>
+                            <div style="display: flex; justify-content: center; gap: 10px;">
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="height: 70px;">&nbsp;</div>
+                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">&nbsp;</div>
+                                </div>
+                            </div>
+                        </td>
+                        {{-- Menyetujui --}}
+                        <td style="border: none; text-align: center; width: 33%; padding: 0 10px;">
+                            <div style="font-weight: bold; margin-bottom: 10px;">Menyetujui,</div>
+                            <div style="display: flex; justify-content: space-around; gap: 10px;">
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="height: 70px;">&nbsp;</div>
+                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">Log Margo</div>
+                                </div>
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="height: 70px;">&nbsp;</div>
+                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">Log Toko</div>
+                                </div>
+                            </div>
+                        </td>
+                        {{-- Mengetahui --}}
+                        <td style="border: none; text-align: center; width: 33%; padding: 0 10px;">
+                            <div style="font-weight: bold; margin-bottom: 10px;">Mengetahui,</div>
+                            <div style="display: flex; justify-content: center; gap: 10px;">
+                                <div style="flex: 1; text-align: center;">
+                                    <div style="height: 70px;">&nbsp;</div>
+                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">HCS</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
 
 
 </body>
