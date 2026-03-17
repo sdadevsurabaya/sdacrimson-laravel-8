@@ -14,15 +14,20 @@
                     visibility: hidden;
                 }
 
-                #data-excel,
-                #data-excel * {
+                #print-area,
+                #print-area * {
                     visibility: visible;
                 }
 
-                #data-excel {
+                #print-area {
                     position: absolute;
                     left: 0;
                     top: 0;
+                    width: 100%;
+                }
+
+                .no-print {
+                    display: none !important;
                 }
             }
 
@@ -72,10 +77,11 @@
 
     <body>
         <div class="container-fluid" style="padding-top: 2rem;">
-            <div class="mb-3 text-end">
+            <div class="mb-3 text-end no-print">
                 <button class="btn btn-dark" onclick="printContent()">Print</button>
                 <button onclick="exportToExcel()" class="btn btn-success">Export ke Excel</button>
             </div>
+            <div id="print-area">
             {{-- <h5 class="text-start mb-3"></h5> --}}
             <table id="data-excel">
                 <thead>
@@ -176,7 +182,7 @@
 </table>
 
             {{-- Area Tanda Tangan --}}
-            <div style="margin-top: 40px; width: 100%;">
+            <div id="area-ttd" style="margin-top: 40px; width: 100%;">
                 <table style="width: 100%; border: none; border-collapse: collapse;">
                     <tr style="vertical-align: top;">
                         {{-- Dibuat Oleh --}}
@@ -220,6 +226,7 @@
                     </tr>
                 </table>
             </div>
+            </div>{{-- end print-area --}}
 
         </div>
 
