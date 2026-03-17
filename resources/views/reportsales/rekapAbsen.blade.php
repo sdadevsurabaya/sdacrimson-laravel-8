@@ -118,8 +118,8 @@
                             @endif
 
                         </td>
-                        <td>SDA GLOBAL INDONESIA</td>
-                        <td>Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20 </td>
+                        <td>{{ $userJadwal->user->hasRole('Driver') ? 'SDA MARGOMULYO' : 'SDA GLOBAL INDONESIA' }}</td>
+                        <td>{{ $userJadwal->user->hasRole('Driver') ? 'Jl. Margomulyo Indah 1A No. 7-8, Surabaya' : 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20' }}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -187,38 +187,38 @@
                     <tr style="vertical-align: top;">
                         {{-- Dibuat Oleh --}}
                         <td style="border: none; text-align: center; width: 33%; padding: 0 10px;">
-                            <div style="font-weight: bold; margin-bottom: 10px;">Dibuat Oleh,</div>
+                            <div style="font-weight: bold; margin-bottom: 10px;">Dibuat Oleh</div>
                             <div style="display: flex; justify-content: center; gap: 10px;">
                                 <div style="flex: 1; text-align: center;">
                                     <div style="height: 70px;">&nbsp;</div>
-                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="padding-top: 5px;">...........................</div>
                                     <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">&nbsp;</div>
                                 </div>
                             </div>
                         </td>
                         {{-- Menyetujui --}}
                         <td style="border: none; text-align: center; width: 33%; padding: 0 10px;">
-                            <div style="font-weight: bold; margin-bottom: 10px;">Menyetujui,</div>
+                            <div style="font-weight: bold; margin-bottom: 10px;">Menyetujui</div>
                             <div style="display: flex; justify-content: space-around; gap: 10px;">
                                 <div style="flex: 1; text-align: center;">
                                     <div style="height: 70px;">&nbsp;</div>
-                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="padding-top: 5px;">...........................</div>
                                     <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">Log Margo</div>
                                 </div>
                                 <div style="flex: 1; text-align: center;">
                                     <div style="height: 70px;">&nbsp;</div>
-                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="padding-top: 5px;">...........................</div>
                                     <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">Log Toko</div>
                                 </div>
                             </div>
                         </td>
                         {{-- Mengetahui --}}
                         <td style="border: none; text-align: center; width: 33%; padding: 0 10px;">
-                            <div style="font-weight: bold; margin-bottom: 10px;">Mengetahui,</div>
+                            <div style="font-weight: bold; margin-bottom: 10px;">Mengetahui</div>
                             <div style="display: flex; justify-content: center; gap: 10px;">
                                 <div style="flex: 1; text-align: center;">
                                     <div style="height: 70px;">&nbsp;</div>
-                                    <div style="padding-top: 5px;">( ........................... )</div>
+                                    <div style="padding-top: 5px;">...........................</div>
                                     <div style="font-size: 12px; margin-top: 4px; font-weight: bold;">HCS</div>
                                 </div>
                             </div>
