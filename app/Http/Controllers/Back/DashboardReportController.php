@@ -97,6 +97,7 @@ class DashboardReportController extends Controller
                     dj.activity_type,
                     dj.note AS catatan,
                     g.id AS general_id,
+                    (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.id < l.id) = 0 AS is_first_visit,
                     g.nama_usaha AS customer,
                     l.id AS laporan_id,
                     l.pesan AS laporan_kunjungan,

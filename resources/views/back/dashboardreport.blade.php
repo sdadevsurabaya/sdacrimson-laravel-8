@@ -339,6 +339,7 @@
                                                                                             : null;
 
                                                                                     // Tentukan background class
+                                                                                    $isNewCust = (bool) $agenda->is_first_visit;
                                                                                     if (
                                                                                         $agenda->activity_type ===
                                                                                             'Meeting' ||
@@ -352,9 +353,11 @@
                                                                                         ) &&
                                                                                         !empty($agenda->checkout_status)
                                                                                     ) {
+                                                                                        // Customer baru dengan durasi < 20 menit tetap hijau
                                                                                         $bgClass =
                                                                                             $minutes !== null &&
-                                                                                            $minutes < 20
+                                                                                            $minutes < 20 &&
+                                                                                            !$isNewCust
                                                                                                 ? 'bg-primary text-white'
                                                                                                 : 'bg-success';
                                                                                     } elseif (
@@ -392,14 +395,20 @@
                                                                                     </div>
 
                                                                                     @if (!empty($agenda->checkin_status) && !empty($agenda->checkout_status) && $duration)
+                                                                                        @php
+                                                                                            $visitAlertClass = ($minutes >= 20 || $isNewCust) ? 'alert-success' : 'alert-danger';
+                                                                                        @endphp
                                                                                         <div
-                                                                                            class="text-dark alert {{ $minutes >= 20 ? 'alert-success' : 'alert-danger' }} p-1 rounded mt-2">
+                                                                                            class="text-dark alert {{ $visitAlertClass }} p-1 rounded mt-2">
                                                                                             <strong>Lama Visit:</strong><br>
                                                                                             <div>
                                                                                                 {{ $duration->h }} jam
                                                                                                 {{ $duration->i }} menit
                                                                                                 {{ $duration->s }} detik
                                                                                             </div>
+                                                                                            @if ($isNewCust && $minutes < 20)
+                                                                                                <small><em>*Customer Baru</em></small>
+                                                                                            @endif
                                                                                         </div>
                                                                                     @endif
                                                                                 </div>
@@ -473,11 +482,12 @@
                                                                                         )
                                                                                         : null;
                                                                                 $isLongVisit = $minutes >= 20;
+                                                                                $isNewCustAgenda = (bool) $agenda->is_first_visit;
                                                                                 if (
                                                                                     $agenda->activity_type == 'Visit' &&
                                                                                     !empty($agenda->checkin_status) &&
                                                                                     !empty($agenda->checkout_status) &&
-                                                                                    $isLongVisit
+                                                                                    ($isLongVisit || $isNewCustAgenda)
                                                                                 ) {
                                                                                     $productivityCount++;
                                                                                 }
@@ -538,11 +548,12 @@
                                                                                         )
                                                                                         : null;
                                                                                 $isLongVisit = $minutes >= 20;
+                                                                                $isNewCustAgenda = (bool) $agenda->is_first_visit;
                                                                                 if (
                                                                                     $agenda->activity_type == 'Visit' &&
                                                                                     !empty($agenda->checkin_status) &&
                                                                                     !empty($agenda->checkout_status) &&
-                                                                                    $isLongVisit
+                                                                                    ($isLongVisit || $isNewCustAgenda)
                                                                                 ) {
                                                                                     $productivityCount++;
                                                                                 }
@@ -611,11 +622,12 @@
                                                                                     ? $checkin->diffInMinutes($checkout)
                                                                                     : null;
                                                                             $isLongVisit = $minutes >= 20;
+                                                                            $isNewCustAgenda = (bool) $agenda->is_first_visit;
                                                                             if (
                                                                                 $agenda->activity_type == 'Visit' &&
                                                                                 !empty($agenda->checkin_status) &&
                                                                                 !empty($agenda->checkout_status) &&
-                                                                                $isLongVisit
+                                                                                ($isLongVisit || $isNewCustAgenda)
                                                                             ) {
                                                                                 $productivityCount++;
                                                                             }
