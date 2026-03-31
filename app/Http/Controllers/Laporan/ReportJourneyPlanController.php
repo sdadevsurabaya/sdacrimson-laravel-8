@@ -59,11 +59,13 @@ class ReportJourneyPlanController extends Controller
         }
 
         $pivotData = [];
-        $newCustomers = [];
-        
-        // Identify new customers (added within the period)
-        $newCustomersInPeriod = General_model::whereBetween('created_at', [$startDate->toDateTimeString(), $endDate->toDateTimeString()])
-            ->pluck('id')
+
+        // Identify new customers: those never visited by this user BEFORE the filter period
+        $existingCustomerIds = LaporanSales::join('jadwals', 'laporan_sales.jadwal_id', '=', 'jadwals.id')
+            ->where('laporan_sales.user_id', $userId)
+            ->where('jadwals.date', '<', $startDate->toDateString())
+            ->pluck('laporan_sales.general_id')
+            ->unique()
             ->toArray();
 
         foreach ($laporan as $item) {
@@ -76,7 +78,8 @@ class ReportJourneyPlanController extends Controller
                     'name' => $customerName,
                     'months' => array_fill_keys($months, 0),
                     'total' => 0,
-                    'is_new' => in_array($customerId, $newCustomersInPeriod)
+                    'is_new' => !in_array($customerId, $existingCustomerIds),
+                    'first_visit_month' => $monthKey, // track which month first visited
                 ];
             }
 
@@ -103,10 +106,10 @@ class ReportJourneyPlanController extends Controller
         foreach($pivotData as $data) {
             if ($data['is_new']) {
                 $totalNewCustomers++;
-                foreach ($months as $m) {
-                    if ($data['months'][$m] > 0) {
-                        $newCustPerMonth[$m]++;
-                    }
+                // Count new customer only in the month they were FIRST visited
+                $firstMonth = $data['first_visit_month'];
+                if (isset($newCustPerMonth[$firstMonth])) {
+                    $newCustPerMonth[$firstMonth]++;
                 }
             }
             if ($data['total'] == 1) $singleVisitCustomers++;
