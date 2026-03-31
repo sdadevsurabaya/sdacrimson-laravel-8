@@ -99,8 +99,16 @@ class ReportJourneyPlanController extends Controller
         $totalCustomers = count($pivotData);
         $totalNewCustomers = 0;
         $singleVisitCustomers = 0;
+        $newCustPerMonth = array_fill_keys($months, 0);
         foreach($pivotData as $data) {
-            if ($data['is_new']) $totalNewCustomers++;
+            if ($data['is_new']) {
+                $totalNewCustomers++;
+                foreach ($months as $m) {
+                    if ($data['months'][$m] > 0) {
+                        $newCustPerMonth[$m]++;
+                    }
+                }
+            }
             if ($data['total'] == 1) $singleVisitCustomers++;
         }
 
@@ -140,7 +148,8 @@ class ReportJourneyPlanController extends Controller
             'pivotData', 
             'monthlyGrandTotal', 
             'overallTotal',
-            'analysis'
+            'analysis',
+            'newCustPerMonth'
         ));
     }
 }

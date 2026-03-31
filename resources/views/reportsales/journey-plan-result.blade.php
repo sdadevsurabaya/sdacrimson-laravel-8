@@ -76,17 +76,21 @@
 
         <div class="analisa-section" id="analisa-section">
             <p><strong>Sales : {{ $user->name }}</strong></p>
+            <p><strong>Periode : {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}</strong></p>
             <p class="analisa-title">Analisa :</p>
             <ul id="analisa-list">
                 <li>{{ $analysis['trend'] }}</li>
                 <li>ada {{ $analysis['new_cust_count'] }} customer baru di tambahkan selama periode ini</li>
+                @foreach($months as $month)
+                    <li>customer baru yang dikunjungi bulan {{ $month }} : {{ $newCustPerMonth[$month] }} customer</li>
+                @endforeach
                 <li>ada {{ $analysis['single_visit_count'] }} customer hanya di visit 1 kali</li>
-                <li>dalam {{ $analysis['period_months'] }} bulan dapat {{ $analysis['total_customers'] }} customer, rata2 perhari {{ $analysis['avg_new_cust'] }} customer baru</li>
+                <li>dalam {{ $analysis['period_months'] }} bulan dapat {{ $analysis['total_customers'] }} customer, rata2 perhari {{ $analysis['avg_new_cust'] }} customer</li>
                 <li>dalam {{ $analysis['period_months'] }} bulan visit {{ $analysis['total_visits'] }} kali, rata2 perhari {{ $analysis['avg_visits'] }} visit</li>
-                @if($analysis['avg_visits'] < 3)
-                    <li>hanya tercapai dibawah target minimal visit perhari nya (3 customer/hari)</li>
+                @if($analysis['avg_visits'] < 4)
+                    <li>hanya tercapai dibawah target minimal visit perhari nya (4 customer/hari)</li>
                 @else
-                    <li>mencapai atau melebihi target minimal visit perhari nya (3 customer/hari)</li>
+                    <li>mencapai atau melebihi target minimal visit perhari nya (4 customer/hari)</li>
                 @endif
             </ul>
         </div>
