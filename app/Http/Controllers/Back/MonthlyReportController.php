@@ -117,12 +117,12 @@ class MonthlyReportController extends Controller
                 $userStats = [];
                 foreach ($yearlyVisits as $v) {
                     if (!isset($userStats[$v->user_id])) $userStats[$v->user_id] = 0;
-                    $userStats[$v->user_id] += min($v->daily_count, 3);
+                    $userStats[$v->user_id] += min($v->daily_count, 4);
                 }
 
                 foreach ($sales as $sale) {
                     $sale->actual_yearly = $userStats[$sale->id] ?? 0;
-                    $sale->target_yearly = 720;
+                    $sale->target_yearly = 960;
                     $sale->percentage_yearly = ($sale->target_yearly > 0) ? min(100, round(($sale->actual_yearly / $sale->target_yearly) * 100, 1)) : 0;
                 }
             }
@@ -183,7 +183,7 @@ class MonthlyReportController extends Controller
     {
         $userId = $request->userId;
         $year   = $request->year ?? date('Y');
-        $targetMonthly = $request->input('target', 60);
+        $targetMonthly = $request->input('target', 80);
 
         $monthlyData = [];
 
@@ -216,7 +216,7 @@ class MonthlyReportController extends Controller
 
             $actualVisits = 0;
             foreach ($visits as $v) {
-                $actualVisits += min($v->visit_count, 3);
+                $actualVisits += min($v->visit_count, 4);
             }
 
             $percentage = $targetVisits > 0 ? ($actualVisits / $targetVisits) * 100 : 0;

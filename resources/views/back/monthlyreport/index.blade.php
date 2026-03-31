@@ -449,7 +449,7 @@
             modal.show();
 
             const year = $('#year').val();
-            const target = 60; // Hardcoded constant value
+            const target = 80; // 20 hari kerja x 4 kunjungan/hari
 
             $.ajax({
                 url: "{{ route('back.monthlyreport.stats') }}",

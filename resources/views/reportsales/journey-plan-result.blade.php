@@ -82,7 +82,7 @@
                 <li>{{ $analysis['trend'] }}</li>
                 <li>ada {{ $analysis['new_cust_count'] }} customer baru di tambahkan selama periode ini</li>
                 @foreach($months as $month)
-                    <li>customer baru yang dikunjungi bulan {{ $month }} : {{ $newCustPerMonth[$month] }} customer</li>
+                    <li>customer baru yang ditambahkan bulan {{ $month }} : {{ $newCustPerMonth[$month] }} customer</li>
                 @endforeach
                 <li>ada {{ $analysis['single_visit_count'] }} customer hanya di visit 1 kali</li>
                 <li>dalam {{ $analysis['period_months'] }} bulan dapat {{ $analysis['total_customers'] }} customer, rata2 perhari {{ $analysis['avg_new_cust'] }} customer</li>
