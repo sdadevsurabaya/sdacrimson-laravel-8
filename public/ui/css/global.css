@@ -126,7 +126,7 @@ select,
 
 /*------------------------ custom font  ------------------------*/
 
-@font-face {
+/* @font-face {
    font-family: 'Gotham Black';
    src: url(../fonts/gotham-black-webfont.woff) format('woff');
    font-weight: 800;
@@ -194,7 +194,7 @@ select,
 
 .latin {
    font-family: 'TheSecret Regular';
-}
+} */
 
 
 /*------------------------ struktur  ------------------------*/
