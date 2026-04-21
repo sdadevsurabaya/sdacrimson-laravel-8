@@ -12,9 +12,6 @@ use App\Models\Legal_model;
 use App\Models\ContactPerson_model;
 use App\Models\LocationTime;
 use App\Models\Outlet_model;
-use App\Models\Jadwal;
-use App\Models\DetailJadwal;
-use App\Models\LaporanSales;
 
 use Illuminate\Http\Request;
 
@@ -59,26 +56,39 @@ class DashboardController extends Controller
         }
 
         // Data kunjungan bulan ini untuk Sales, Driver, Collector
+        // Menggunakan logika yang sama dengan MonthlyReportController::getMonthlyStats
         $totalPlan   = 0;
         $totalAktual = 0;
         $persenVisit = 0;
 
         if ($user->hasRole('Sales') || $user->hasRole('Driver') || $user->hasRole('Collector')) {
-            $bulanIni = now()->format('Y-m');
+            $startDate = now()->startOfMonth()->format('Y-m-d');
+            $endDate   = now()->endOfMonth()->format('Y-m-d');
 
-            // Total plan = jumlah baris detail jadwal milik user di bulan ini
-            $totalPlan = DetailJadwal::whereHas('jadwal', function ($q) use ($id_user, $bulanIni) {
-                $q->where('user_id', $id_user)
-                  ->whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$bulanIni])
-                  ->whereNull('deleted_at');
-            })->whereNull('deleted_at')->count();
+            // Target tetap: 20 hari kerja × 4 kunjungan/hari = 80 (sama dengan MonthlyReport)
+            $totalPlan = 80;
 
-            // Total aktual = jumlah laporan sales yang sudah dibuat user di bulan ini
-            $totalAktual = LaporanSales::where('user_id', $id_user)
-                ->whereHas('jadwal', function ($q) use ($bulanIni) {
-                    $q->whereRaw("DATE_FORMAT(date, '%Y-%m') = ?", [$bulanIni]);
-                })
-                ->count();
+            // Aktual: kunjungan Visit yang ada check-in + check-out,
+            // durasi >= 20 menit, dibatasi max 4 per hari (identik dengan MonthlyReportController)
+            $visits = DB::select("
+                SELECT DATE(j.date) as visit_date, COUNT(*) as visit_count
+                FROM jadwals j
+                INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id
+                INNER JOIN laporan_sales l ON l.jadwal_id = j.id
+                INNER JOIN general_informations g ON l.general_id = g.id AND dj.general_id = g.id
+                INNER JOIN attendances a_in  ON a_in.user_id  = j.user_id AND a_in.general_id  = g.id AND DATE(a_in.created_at)  = j.date AND a_in.status  = 'check in'
+                INNER JOIN attendances a_out ON a_out.user_id = j.user_id AND a_out.general_id = g.id AND DATE(a_out.created_at) = j.date AND a_out.status = 'check out'
+                WHERE j.user_id = ?
+                AND dj.deleted_at IS NULL
+                AND dj.activity_type = 'Visit'
+                AND j.date BETWEEN ? AND ?
+                AND TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
+                GROUP BY DATE(j.date)
+            ", [$id_user, $startDate, $endDate]);
+
+            foreach ($visits as $v) {
+                $totalAktual += min($v->visit_count, 4);
+            }
 
             $persenVisit = $totalPlan > 0
                 ? round(($totalAktual / $totalPlan) * 100, 1)
