@@ -12,6 +12,77 @@ Dashboard
 @endslot
 @endcomponent
 
+@php
+    $isSalesRole = Auth::user()->hasRole('Sales') || Auth::user()->hasRole('Driver') || Auth::user()->hasRole('Collector');
+@endphp
+
+@if ($isSalesRole)
+{{-- ===== SPEEDOMETER GAUGE: Khusus Sales, Driver, Collector ===== --}}
+<div class="row justify-content-center mb-4">
+    <div class="col-md-10 col-xl-8">
+        <div class="card shadow-sm">
+            <div class="card-body py-4">
+                <h5 class="card-title text-center fw-semibold mb-4" style="letter-spacing:.04em;color:#555;">
+                    <i class="mdi mdi-map-marker-check me-2 text-primary"></i>
+                    Rekapitulasi Kunjungan &mdash; {{ now()->translatedFormat('F Y') }}
+                </h5>
+                <div class="row align-items-center">
+                    {{-- Speedometer --}}
+                    <div class="col-md-5 text-center">
+                        <div class="position-relative mx-auto" style="width:220px;">
+                            <canvas id="speedometerChart" width="220" height="220"></canvas>
+                            <div class="position-absolute w-100 text-center" style="bottom:18px;left:0;">
+                                <div class="fw-bold" style="font-size:2rem;line-height:1;color:#333;">{{ $persenVisit }}%</div>
+                                <div class="text-muted" style="font-size:.75rem;">Persentase Kunjungan</div>
+                            </div>
+                        </div>
+                    </div>
+                    {{-- Stat Cards --}}
+                    <div class="col-md-7 mt-3 mt-md-0">
+                        <div class="row g-3 justify-content-center">
+                            <div class="col-4">
+                                <div class="border rounded-3 text-center py-3 px-2 h-100" style="background:#f8f9fa;">
+                                    <div class="fw-bold text-success" style="font-size:1.8rem;">{{ $totalAktual }}</div>
+                                    <div class="text-muted mt-1" style="font-size:.78rem;font-weight:500;">Aktual</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="border rounded-3 text-center py-3 px-2 h-100" style="background:#f8f9fa;">
+                                    <div class="fw-bold text-primary" style="font-size:1.8rem;">{{ $totalPlan }}</div>
+                                    <div class="text-muted mt-1" style="font-size:.78rem;font-weight:500;">Plan</div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="border rounded-3 text-center py-3 px-2 h-100" style="background:#f8f9fa;">
+                                    <div class="fw-bold text-danger" style="font-size:1.8rem;">{{ max(0, $totalPlan - $totalAktual) }}</div>
+                                    <div class="text-muted mt-1" style="font-size:.78rem;font-weight:500;">Sisa</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 px-1">
+                            <div class="d-flex justify-content-between mb-1" style="font-size:.8rem;">
+                                <span class="text-muted">Progress Kunjungan</span>
+                                <span class="fw-semibold">{{ $persenVisit }}%</span>
+                            </div>
+                            <div class="progress" style="height:10px;border-radius:10px;">
+                                <div class="progress-bar
+                                    @if($persenVisit >= 80) bg-success
+                                    @elseif($persenVisit >= 50) bg-warning
+                                    @else bg-danger @endif"
+                                    role="progressbar"
+                                    style="width: {{ min(100, $persenVisit) }}%;border-radius:10px;"
+                                    aria-valuenow="{{ $persenVisit }}" aria-valuemin="0" aria-valuemax="100">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@else
+{{-- ===== 4 CARD SUMMARY: Role lain ===== --}}
 <div class="row">
     <div class="col-md-6 col-xl-3">
         <div class="card">
@@ -23,8 +94,6 @@ Dashboard
                     <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{ count($get_general) }}</span></h4>
                     <p class="text-muted mb-0">Total General</p>
                 </div>
-                {{-- <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="mdi mdi-arrow-up-bold me-1"></i>2.65%</span> since last week
-                </p> --}}
             </div>
         </div>
     </div> <!-- end col-->
@@ -39,8 +108,6 @@ Dashboard
                     <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{ count($get_legal) }}</span></h4>
                     <p class="text-muted mb-0">Total Legal</p>
                 </div>
-                {{-- <p class="text-muted mt-3 mb-0"><span class="text-danger me-1"><i class="mdi mdi-arrow-down-bold me-1"></i>0.82%</span> since last week
-                </p> --}}
             </div>
         </div>
     </div> <!-- end col-->
@@ -55,14 +122,11 @@ Dashboard
                     <h4 class="mb-1 mt-1"><span data-plugin="counterup">{{ count($get_kontak) }}</span></h4>
                     <p class="text-muted mb-0">Total Contact Person</p>
                 </div>
-                {{-- <p class="text-muted mt-3 mb-0"><span class="text-danger me-1"><i class="mdi mdi-arrow-down-bold me-1"></i>6.24%</span> since last week
-                </p> --}}
             </div>
         </div>
     </div> <!-- end col-->
 
     <div class="col-md-6 col-xl-3">
-
         <div class="card">
             <div class="card-body">
                 <div class="float-end mt-2">
@@ -72,12 +136,11 @@ Dashboard
                     <h4 class="mb-1 mt-1"> <span data-plugin="counterup">{{ count($get_outlet) }}</span></h4>
                     <p class="text-muted mb-0">Total Outlet</p>
                 </div>
-                {{-- <p class="text-muted mt-3 mb-0"><span class="text-success me-1"><i class="mdi mdi-arrow-up-bold me-1"></i>10.51%</span> since last week
-                </p> --}}
             </div>
         </div>
     </div> <!-- end col-->
 </div> <!-- end row-->
+@endif
 
 <input type="hidden" class="form-control" name="latitude" id="latitude" placeholder="Masukan gps">
 <input type="hidden" class="form-control" name="longitude" id="longitude" placeholder="Masukan gps">
@@ -164,6 +227,46 @@ Dashboard
 </div> <!-- end row-->
 @endsection
 @section('script')
+@if ($isSalesRole)
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+(function () {
+    var pct     = {{ $persenVisit }};
+    var aktual  = {{ $totalAktual }};
+    var plan    = {{ $totalPlan }};
+
+    // Warna gauge berdasarkan persentase
+    var gaugeColor = pct >= 80 ? '#28a745' : (pct >= 50 ? '#ffc107' : '#dc3545');
+
+    var ctx = document.getElementById('speedometerChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [pct, 100 - pct],
+                backgroundColor: [gaugeColor, '#e9ecef'],
+                borderWidth: 0,
+                circumference: 180,
+                rotation: 270,
+            }]
+        },
+        options: {
+            responsive: false,
+            cutout: '72%',
+            animation: {
+                animateRotate: true,
+                duration: 1000,
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false },
+            }
+        }
+    });
+})();
+</script>
+@endif
 <script>
     $(document).ready(function() {
         handlePermission(this);
