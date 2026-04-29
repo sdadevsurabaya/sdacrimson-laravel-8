@@ -171,7 +171,10 @@
                     @php
                         $durasi_menit = 0;
                         if ($current_checkin && $lastCheckOut) {
-                            $durasi_menit = $lastCheckOut->diffInMinutes($current_checkin);
+                            $time1 = \Carbon\Carbon::parse($lastCheckOut->format('Y-m-d H:i:00'));
+                            $time2 = \Carbon\Carbon::parse($current_checkin->format('Y-m-d H:i:00'));
+                            $diff = $time1->diffInMinutes($time2, false);
+                            $durasi_menit = $diff > 0 ? $diff : 0;
                         }
                     @endphp
                     {{ $durasi_menit }} Menit
@@ -181,6 +184,8 @@
         @php
             if ($current_checkout) {
                 $lastCheckOut = $current_checkout;
+            } elseif ($current_checkin) {
+                $lastCheckOut = $current_checkin;
             }
         @endphp
 @endforeach
