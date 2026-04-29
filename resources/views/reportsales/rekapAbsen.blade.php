@@ -103,7 +103,7 @@
                 <tbody>
                     @php
                         $lastCheckIn = null;
-                        $lastCheckOut = null;
+                        $lastCheckOut = !empty($start) ? $start->created_at : null;
                         $total = 0;
                     @endphp
 
@@ -129,11 +129,14 @@
                         <tr>
                             <td>{{ $item->created_at->format('Y-m-d') }}</td>
                             <td>
+                                @php $current_checkin = null; @endphp
                                 @if ($key == count($laporan) - 1 && !empty($stop))
+                                    @php $current_checkin = $stop->created_at; @endphp
                                     {{ $stop->created_at->format('H:i') }}
                                 @else
                                     @foreach ($item->attendance as $attendances)
                                         @if ($attendances->status == 'check in')
+                                            @php $current_checkin = $attendances->created_at; @endphp
                                             {{ $attendances->created_at->format('H:i') }}
                                         @break
                                         @endif
@@ -141,13 +144,15 @@
                                 @endif
                             </td>
                         <td>
+                            @php $current_checkout = null; @endphp
                             @foreach ($item->attendance as $attendances)
                                 @if ($attendances->status == 'check out')
+                                    @php $current_checkout = $attendances->created_at; @endphp
                                     {{ $attendances->created_at->format('H:i') }}
                                 @break
-                            @endif
-                        @endforeach
-                    </td>
+                                @endif
+                            @endforeach
+                        </td>
                     <td>{{ $item->general->nama_usaha }}</td>
                     <td>{{ $item->general->alamat_kantor }}</td>
                     <td>
@@ -163,15 +168,21 @@
                     @endforeach
                 </td>
                 <td>
-                    @foreach ($item->jarak as $jaraks)
-                        @if ($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
-                            {{ $jaraks->duration_web }} Menit
-                        @break
-                    @endif
-                @endforeach
-            </td>
-            <td>{{ $item->odo_km ?? '-' }}</td>
-    </tr>
+                    @php
+                        $durasi_menit = 0;
+                        if ($current_checkin && $lastCheckOut) {
+                            $durasi_menit = $lastCheckOut->diffInMinutes($current_checkin);
+                        }
+                    @endphp
+                    {{ $durasi_menit }} Menit
+                </td>
+                <td>{{ $item->odo_km ?? '-' }}</td>
+        </tr>
+        @php
+            if ($current_checkout) {
+                $lastCheckOut = $current_checkout;
+            }
+        @endphp
 @endforeach
 <tr>
     <td colspan="5" style="text-align: right; font-weight:bold;">TOTAL</td>
