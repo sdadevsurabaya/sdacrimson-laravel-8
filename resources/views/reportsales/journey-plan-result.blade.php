@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report Journey Plan - {{ $user->name }}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx-js-style@1.2.0/dist/xlsx.bundle.js"></script>
     <style>
         @media print {
             .no-print { display: none; }
@@ -105,11 +105,35 @@
             var wb = XLSX.utils.book_new();
 
             // 1. Convert Table to Worksheet
-            // Using aoa to handle merging and custom headers if needed,
-            // but table_to_sheet is simpler for standard tables.
             var ws = XLSX.utils.table_to_sheet(table);
 
-            // 2. Extract Analisa section as rows
+            // 2. Apply green fill to rows that have the 'new-customer' class
+            // SheetJS does not read CSS styles automatically, so we apply them manually.
+            var greenFill = {
+                patternType: "solid",
+                fgColor: { rgb: "C6E0B4" } // matches .new-customer CSS color
+            };
+
+            var rows = table.querySelectorAll('tbody tr');
+            var wsRowOffset = 2; // offset: 2 header rows (thead has 2 <tr>)
+
+            rows.forEach(function(row, rowIndex) {
+                var hasNewCustomer = row.querySelector('td.new-customer') !== null;
+                if (!hasNewCustomer) return;
+
+                var excelRow = wsRowOffset + rowIndex; // 0-based row index in worksheet
+                var colCount = row.querySelectorAll('td').length;
+
+                for (var c = 0; c < colCount; c++) {
+                    var cellAddr = XLSX.utils.encode_cell({ r: excelRow, c: c });
+                    if (!ws[cellAddr]) {
+                        ws[cellAddr] = { t: 's', v: '' }; // create empty cell if missing
+                    }
+                    ws[cellAddr].s = { fill: greenFill };
+                }
+            });
+
+            // 3. Extract Analisa section as rows
             var salesName = "Sales : {{ $user->name }}";
             var range = "Periode : {{ $startDate->format('d/m/Y') }} - {{ $endDate->format('d/m/Y') }}";
             var analysisData = [
@@ -130,9 +154,9 @@
             // Add worksheet to workbook
             XLSX.utils.book_append_sheet(wb, ws, "Journey Plan Report");
 
-            // Generate Excel file
+            // Generate Excel file - use xlsx with cellStyles support
             var filename = "Report-Journey-Plan-{{ $user->name }}-" + new Date().getTime() + ".xlsx";
-            XLSX.writeFile(wb, filename);
+            XLSX.writeFile(wb, filename, { cellStyles: true });
         }
     </script>
 </body>
