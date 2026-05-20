@@ -53,6 +53,7 @@ use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
 
 //Jadwal Check IN/OUT
+use App\Http\Controllers\PinCustomerController;
 use App\Http\Controllers\ReportSalesController;
 
 //kunjungan
@@ -187,6 +188,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('report-journey-plan', [App\Http\Controllers\Laporan\ReportJourneyPlanController::class, 'index'])->name('laporan.journeyPlan');
     Route::get('print-report-journey-plan', [App\Http\Controllers\Laporan\ReportJourneyPlanController::class, 'indexReport'])->name('laporan.journeyPlan.print');
     Route::get('jarak', [App\Http\Controllers\JarakController::class, 'index'])->name('jarak');
+
+    // Pin Customer
+    Route::get('admin/pin-customer', [PinCustomerController::class, 'index'])->name('pin.customer.index');
+    Route::post('admin/pin-customer/{id}/update', [PinCustomerController::class, 'update'])->name('pin.customer.update');
 
     Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
     Route::get('getDetailByJadwal', [App\Http\Controllers\DetailJadwal\GetDetailJadwalController::class, 'index'])->name('index.getDetail');
