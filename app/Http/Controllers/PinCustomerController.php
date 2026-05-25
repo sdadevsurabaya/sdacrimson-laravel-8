@@ -20,8 +20,6 @@ class PinCustomerController extends Controller
      */
     public function index(Request $request)
     {
-        $search = $request->search;
-
         $query = General_model::join('users', 'users.id', '=', 'general_informations.ar')
             ->orderBy('general_informations.id', 'desc')
             ->select([
@@ -34,21 +32,14 @@ class PinCustomerController extends Controller
                 'users.name as ar_name',
             ]);
 
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('general_informations.nama_usaha', 'like', '%' . $search . '%')
-                  ->orWhere('general_informations.id_customer', 'like', '%' . $search . '%');
-            });
-        }
-
         // Batasi akses berdasarkan role
         if (!Auth::user()->hasRole('Admin') && !Auth::user()->hasRole('Verifikator') && !Auth::user()->hasRole('Toko')) {
             $query->where('general_informations.ar', Auth::user()->id);
         }
 
-        $customers = $query->paginate(15)->appends(['search' => $search]);
+        $customers = $query->get();
 
-        return view('general.pin_customer', compact('customers', 'search'));
+        return view('general.pin_customer', compact('customers'));
     }
 
     /**
@@ -75,6 +66,7 @@ class PinCustomerController extends Controller
         }
 
         $customer = General_model::findOrFail($id);
+        $customer->alamat_kantor = $request->alamat_kantor;
         $customer->latitude  = $request->latitude;
         $customer->longitude = $request->longitude;
         $customer->save();
