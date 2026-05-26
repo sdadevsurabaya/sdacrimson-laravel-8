@@ -52,17 +52,25 @@ class AttendanceController extends Controller
         }
 
         // // Pengecekan jarak
-        // $latitudeFrom = -7.251100291890603;
-        // $longitudeFrom = 112.7328919383071;
-        // $latitudeTo = $request->input('latitude');
-        // $longitudeTo = $request->input('longitude');
+        $customer = \App\Models\General_model::find($request->input('general_id'));
+        if ($customer && $customer->latitude && $customer->longitude) {
+            $latitudeFrom = $customer->latitude;
+            $longitudeFrom = $customer->longitude;
+            $latitudeTo = $request->input('latitude');
+            $longitudeTo = $request->input('longitude');
 
-        // $distance = $this->haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo);
+            $distance = $this->haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo);
 
-        // // Jika jarak lebih dari 1km (1000 meters), kembalikan response error
-        // if ($distance > 500) {
-        //     return response()->json(['success' => false, 'message' => 'Jarak terlalu jauh, tidak bisa insert data'], 422);
-        // }
+            // Jika jarak lebih dari 500 meters, kembalikan response error
+            if ($distance > 500) {
+                return response()->json([
+                    'success' => false,
+                    'message' => [
+                        'jarak' => ['Jarak terlalu jauh (' . round($distance) . ' meter). Anda harus berada dalam radius 500 meter dari lokasi customer.']
+                    ]
+                ], 422);
+            }
+        }
 
 
         if ($request->hasFile('foto')) {

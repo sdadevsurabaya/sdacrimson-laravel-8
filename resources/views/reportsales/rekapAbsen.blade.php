@@ -109,6 +109,29 @@
 
                     {{-- @dump($start)
                     @dump($stop) --}}
+                    @php
+                        $userCabang = trim(strtolower($userJadwal->user->cabang->cabang ?? ''));
+                        $startLocation = 'SDA GLOBAL INDONESIA';
+                        $startAddress = 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20';
+
+                        if ($userCabang == 'surabaya') {
+                            $startLocation = 'SDA Surabaya';
+                            $startAddress = 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20';
+                        } elseif ($userCabang == 'jakarta') {
+                            $startLocation = 'SDA Jakarta';
+                            $startAddress = 'Komp. Puri Mutiara Blok BD No. 8 Jl. Raya Griya Utama, Sunter Agung';
+                        } elseif ($userCabang == 'semarang') {
+                            $startLocation = 'SDA Semarang';
+                            $startAddress = 'Komp. THD Blok C No. 25-26 Jl. KH. Agus Salim Purwodinatan';
+                        } elseif ($userCabang == 'balikpapan') {
+                            $startLocation = 'SDA Balikpapan';
+                            $startAddress = 'Jl. Mayjen Sutoyo No. 39 Gunung Sari Ulu, Balikpapan';
+                        } else {
+                            $debugCabang = $userCabang == '' ? 'Tanpa Cabang' : $userCabang;
+                            $startLocation = $userJadwal->user->hasRole('Driver') ? 'SDA MARGOMULYO' : 'SDA GLOBAL INDONESIA (' . $debugCabang . ')';
+                            $startAddress = $userJadwal->user->hasRole('Driver') ? 'Jl. Margomulyo Indah 1A No. 7-8, Surabaya' : 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20';
+                        }
+                    @endphp
                     <tr>
                         <td></td>
                         <td></td>
@@ -118,8 +141,8 @@
                             @endif
 
                         </td>
-                        <td>{{ $userJadwal->user->hasRole('Driver') ? 'SDA MARGOMULYO' : 'SDA GLOBAL INDONESIA' }}</td>
-                        <td>{{ $userJadwal->user->hasRole('Driver') ? 'Jl. Margomulyo Indah 1A No. 7-8, Surabaya' : 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20' }}</td>
+                        <td>{{ $startLocation }}</td>
+                        <td>{{ $startAddress }}</td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -145,16 +168,18 @@
                             </td>
                         <td>
                             @php $current_checkout = null; @endphp
-                            @foreach ($item->attendance as $attendances)
-                                @if ($attendances->status == 'check out')
-                                    @php $current_checkout = $attendances->created_at; @endphp
-                                    {{ $attendances->created_at->format('H:i') }}
-                                @break
-                                @endif
-                            @endforeach
+                            @if (!($key == count($laporan) - 1 && !empty($stop)))
+                                @foreach ($item->attendance as $attendances)
+                                    @if ($attendances->status == 'check out')
+                                        @php $current_checkout = $attendances->created_at; @endphp
+                                        {{ $attendances->created_at->format('H:i') }}
+                                    @break
+                                    @endif
+                                @endforeach
+                            @endif
                         </td>
-                    <td>{{ $item->general->nama_usaha }}</td>
-                    <td>{{ $item->general->alamat_kantor }}</td>
+                    <td>{{ $item->general_id == 553 ? $startLocation : ($item->general->nama_usaha ?? '') }}</td>
+                    <td>{{ $item->general_id == 553 ? $startAddress : ($item->general->alamat_kantor ?? '') }}</td>
                     <td>
                         @foreach ($item->jarak as $jaraks)
                             @if ($jaraks->jadwal_id == $item->jadwal_id && $jaraks->general_id == $item->general_id)
@@ -188,14 +213,14 @@
                 $lastCheckOut = $current_checkin;
             }
         @endphp
-@endforeach
-<tr>
-    <td colspan="5" style="text-align: right; font-weight:bold;">TOTAL</td>
-    <td style="font-weight:bold;">{{ number_format($total, 2, ',', '.') }} km</td>
-    <td colspan="2"></td>
-</tr>
-</tbody>
-</table>
+                    @endforeach
+                    <tr>
+                        <td colspan="5" style="text-align: right; font-weight:bold;">TOTAL</td>
+                        <td style="font-weight:bold;">{{ number_format($total, 2, ',', '.') }} km</td>
+                        <td colspan="2"></td>
+                    </tr>
+                    </tbody>
+                </table>
 
             {{-- Area Tanda Tangan --}}
             <div id="area-ttd" style="margin-top: 40px; width: 100%;">
