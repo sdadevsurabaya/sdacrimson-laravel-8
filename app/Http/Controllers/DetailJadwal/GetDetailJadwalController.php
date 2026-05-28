@@ -18,7 +18,21 @@ class GetDetailJadwalController extends Controller
             })
             ->get();
         $customerDetails = $Jadwal->pluck('customer.nama_usaha', 'customer.id')->toArray();
-        $newCustomer = [553 => 'SDA GLOBAL INDONESIA'];
+        $userCabang = trim(strtolower(auth()->user()->cabang->cabang ?? ''));
+        
+        if ($userCabang == 'surabaya') {
+            $officeName = 'SDA Surabaya';
+        } elseif ($userCabang == 'jakarta') {
+            $officeName = 'SDA Jakarta';
+        } elseif ($userCabang == 'semarang') {
+            $officeName = 'SDA Semarang';
+        } elseif ($userCabang == 'balikpapan') {
+            $officeName = 'SDA Balikpapan';
+        } else {
+            $officeName = auth()->user()->hasRole('Driver') ? 'SDA MARGOMULYO' : 'SDA GLOBAL INDONESIA';
+        }
+
+        $newCustomer = [553 => $officeName];
 
         // Menggabungkan data baru dengan data yang diambil dari database
         $combinedDetails = $newCustomer + $customerDetails;

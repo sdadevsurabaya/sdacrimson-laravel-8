@@ -86,9 +86,13 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
+<<<<<<< HEAD
+=======
+                            
+>>>>>>> 9d0bc6446afb19a6073d2dea2c9e63df36e44177
                         </ul>
                     </li>
-
+                    
                     <li class="menu-title">@lang('Sales')</li>
                     <li>
                         <a href="#" class="has-arrow waves-effect">
@@ -294,6 +298,18 @@
                             <i class="uil-home-alt"></i>
                             <span>@lang('translation.Dashboard')</span>
                         </a>
+                    </li>
+
+                    <li class="menu-title">@lang('Master Customer')</li>
+                    <li>
+                        <a href="#" class="has-arrow waves-effect">
+                            <i class="uil-dashboard"></i>
+                            <span>@lang('Customer')</span>
+                        </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
+                            <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
+                        </ul>
                     </li>
 
                     @unless (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
