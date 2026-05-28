@@ -33,7 +33,7 @@ class PinCustomerController extends Controller
             ]);
 
         // Batasi akses berdasarkan role
-        if (!Auth::user()->hasRole('Admin') && !Auth::user()->hasRole('Verifikator') && !Auth::user()->hasRole('Toko')) {
+        if (!Auth::user()->hasRole('Admin') && !Auth::user()->hasRole('Verifikator') && !Auth::user()->hasRole('Toko') && !Auth::user()->hasRole('Manager Sales')) {
             $query->where('general_informations.ar', Auth::user()->id);
         }
 
