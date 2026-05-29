@@ -86,10 +86,6 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
-<<<<<<< HEAD
-=======
-                            
->>>>>>> 9d0bc6446afb19a6073d2dea2c9e63df36e44177
                         </ul>
                     </li>
                     
