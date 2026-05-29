@@ -211,17 +211,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/force-login/{id}', [UserController::class, 'loginById'])->name('loginbyid');
 
     Route::get('/check-new-checkin', [TimerNotificationController::class, 'checkForNewCheckin'])->name('check.new.checkin');
-
-    Route::get('/fix-permission-head', function() {
-        $role = \Spatie\Permission\Models\Role::where('name', 'Head Of Sales')->first();
-        if ($role) {
-            $perm = \Spatie\Permission\Models\Permission::firstOrCreate(['name' => 'generals-excel-general']);
-            $role->givePermissionTo($perm);
-            app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
-            return '<h1>✅ BERHASIL!</h1><p>Permission Export Excel sudah ditambahkan ke Head Of Sales.</p>';
-        }
-        return '<h1>❌ ERROR</h1><p>Role Head Of Sales tidak ditemukan.</p>';
-    });
+    
 });
 
 Route::post('admin/cabang/update/{cabang}', [CabangController::class, 'update'])->name('cabang.updated');
