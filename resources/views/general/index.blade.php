@@ -37,12 +37,15 @@
         <div class="col-lg-12 margin-tb">
             <div class="card">
                 <div class="card-body">
+                    @unless(Auth::user()->hasRole('Head Of Sales'))
                     @can('generals-create')
                         <a class="btn btn-success m-1" href="{{ route('generals.create') }}"> Buat General Baru</a>
                     @endcan
+                    @endunless
                     @can('generals-excel-general')
                         <button class="btn btn-success m-1" onclick="excel_general()"> Export Excel General</button>
                     @endcan
+                    @unless(Auth::user()->hasRole('Head Of Sales'))
                     @can('generals-excel-outlet')
                         <button class="btn btn-success m-1" onclick="excel_outlet()"> Export Excel Outlet</button>
                     @endcan
@@ -52,6 +55,7 @@
                     {{-- @can('generals-synchronize') --}}
                         <button class="btn btn-success m-1 button" onclick="sync()">Synchronize</button>
                     {{-- @endcan --}}
+                    @endunless
                 </div>
             </div>
         </div>
