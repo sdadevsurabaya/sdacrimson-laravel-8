@@ -53,7 +53,7 @@ class AttendanceController extends Controller
 
         // // Pengecekan jarak
         $userCheck = \App\Models\User::find($request->input('iduser'));
-        $isSales = $userCheck ? $userCheck->hasRole('Sales') : false;
+        $isSales = $userCheck ? ($userCheck->hasRole('Sales') || $userCheck->hasRole('Manager Sales')) : false;
 
         if ($isSales) {
             $customer = \App\Models\General_model::find($request->input('general_id'));

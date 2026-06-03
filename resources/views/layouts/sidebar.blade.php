@@ -86,6 +86,7 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
+                            <li><a href="{{ route('duplicate.customer.index') }}">@lang('Cek Duplikat')</a></li>
                         </ul>
                     </li>
                     
@@ -202,6 +203,7 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
+                            <li><a href="{{ route('duplicate.customer.index') }}">@lang('Cek Duplikat')</a></li>
                         </ul>
                     </li>
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Toko')) == 1)
@@ -242,6 +244,7 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
+                            <li><a href="{{ route('duplicate.customer.index') }}">@lang('Cek Duplikat')</a></li>
                         </ul>
                     </li>
 
@@ -305,6 +308,7 @@
                         <ul class="sub-menu" aria-expanded="true">
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
+                            <li><a href="{{ route('duplicate.customer.index') }}">@lang('Cek Duplikat')</a></li>
                         </ul>
                     </li>
 

@@ -193,6 +193,12 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('admin/pin-customer', [PinCustomerController::class, 'index'])->name('pin.customer.index');
     Route::post('admin/pin-customer/{id}/update', [PinCustomerController::class, 'update'])->name('pin.customer.update');
 
+    // Duplicate Customer
+    Route::get('admin/duplicate-customer', [App\Http\Controllers\DuplicateCustomerController::class, 'index'])->name('duplicate.customer.index');
+    Route::get('admin/duplicate-customer/search', [App\Http\Controllers\DuplicateCustomerController::class, 'search'])->name('duplicate.customer.search');
+    Route::post('admin/duplicate-customer/merge', [App\Http\Controllers\DuplicateCustomerController::class, 'merge'])->name('duplicate.customer.merge');
+    Route::get('admin/duplicate-customer/compare', [App\Http\Controllers\DuplicateCustomerController::class, 'compare'])->name('duplicate.customer.compare');
+
     Route::get('getByidDetailJadwal', [App\Http\Controllers\DetailJadwal\DetailJadwalController::class, 'getDataById'])->name('byid.detailjadwal');
     Route::get('getDetailByJadwal', [App\Http\Controllers\DetailJadwal\GetDetailJadwalController::class, 'index'])->name('index.getDetail');
     Route::get('createJadwal', [App\Http\Controllers\JadwalController::class, 'create'])->name('jadwal.createJadwal');
