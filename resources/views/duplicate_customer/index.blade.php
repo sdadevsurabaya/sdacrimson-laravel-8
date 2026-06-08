@@ -165,6 +165,9 @@ Cek Duplikat Customer
                                         <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
                                             Laporan Sales <span class="badge bg-danger rounded-pill" style="font-size: 14px; padding: 6px 12px;">${c.laporan_count}</span>
                                         </li>
+                                        <li class="list-group-item bg-transparent px-0 d-flex justify-content-between align-items-center">
+                                            AR <span class="badge bg-danger rounded-pill" style="font-size: 14px; padding: 6px 12px;">${c.ar_name}</span>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

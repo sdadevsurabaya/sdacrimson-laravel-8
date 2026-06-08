@@ -45,6 +45,10 @@ class DuplicateCustomerController extends Controller
              $customer->jadwals_count = DetailJadwal::where('general_id', $customer->id)->count();
              $customer->attendances_count = Attendance::where('general_id', $customer->id)->count();
              $customer->laporan_count = LaporanSales::where('general_id', $customer->id)->count();
+             
+             $arUser = \App\Models\User::find($customer->ar);
+             $customer->ar_name = $arUser ? $arUser->name : '-';
+
              return $customer;
         });
 
