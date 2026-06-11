@@ -171,6 +171,12 @@
                             <span>@lang('Kunjungan')</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('history.kunjungan.index') }}">
+                            <i class="uil-history"></i>
+                            <span>@lang('History Kunjungan')</span>
+                        </a>
+                    </li>
                 @elseif (Str::ucfirst(Auth::user()->hasRole('HCS')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
                     <li>

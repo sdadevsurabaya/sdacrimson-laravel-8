@@ -53,6 +53,7 @@ use App\Http\Controllers\OutletController;
 use App\Http\Controllers\PermissionController;
 
 //Jadwal Check IN/OUT
+use App\Http\Controllers\HistoryKunjunganController;
 use App\Http\Controllers\PinCustomerController;
 use App\Http\Controllers\ReportSalesController;
 
@@ -217,6 +218,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/force-login/{id}', [UserController::class, 'loginById'])->name('loginbyid');
 
     Route::get('/check-new-checkin', [TimerNotificationController::class, 'checkForNewCheckin'])->name('check.new.checkin');
+
+    // History Kunjungan (Sales only)
+    Route::get('sales/history-kunjungan', [HistoryKunjunganController::class, 'index'])->name('history.kunjungan.index');
+    Route::get('sales/history-kunjungan/{id}', [HistoryKunjunganController::class, 'show'])->name('history.kunjungan.show');
     
 });
 
