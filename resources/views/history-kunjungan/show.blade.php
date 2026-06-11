@@ -77,7 +77,8 @@
                     </h4>
 
                     @if ($laporan->count() > 0)
-                        <div class="table-responsive">
+                        <!-- TAMPILAN DESKTOP (Table) -->
+                        <div class="table-responsive d-none d-md-block">
                             <table id="datatable-laporan" class="table table-striped table-bordered dt-responsive"
                                 style="border-spacing: 0; width: 100%;">
                                 <thead>
@@ -93,7 +94,7 @@
                                     @foreach ($laporan as $key => $item)
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($item->created_at)->format('d-M-Y H:i') }}</td>
+                                            <td data-order="{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d H:i:s') }}">{{ \Carbon\Carbon::parse($item->created_at)->format('d-M-Y H:i') }}</td>
                                             <td>{{ $item->user->name ?? '-' }}</td>
                                             <td>
                                                 <div style="min-width: 280px; white-space: normal;">
@@ -118,6 +119,47 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                        </div>
+
+                        <!-- TAMPILAN MOBILE (Card List) -->
+                        <div class="d-block d-md-none" id="mobile-laporan-list">
+                            @foreach ($laporan as $item)
+                                <div class="card border mb-3 shadow-sm mobile-laporan-item">
+                                    <div class="card-body p-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
+                                            <div class="d-flex align-items-center">
+                                                <div class="avatar-xs me-2">
+                                                    <span class="avatar-title bg-soft-primary text-primary rounded-circle" style="width: 32px; height: 32px;">
+                                                        <i class="uil-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <h6 class="mb-0 font-size-14">{{ $item->user->name ?? '-' }}</h6>
+                                                    <span class="text-muted small">
+                                                        <i class="uil-clock me-1"></i> {{ \Carbon\Carbon::parse($item->created_at)->format('d M Y, H:i') }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <p class="text-muted mb-3" style="font-size: 14px;">
+                                            {{ $item->pesan ?? 'Tidak ada pesan laporan.' }}
+                                        </p>
+
+                                        <div class="d-flex flex-wrap gap-2">
+                                            @forelse ($item->gambar as $gambar)
+                                                <a class="image-popup-no-margins" href="{{ url('laporan/' . $gambar->foto) }}">
+                                                    <img src="{{ url('laporan/' . $gambar->foto) }}"
+                                                        alt="Lampiran" class="rounded"
+                                                        style="width: 70px; height: 70px; object-fit: cover; border: 1px solid #dee2e6;">
+                                                </a>
+                                            @empty
+                                                <span class="badge bg-soft-secondary text-secondary">Tidak ada lampiran</span>
+                                            @endforelse
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
                     @else
                         <div class="text-center py-5">
@@ -155,6 +197,54 @@
                     duration: 300
                 }
             });
+
+            // Pagination khusus mobile list
+            var itemsPerPage = 5; // Untuk laporan kunjungan, 5 item per halaman agar tidak terlalu panjang
+            var $cards = $('.mobile-laporan-item');
+            var totalItems = $cards.length;
+            var totalPages = Math.ceil(totalItems / itemsPerPage);
+            var currentPage = 1;
+
+            function showPage(page) {
+                var start = (page - 1) * itemsPerPage;
+                var end = start + itemsPerPage;
+                
+                $cards.hide();
+                $cards.slice(start, end).show();
+                
+                $('#mobile-page-info').text('Halaman ' + page + ' dari ' + totalPages);
+                $('#btn-prev').prop('disabled', page === 1);
+                $('#btn-next').prop('disabled', page === totalPages || totalPages === 0);
+            }
+
+            if(totalItems > itemsPerPage) {
+                var paginationHtml = `
+                    <div class="d-flex justify-content-between align-items-center mt-3 mb-4">
+                        <button class="btn btn-sm btn-outline-primary" id="btn-prev"><i class="uil-angle-left"></i> Kembali</button>
+                        <span id="mobile-page-info" class="text-muted small fw-bold"></span>
+                        <button class="btn btn-sm btn-outline-primary" id="btn-next">Lanjut <i class="uil-angle-right"></i></button>
+                    </div>
+                `;
+                $('#mobile-laporan-list').append(paginationHtml);
+                
+                $('#btn-prev').click(function(e) {
+                    e.preventDefault();
+                    if(currentPage > 1) {
+                        currentPage--;
+                        showPage(currentPage);
+                    }
+                });
+                
+                $('#btn-next').click(function(e) {
+                    e.preventDefault();
+                    if(currentPage < totalPages) {
+                        currentPage++;
+                        showPage(currentPage);
+                    }
+                });
+                
+                showPage(1);
+            }
         });
     </script>
 

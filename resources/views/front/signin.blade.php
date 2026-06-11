@@ -34,16 +34,43 @@
             src: url("public/assets/fonts/Gotham-Bold.woff") format("woff");
         }
 
+        /* Style untuk mengunci scroll secara paksa (Fixed Screen) */
+        html, body {
+            overflow: hidden !important;
+            height: 100vh !important;
+            width: 100vw !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            touch-action: none !important; /* Mencegah sentuhan bergeser/scroll di mobile */
+        }
+
+        .login-wrapper-fixed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f8f9fa; /* Soft background */
+            z-index: 9999; /* Menutupi semua layout nav/footer */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden !important;
+        }
+
         </style>
-    <section>
-        <div class="col-md-4 col-xl-4 container">
+    <section class="login-wrapper-fixed">
+        <div class="container w-100 px-3">
+            <div class="row justify-content-center m-0">
+                <div class="col-12 col-sm-10 col-md-8 col-lg-5 col-xl-4 bg-white p-4 p-md-5 rounded-3 shadow">
 
             <div class="lh-sm mb-2 text-center">
                 {{-- <strong class="gotham-bold  fs-2 fs-lg-3">Welcome.!</strong> --}}
                 <img src="{{ URL::asset('/assets/images/logo-sda-global-24.svg') }}" alt="" height="55"
                 {{-- <img src="{{ URL::asset('/assets/images/iris.png') }}" alt="" --}}
                 class="logo logo-dark mb-3">
-                <p class="mb-5" style="font-size: 15px;"><b>Customer RelationshIp Management SDA ONline</b><br>
+                <p class="mb-5" style="font-size: 15px;"><b>Customer Relationship Management SDA Online</b><br>
             </div>
 
 
@@ -106,8 +133,8 @@
 
                         <label for="userpassword" class="px-0 opacity-50">Password</label>
                     </div>
-                    <button class="btn border-0 bi bi-eye d-none"></button>
-                    <button class="btn border-0 bi bi-eye-slash"></button>
+                    <button type="button" class="btn border-0 bi bi-eye d-none fs-5 text-muted" id="btn-show-pass"></button>
+                    <button type="button" class="btn border-0 bi bi-eye-slash fs-5 text-muted" id="btn-hide-pass"></button>
                 </div>
 
                 {{-- <div class="mb-3">
@@ -248,6 +275,34 @@
 
             </div>
 
+                </div>
+            </div>
         </div>
     </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const passInput = document.getElementById('userpassword');
+            const btnShow = document.getElementById('btn-show-pass');
+            const btnHide = document.getElementById('btn-hide-pass');
+
+            if (btnShow && btnHide && passInput) {
+                // Tampilkan password
+                btnHide.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    passInput.type = 'text';
+                    btnHide.classList.add('d-none');
+                    btnShow.classList.remove('d-none');
+                });
+
+                // Sembunyikan password
+                btnShow.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    passInput.type = 'password';
+                    btnShow.classList.add('d-none');
+                    btnHide.classList.remove('d-none');
+                });
+            }
+        });
+    </script>
 @endsection
