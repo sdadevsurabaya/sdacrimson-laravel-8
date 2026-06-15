@@ -133,6 +133,13 @@ Route::group(['middleware' => ['auth']], function () {
     //Area
     Route::resource('admin/area', AreaController::class);
 
+    // Wilayah (now Area Customer)
+    Route::resource('admin/area-customer', App\Http\Controllers\AreaCustomerController::class);
+    Route::post('admin/area-customer/store', [App\Http\Controllers\AreaCustomerController::class, 'store']);
+    Route::get('admin/area-customer/show/{id}', [App\Http\Controllers\AreaCustomerController::class, 'show']);
+    Route::post('admin/area-customer/update/{id}', [App\Http\Controllers\AreaCustomerController::class, 'update']);
+    Route::get('admin/area-customer/destroy/{id}', [App\Http\Controllers\AreaCustomerController::class, 'destroy']);
+
     // Cabang
     Route::resource('admin/cabang', CabangController::class);
 
@@ -222,6 +229,9 @@ Route::group(['middleware' => ['auth']], function () {
     // History Kunjungan (Sales only)
     Route::get('sales/history-kunjungan', [HistoryKunjunganController::class, 'index'])->name('history.kunjungan.index');
     Route::get('sales/history-kunjungan/{id}', [HistoryKunjunganController::class, 'show'])->name('history.kunjungan.show');
+
+    // Pemetaan Area (Admin & Logistik)
+    Route::get('delivery-planner/pemetaan-area', [App\Http\Controllers\PemetaanAreaController::class, 'index'])->name('pemetaan.area.index');
     
 });
 

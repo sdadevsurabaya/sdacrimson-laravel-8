@@ -70,6 +70,7 @@
                             <li><a href="{{ route('brand.index') }}">@lang('Master Brand')</a></li>
                             <li><a href="{{ route('distributor.index') }}">@lang('Master Distributor')</a></li>
                             <li><a href="{{ route('area.index') }}">@lang('Master Area')</a></li>
+                            <li><a href="{{ route('area-customer.index') }}">@lang('Master Area Customer')</a></li>
                             <li><a href="{{ route('cabang.index') }}">@lang('Master Cabang')</a></li>
                             <li><a href="{{ route('libur.index') }}">@lang('Hari Libur')</a></li>
 
@@ -130,6 +131,14 @@
                         <a href="{{ route('maps.index') }}">
                             <i class="uil-map-marker-alt"></i>
                             <span>@lang('Maps')</span>
+                        </a>
+                    </li>
+
+                    <li class="menu-title">@lang('Delivery Planner')</li>
+                    <li>
+                        <a href="{{ route('pemetaan.area.index') }}">
+                            <i class="uil-map"></i>
+                            <span>@lang('Pemetaan Area')</span>
                         </a>
                     </li>
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1 || Str::ucfirst(Auth::user()->hasRole('Collector')) == 1 || Str::ucfirst(Auth::user()->hasRole('Driver')) == 1)
@@ -236,6 +245,7 @@
                             <li><a href="{{ route('brand.index') }}">@lang('Master Brand')</a></li>
                             <li><a href="{{ route('distributor.index') }}">@lang('Master Distributor')</a></li>
                             <li><a href="{{ route('area.index') }}">@lang('Master Area')</a></li>
+                            <li><a href="{{ route('area-customer.index') }}">@lang('Master Area Customer')</a></li>
 
                             {{-- <li><a href="#">@lang('Master Harga')</a></li> --}}
                         </ul>
@@ -367,6 +377,16 @@
                         </a>
                     </li>
                     @endunless
+
+                    @if (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
+                    <li class="menu-title">@lang('Delivery Planner')</li>
+                    <li>
+                        <a href="{{ route('pemetaan.area.index') }}">
+                            <i class="uil-map"></i>
+                            <span>@lang('Pemetaan Area')</span>
+                        </a>
+                    </li>
+                    @endif
                 @endif
             </ul>
         </div>
