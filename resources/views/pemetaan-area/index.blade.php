@@ -24,6 +24,14 @@
                     <h4 class="card-title">Filter Pemetaan Area</h4>
                     <p class="card-title-desc">Filter customer berdasarkan Kota dan Area untuk merencanakan delivery.</p>
 
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+
+
                     <form action="{{ route('pemetaan.area.index') }}" method="GET">
                         <div class="row mb-4">
                             <div class="col-md-4">
@@ -68,7 +76,7 @@
                                     <th>Alamat</th>
                                     <th>Kota</th>
                                     <th>Area</th>
-                                    <th>Koordinat GPS</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -78,14 +86,10 @@
                                     <td>{{ $customer->id_customer }}</td>
                                     <td>{{ $customer->nama_usaha }}</td>
                                     <td>{{ $customer->alamat_kantor }}</td>
-                                    <td>{{ $customer->kota }}</td>
-                                    <td>{{ $customer->area }}</td>
+                                    <td>{{ $customer->kota ?: '-' }}</td>
+                                    <td>{{ $customer->area ?: '-' }}</td>
                                     <td>
-                                        @if($customer->latitude && $customer->longitude)
-                                            <span class="badge bg-success">Sesuai ({{ $customer->latitude }}, {{ $customer->longitude }})</span>
-                                        @else
-                                            <span class="badge bg-danger">Belum ada titik</span>
-                                        @endif
+                                        <button class="btn btn-sm btn-primary" onclick="setArea({{ $customer->id }}, '{{ addslashes($customer->kota) }}', '{{ addslashes($customer->area) }}')">Set Area</button>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -97,6 +101,46 @@
             </div>
         </div>
     </div>
+
+    {{-- Modal Set Area --}}
+    <div class="modal fade" id="ModalSetArea" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Setting Area Customer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="form_set_area" method="POST" action="">
+                        @csrf
+                        <div class="mb-3">
+                            <label class="form-label">Kota</label>
+                            <select class="form-control select2" name="kota" id="set_kota" required>
+                                <option value="">-- Pilih Kota --</option>
+                                @foreach($kotas as $kota)
+                                    <option value="{{ $kota->kota }}">{{ $kota->kota }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Area</label>
+                            <select class="form-control select2" name="area" id="set_area" required>
+                                <option value="">-- Pilih Area --</option>
+                                @foreach($areas as $area)
+                                    <option value="{{ $area->area }}" data-kota="{{ $area->kota }}">{{ $area->area }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
     <script src="{{ URL::asset('/assets/libs/datatables/datatables.min.js') }}"></script>
@@ -108,6 +152,38 @@
             $('#datatable').DataTable({
                 responsive: true
             });
+            
+            // Cascading filter for Modal Set Area
+            $('#set_kota').on('change', function() {
+                var selectedKota = $(this).val();
+                
+                $('#set_area option').each(function() {
+                    if ($(this).val() == '') return; // Skip default option
+                    
+                    if (selectedKota == '' || $(this).data('kota') == selectedKota) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                
+                // Reset area if current selection is hidden
+                if ($('#set_area option:selected').css('display') == 'none') {
+                    $('#set_area').val('');
+                }
+            });
         });
+
+        function setArea(id, kota, area) {
+            $('#set_kota').val(kota).trigger('change');
+            
+            // Slight delay to allow options to be shown/hidden
+            setTimeout(function() {
+                $('#set_area').val(area);
+            }, 50);
+            
+            $('#form_set_area').attr('action', "{{ url('delivery-planner/pemetaan-area') }}/" + id);
+            $('#ModalSetArea').modal('show');
+        }
     </script>
 @endsection
