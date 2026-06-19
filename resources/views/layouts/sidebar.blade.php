@@ -136,10 +136,14 @@
 
                     <li class="menu-title">@lang('Delivery Planner')</li>
                     <li>
-                        <a href="{{ route('pemetaan.area.index') }}">
+                        <a href="#" class="has-arrow waves-effect">
                             <i class="uil-map"></i>
-                            <span>@lang('Pemetaan Area')</span>
+                            <span>@lang('Delivery Planner')</span>
                         </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('pemetaan.area.index') }}">@lang('Pemetaan Area')</a></li>
+                            <li><a href="{{ route('tracking.delivery.index') }}">@lang('Tracking Delivery')</a></li>
+                        </ul>
                     </li>
                 @elseif (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1 || Str::ucfirst(Auth::user()->hasRole('Collector')) == 1 || Str::ucfirst(Auth::user()->hasRole('Driver')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
@@ -186,6 +190,16 @@
                             <span>@lang('History Kunjungan')</span>
                         </a>
                     </li>
+
+                    @if (Str::ucfirst(Auth::user()->hasRole('Sales')) == 1)
+                    <li class="menu-title">@lang('Delivery Planner')</li>
+                    <li>
+                        <a href="{{ route('tracking.delivery.index') }}">
+                            <i class="uil-truck"></i>
+                            <span>@lang('Tracking Delivery')</span>
+                        </a>
+                    </li>
+                    @endif
                 @elseif (Str::ucfirst(Auth::user()->hasRole('HCS')) == 1)
                     <li class="menu-title">@lang('translation.Menu')</li>
                     <li>
@@ -384,10 +398,14 @@
                     @if (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
                     <li class="menu-title">@lang('Delivery Planner')</li>
                     <li>
-                        <a href="{{ route('pemetaan.area.index') }}">
+                        <a href="#" class="has-arrow waves-effect">
                             <i class="uil-map"></i>
-                            <span>@lang('Pemetaan Area')</span>
+                            <span>@lang('Delivery Planner')</span>
                         </a>
+                        <ul class="sub-menu" aria-expanded="true">
+                            <li><a href="{{ route('pemetaan.area.index') }}">@lang('Pemetaan Area')</a></li>
+                            <li><a href="{{ route('tracking.delivery.index') }}">@lang('Tracking Delivery')</a></li>
+                        </ul>
                     </li>
                     @endif
                 @endif

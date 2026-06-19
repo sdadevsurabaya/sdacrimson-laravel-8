@@ -56,6 +56,7 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\HistoryKunjunganController;
 use App\Http\Controllers\PinCustomerController;
 use App\Http\Controllers\ReportSalesController;
+use App\Http\Controllers\TrackingDeliveryController;
 
 //kunjungan
 use App\Http\Controllers\RoleController;
@@ -234,7 +235,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('delivery-planner/pemetaan-area', [App\Http\Controllers\PemetaanAreaController::class, 'index'])->name('pemetaan.area.index');
     Route::post('delivery-planner/pemetaan-area/{id}', [App\Http\Controllers\PemetaanAreaController::class, 'update'])->name('pemetaan.area.update');
     Route::post('delivery-planner/pemetaan-area-bulk', [App\Http\Controllers\PemetaanAreaController::class, 'bulkUpdate'])->name('pemetaan.area.bulk');
-    
+
+    // Tracking Delivery (Admin, Logistik, Sales)
+    Route::get('delivery-planner/tracking', [App\Http\Controllers\TrackingDeliveryController::class, 'index'])->name('tracking.delivery.index');
+
 });
 
 Route::post('admin/cabang/update/{cabang}', [CabangController::class, 'update'])->name('cabang.updated');
