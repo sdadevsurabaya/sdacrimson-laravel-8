@@ -23,16 +23,18 @@ class JadwalController extends Controller
 
     public function create()
     {
-        // dd(Auth::user()->getRoleNames());
+        $authUser = auth()->user();
 
-
-        $users = User::pluck('name', 'id');
-
-        $isAdmin = auth()->user()->hasRole('Admin');
-
-        if ($isAdmin) {
+        // Filter daftar user berdasarkan role yang sedang login
+        if ($authUser->hasRole('Logistik')) {
+            // Logistik hanya bisa memilih user ber-role Driver
+            $users = User::role('Driver')->pluck('name', 'id');
+            $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+        } elseif ($authUser->hasRole('Admin')) {
+            $users = User::pluck('name', 'id');
             $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
         } else {
+            $users = User::pluck('name', 'id');
             $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
         }
 
@@ -108,14 +110,12 @@ class JadwalController extends Controller
 
         $user = auth()->user();
 
-        // 🔹 Kalau Sales → paksa user_id = dirinya sendiri
-        // 🔹 Kalau Admin → biarkan user_id dari request
         if ($user->hasRole('Sales')) {
+            // Sales hanya bisa buat jadwal untuk dirinya sendiri
             $request->merge(['user_id' => $user->id]);
-        } elseif ($user->hasRole('Admin')) {
-            // biarkan user_id dari form (Admin bisa buat untuk siapa pun)
+        } elseif ($user->hasRole('Admin') || $user->hasRole('Logistik')) {
+            // Admin & Logistik bebas memilih user_id dari form
         } else {
-            // Jika role lain (misalnya Marketing), sesuaikan logika di sini
             $request->merge(['user_id' => $user->id]);
         }
 

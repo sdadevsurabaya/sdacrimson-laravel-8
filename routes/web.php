@@ -233,6 +233,7 @@ Route::group(['middleware' => ['auth']], function () {
     // Pemetaan Area (Admin & Logistik)
     Route::get('delivery-planner/pemetaan-area', [App\Http\Controllers\PemetaanAreaController::class, 'index'])->name('pemetaan.area.index');
     Route::post('delivery-planner/pemetaan-area/{id}', [App\Http\Controllers\PemetaanAreaController::class, 'update'])->name('pemetaan.area.update');
+    Route::post('delivery-planner/pemetaan-area-bulk', [App\Http\Controllers\PemetaanAreaController::class, 'bulkUpdate'])->name('pemetaan.area.bulk');
     
 });
 

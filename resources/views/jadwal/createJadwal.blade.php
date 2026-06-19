@@ -165,9 +165,11 @@
                         $user = Auth::user();
                     @endphp
 
-                    @if ($user->hasRole('Admin'))
+                    @if ($user->hasRole('Admin') || $user->hasRole('Logistik'))
                         <div class="mb-3">
-                            <label for="user_id" class="col-form-label">Sales / PIC</label>
+                            <label for="user_id" class="col-form-label">
+                                @if ($user->hasRole('Logistik')) Driver @else Sales / PIC @endif
+                            </label>
                             <div>
                                 <select class="form-select" name="user_id" id="user_id" aria-label="Pilih user">
                                     <option value="">-- Pilih User --</option>

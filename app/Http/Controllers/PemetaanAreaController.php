@@ -49,4 +49,23 @@ class PemetaanAreaController extends Controller
 
         return redirect()->route('pemetaan.area.index')->with('success', 'Data Kota dan Area berhasil diperbarui.');
     }
+
+    public function bulkUpdate(Request $request)
+    {
+        $request->validate([
+            'kota'         => 'required|string',
+            'area'         => 'required|string',
+            'customer_ids' => 'required|array|min:1',
+            'customer_ids.*' => 'integer|exists:general_informations,id',
+        ]);
+
+        $count = General_model::whereIn('id', $request->customer_ids)
+            ->update([
+                'kota' => $request->kota,
+                'area' => $request->area,
+            ]);
+
+        return redirect()->route('pemetaan.area.index')
+            ->with('success', $count . ' customer berhasil di-assign ke area ' . $request->area . ' (' . $request->kota . ').');
+    }
 }

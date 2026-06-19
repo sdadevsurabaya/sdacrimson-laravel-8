@@ -325,11 +325,14 @@
                             <li><a href="{{ route('generals.index') }}">@lang('Data Customer')</a></li>
                             <li><a href="{{ route('pin.customer.index') }}">@lang('Pin Customer')</a></li>
                             <li><a href="{{ route('duplicate.customer.index') }}">@lang('Cek Duplikat')</a></li>
+                            @if (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
+                            <li><a href="{{ route('area-customer.index') }}">@lang('Master Area Customer')</a></li>
+                            @endif
                         </ul>
                     </li>
 
-                    @unless (Str::ucfirst(Auth::user()->hasRole('Logistik')) == 1)
-                    <li class="menu-title">@lang('Sales')</li>
+
+                    <li class="menu-title">@lang('Jadwal & Kunjungan')</li>
                     <li>
                         <a href="#" class="has-arrow waves-effect">
                             <i class="uil-presentation-check"></i>
@@ -347,7 +350,7 @@
                             <span>@lang('Kunjungan')</span>
                         </a>
                     </li>
-                    @endunless
+
 
                     <li>
                         <a href="#" class="has-arrow waves-effect">
