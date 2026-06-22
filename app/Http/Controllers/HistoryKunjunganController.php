@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Auth;
 use App\Models\General_model;
+use App\Models\Attendance;
 use App\Models\LaporanSales;
 use Illuminate\Http\Request;
 
@@ -52,6 +53,12 @@ class HistoryKunjunganController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return view('history-kunjungan.show', compact('customer', 'laporan'));
+        $attendance = Attendance::where('general_id', $id)
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->groupBy(fn($att) => \Carbon\Carbon::parse($att->created_at)->toDateString());
+
+        return view('history-kunjungan.show', compact('customer', 'laporan', 'attendance'));
     }
 }

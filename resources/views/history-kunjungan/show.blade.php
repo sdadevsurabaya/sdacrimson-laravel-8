@@ -88,10 +88,17 @@
                                         <th>Sales</th>
                                         <th>Laporan Kunjungan</th>
                                         <th>Lampiran Foto</th>
+                                        <th>Foto Checkin/Checkout</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($laporan as $key => $item)
+                                    @foreach ($laporan as $item)
+                                        @php
+                                            $tglLaporan = \Carbon\Carbon::parse($item->created_at)->toDateString();
+                                            $attHari = $attendance->get($tglLaporan, collect());
+                                            $checkIn  = $attHari->firstWhere('status', 'check in');
+                                            $checkOut = $attHari->firstWhere('status', 'check out');
+                                        @endphp
                                         <tr>
                                             <td>{{ $loop->iteration }}</td>
                                             <td data-order="{{ \Carbon\Carbon::parse($item->created_at)->format('Y-m-d H:i:s') }}">{{ \Carbon\Carbon::parse($item->created_at)->format('d-M-Y H:i') }}</td>
@@ -115,6 +122,35 @@
                                                     @endforelse
                                                 </div>
                                             </td>
+                                            <td>
+                                                <div class="d-flex flex-wrap gap-2 align-items-start">
+                                                    @if ($checkIn && $checkIn->foto)
+                                                        <div class="text-center">
+                                                            <a class="image-popup-no-margins"
+                                                                href="{{ url('attendance/' . $checkIn->foto) }}">
+                                                                <img src="{{ url('attendance/' . $checkIn->foto) }}"
+                                                                    width="60" height="60"
+                                                                    style="object-fit: cover; border-radius: 4px; border: 2px solid #34c38f;">
+                                                            </a>
+                                                            <div><span class="badge bg-success mt-1" style="font-size:10px;">Check In</span></div>
+                                                        </div>
+                                                    @endif
+                                                    @if ($checkOut && $checkOut->foto)
+                                                        <div class="text-center">
+                                                            <a class="image-popup-no-margins"
+                                                                href="{{ url('attendance/' . $checkOut->foto) }}">
+                                                                <img src="{{ url('attendance/' . $checkOut->foto) }}"
+                                                                    width="60" height="60"
+                                                                    style="object-fit: cover; border-radius: 4px; border: 2px solid #f46a6a;">
+                                                            </a>
+                                                            <div><span class="badge bg-danger mt-1" style="font-size:10px;">Check Out</span></div>
+                                                        </div>
+                                                    @endif
+                                                    @if ((!$checkIn || !$checkIn->foto) && (!$checkOut || !$checkOut->foto))
+                                                        <span class="text-muted">-</span>
+                                                    @endif
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
@@ -124,6 +160,12 @@
                         <!-- TAMPILAN MOBILE (Card List) -->
                         <div class="d-block d-md-none" id="mobile-laporan-list">
                             @foreach ($laporan as $item)
+                                @php
+                                    $tglLaporan = \Carbon\Carbon::parse($item->created_at)->toDateString();
+                                    $attHari    = $attendance->get($tglLaporan, collect());
+                                    $checkIn    = $attHari->firstWhere('status', 'check in');
+                                    $checkOut   = $attHari->firstWhere('status', 'check out');
+                                @endphp
                                 <div class="card border mb-3 shadow-sm mobile-laporan-item">
                                     <div class="card-body p-3">
                                         <div class="d-flex justify-content-between align-items-center mb-2 pb-2 border-bottom">
@@ -141,12 +183,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                         <p class="text-muted mb-3" style="font-size: 14px;">
                                             {{ $item->pesan ?? 'Tidak ada pesan laporan.' }}
                                         </p>
 
-                                        <div class="d-flex flex-wrap gap-2">
+                                        <!-- Lampiran foto laporan -->
+                                        <div class="d-flex flex-wrap gap-2 mb-3">
                                             @forelse ($item->gambar as $gambar)
                                                 <a class="image-popup-no-margins" href="{{ url('laporan/' . $gambar->foto) }}">
                                                     <img src="{{ url('laporan/' . $gambar->foto) }}"
@@ -157,6 +200,37 @@
                                                 <span class="badge bg-soft-secondary text-secondary">Tidak ada lampiran</span>
                                             @endforelse
                                         </div>
+
+                                        <!-- Foto checkin / checkout -->
+                                        @if ($checkIn || $checkOut)
+                                            <div class="border-top pt-2 mt-1">
+                                                <small class="text-muted fw-semibold d-block mb-2">
+                                                    <i class="uil-map-marker me-1"></i>Foto Checkin/Checkout
+                                                </small>
+                                                <div class="d-flex flex-wrap gap-2">
+                                                    @if ($checkIn && $checkIn->foto)
+                                                        <div class="text-center">
+                                                            <a class="image-popup-no-margins" href="{{ url('attendance/' . $checkIn->foto) }}">
+                                                                <img src="{{ url('attendance/' . $checkIn->foto) }}"
+                                                                    alt="Check In" class="rounded"
+                                                                    style="width: 65px; height: 65px; object-fit: cover; border: 2px solid #34c38f;">
+                                                            </a>
+                                                            <div><span class="badge bg-success mt-1" style="font-size:10px;">Check In</span></div>
+                                                        </div>
+                                                    @endif
+                                                    @if ($checkOut && $checkOut->foto)
+                                                        <div class="text-center">
+                                                            <a class="image-popup-no-margins" href="{{ url('attendance/' . $checkOut->foto) }}">
+                                                                <img src="{{ url('attendance/' . $checkOut->foto) }}"
+                                                                    alt="Check Out" class="rounded"
+                                                                    style="width: 65px; height: 65px; object-fit: cover; border: 2px solid #f46a6a;">
+                                                            </a>
+                                                            <div><span class="badge bg-danger mt-1" style="font-size:10px;">Check Out</span></div>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                             @endforeach
@@ -179,7 +253,7 @@
             $('#datatable-laporan').DataTable({
                 order: [[1, 'desc']],
                 columnDefs: [
-                    { orderable: false, targets: [4] }
+                    { orderable: false, targets: [4, 5] }
                 ]
             });
 
@@ -198,8 +272,8 @@
                 }
             });
 
-            // Pagination khusus mobile list
-            var itemsPerPage = 5; // Untuk laporan kunjungan, 5 item per halaman agar tidak terlalu panjang
+            // Pagination mobile
+            var itemsPerPage = 5;
             var $cards = $('.mobile-laporan-item');
             var totalItems = $cards.length;
             var totalPages = Math.ceil(totalItems / itemsPerPage);
@@ -208,16 +282,14 @@
             function showPage(page) {
                 var start = (page - 1) * itemsPerPage;
                 var end = start + itemsPerPage;
-                
                 $cards.hide();
                 $cards.slice(start, end).show();
-                
                 $('#mobile-page-info').text('Halaman ' + page + ' dari ' + totalPages);
                 $('#btn-prev').prop('disabled', page === 1);
                 $('#btn-next').prop('disabled', page === totalPages || totalPages === 0);
             }
 
-            if(totalItems > itemsPerPage) {
+            if (totalItems > itemsPerPage) {
                 var paginationHtml = `
                     <div class="d-flex justify-content-between align-items-center mt-3 mb-4">
                         <button class="btn btn-sm btn-outline-primary" id="btn-prev"><i class="uil-angle-left"></i> Kembali</button>
@@ -226,23 +298,16 @@
                     </div>
                 `;
                 $('#mobile-laporan-list').append(paginationHtml);
-                
+
                 $('#btn-prev').click(function(e) {
                     e.preventDefault();
-                    if(currentPage > 1) {
-                        currentPage--;
-                        showPage(currentPage);
-                    }
+                    if (currentPage > 1) { currentPage--; showPage(currentPage); }
                 });
-                
                 $('#btn-next').click(function(e) {
                     e.preventDefault();
-                    if(currentPage < totalPages) {
-                        currentPage++;
-                        showPage(currentPage);
-                    }
+                    if (currentPage < totalPages) { currentPage++; showPage(currentPage); }
                 });
-                
+
                 showPage(1);
             }
         });
