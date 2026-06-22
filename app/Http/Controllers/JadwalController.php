@@ -29,7 +29,8 @@ class JadwalController extends Controller
         if ($authUser->hasRole('Logistik')) {
             // Logistik hanya bisa memilih user ber-role Driver
             $users = User::role('Driver')->pluck('name', 'id');
-            $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+            $driverIds = User::role('Driver')->pluck('id');
+            $jadwals = Jadwal::whereIn('user_id', $driverIds)->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
         } elseif ($authUser->hasRole('Admin')) {
             $users = User::pluck('name', 'id');
             $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();

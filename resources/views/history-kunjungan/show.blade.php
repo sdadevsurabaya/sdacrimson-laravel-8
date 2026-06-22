@@ -133,6 +133,7 @@
                                                                     style="object-fit: cover; border-radius: 4px; border: 2px solid #34c38f;">
                                                             </a>
                                                             <div><span class="badge bg-success mt-1" style="font-size:10px;">Check In</span></div>
+                                                            <div class="text-muted fw-bold" style="font-size: 11px; margin-top: 2px;">{{ \Carbon\Carbon::parse($checkIn->created_at)->format('H:i') }}</div>
                                                         </div>
                                                     @endif
                                                     @if ($checkOut && $checkOut->foto)
@@ -144,6 +145,7 @@
                                                                     style="object-fit: cover; border-radius: 4px; border: 2px solid #f46a6a;">
                                                             </a>
                                                             <div><span class="badge bg-danger mt-1" style="font-size:10px;">Check Out</span></div>
+                                                            <div class="text-muted fw-bold" style="font-size: 11px; margin-top: 2px;">{{ \Carbon\Carbon::parse($checkOut->created_at)->format('H:i') }}</div>
                                                         </div>
                                                     @endif
                                                     @if ((!$checkIn || !$checkIn->foto) && (!$checkOut || !$checkOut->foto))
@@ -216,6 +218,7 @@
                                                                     style="width: 65px; height: 65px; object-fit: cover; border: 2px solid #34c38f;">
                                                             </a>
                                                             <div><span class="badge bg-success mt-1" style="font-size:10px;">Check In</span></div>
+                                                            <div class="text-muted fw-bold" style="font-size: 11px; margin-top: 2px;">{{ \Carbon\Carbon::parse($checkIn->created_at)->format('H:i') }}</div>
                                                         </div>
                                                     @endif
                                                     @if ($checkOut && $checkOut->foto)
@@ -226,6 +229,7 @@
                                                                     style="width: 65px; height: 65px; object-fit: cover; border: 2px solid #f46a6a;">
                                                             </a>
                                                             <div><span class="badge bg-danger mt-1" style="font-size:10px;">Check Out</span></div>
+                                                            <div class="text-muted fw-bold" style="font-size: 11px; margin-top: 2px;">{{ \Carbon\Carbon::parse($checkOut->created_at)->format('H:i') }}</div>
                                                         </div>
                                                     @endif
                                                 </div>
