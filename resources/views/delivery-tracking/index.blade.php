@@ -172,8 +172,8 @@
     .info-chip i { font-size: 14px; color: var(--brand-crimson); }
 
     /* Customer stops table */
-    .stops-table-wrap { padding: 0 24px 18px; }
-    .stops-table { width: 100%; border-collapse: collapse; }
+    .stops-table-wrap { padding: 0 24px 18px; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .stops-table { width: 100%; border-collapse: collapse; min-width: 800px; }
     .stops-table thead tr { background: #fdf2f4; }
     .stops-table th {
         font-size: 11px; font-weight: 700; text-transform: uppercase;
@@ -184,6 +184,7 @@
     .stops-table td {
         padding: 10px 12px; font-size: 13px;
         border-bottom: 1px solid #f5f5f5; vertical-align: middle;
+        white-space: nowrap;
     }
     .stops-table tr:last-child td { border-bottom: none; }
     .stops-table tr:hover td { background: #fdf9f9; }
@@ -229,12 +230,15 @@
         white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         font-size: 12px; color: #555;
         cursor: pointer;
+        display: inline-block;
+        vertical-align: middle;
     }
     .laporan-text:hover { color: var(--brand-crimson); }
 
     @media (max-width: 768px) {
         .tracking-header { padding: 20px; }
         .driver-card-header { flex-direction: column; align-items: flex-start; }
+        .stops-table-wrap { padding: 0 16px 16px; }
         .stops-table { font-size: 12px; }
         .stops-table th, .stops-table td { padding: 8px; }
     }
