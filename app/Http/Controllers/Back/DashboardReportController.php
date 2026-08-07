@@ -406,7 +406,8 @@ class DashboardReportController extends Controller
                             l.id AS laporan_id,
                             dj.activity_type,
                             a_in.created_at AS checkin_time,
-                            a_out.created_at AS checkout_time
+                            a_out.created_at AS checkout_time,
+                            (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.id < l.id) = 0 AS is_first_visit
                         FROM users u
                         INNER JOIN jadwals j ON j.user_id = u.id
                         INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id
@@ -436,9 +437,10 @@ class DashboardReportController extends Controller
                             $checkin = \Carbon\Carbon::parse($visit->checkin_time);
                             $checkout = \Carbon\Carbon::parse($visit->checkout_time);
                             $minutes = $checkin->diffInMinutes($checkout);
+                            $isNewCust = (bool) $visit->is_first_visit;
 
-                            // Valid visit: durasi >= 20 menit
-                            if ($minutes >= 20 && $dailyProductivity[$date] < 3) {
+                            // Valid visit: durasi >= 20 menit atau customer baru
+                            if (($minutes >= 20 || $isNewCust) && $dailyProductivity[$date] < 3) {
                                 $dailyProductivity[$date]++;
                             }
                         }

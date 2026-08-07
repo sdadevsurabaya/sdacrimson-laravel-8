@@ -110,7 +110,11 @@ class MonthlyReportController extends Controller
                     AND YEAR(j.date) = ?
                     AND dj.deleted_at IS NULL 
                     AND dj.activity_type = 'Visit'
-                    AND TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
+                    AND (
+                        TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
+                        OR
+                        (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.id < l.id) = 0
+                    )
                     GROUP BY j.user_id, j.date
                 ", array_merge($saleIds, [$year]));
 
@@ -210,7 +214,11 @@ class MonthlyReportController extends Controller
                 AND dj.deleted_at IS NULL 
                 AND dj.activity_type = 'Visit'
                 AND j.date BETWEEN ? AND ?
-                AND TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
+                AND (
+                    TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
+                    OR
+                    (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.id < l.id) = 0
+                )
                 GROUP BY DATE(j.date)
             ", [$userId, $startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);
 
