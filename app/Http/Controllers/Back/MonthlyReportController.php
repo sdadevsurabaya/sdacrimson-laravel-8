@@ -118,16 +118,22 @@ class MonthlyReportController extends Controller
                     GROUP BY j.user_id, j.date
                 ", array_merge($saleIds, [$year]));
 
-                $userStats = [];
+                $userActualStats = [];
+                $userProductiveStats = [];
                 foreach ($yearlyVisits as $v) {
-                    if (!isset($userStats[$v->user_id])) $userStats[$v->user_id] = 0;
-                    $userStats[$v->user_id] += min($v->daily_count, 4);
+                    if (!isset($userActualStats[$v->user_id])) {
+                        $userActualStats[$v->user_id] = 0;
+                        $userProductiveStats[$v->user_id] = 0;
+                    }
+                    $userActualStats[$v->user_id] += $v->daily_count;
+                    $userProductiveStats[$v->user_id] += min($v->daily_count, 4);
                 }
 
                 foreach ($sales as $sale) {
-                    $sale->actual_yearly = $userStats[$sale->id] ?? 0;
+                    $sale->actual_yearly = $userActualStats[$sale->id] ?? 0;
                     $sale->target_yearly = 960;
-                    $sale->percentage_yearly = ($sale->target_yearly > 0) ? min(100, round(($sale->actual_yearly / $sale->target_yearly) * 100, 1)) : 0;
+                    $productive = $userProductiveStats[$sale->id] ?? 0;
+                    $sale->percentage_yearly = ($sale->target_yearly > 0) ? min(100, round(($productive / $sale->target_yearly) * 100, 1)) : 0;
                 }
             }
         }
@@ -223,11 +229,15 @@ class MonthlyReportController extends Controller
             ", [$userId, $startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);
 
             $actualVisits = 0;
+            $productiveVisits = 0;
             foreach ($visits as $v) {
-                $actualVisits += min($v->visit_count, 4);
+                $actualVisits += $v->visit_count;
+                $productiveVisits += min($v->visit_count, 4);
             }
 
-            $percentage = $targetVisits > 0 ? ($actualVisits / $targetVisits) * 100 : 0;
+            $percentage = $targetVisits > 0
+                ? min(100, round(($productiveVisits / $targetVisits) * 100, 1))
+                : 0;
 
             $monthlyData[] = [
                 'month' => $startDate->format('M'),

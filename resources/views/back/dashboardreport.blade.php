@@ -461,7 +461,7 @@
                                                                                 $agendas[$sale->id][$dateFormatted] ??
                                                                                 [];
                                                                             $productivityCount = 0;
-                                                                            $totalCount = 3; // Target minimum 3 per hari
+                                                                            $totalCount = 4; // Target minimum 4 per hari
                                                                             foreach ($dayAgendas as $agenda) {
                                                                                 $checkin = !empty($agenda->checkin_time)
                                                                                     ? \Carbon\Carbon::parse(
@@ -527,7 +527,7 @@
                                                                                 $agendas[$sale->id][$dateFormatted] ??
                                                                                 [];
                                                                             $productivityCount = 0;
-                                                                            $totalCount = 3; // Target minimum 3 per hari
+                                                                            $totalCount = 4; // Target minimum 4 per hari
                                                                             foreach ($dayAgendas as $agenda) {
                                                                                 $checkin = !empty($agenda->checkin_time)
                                                                                     ? \Carbon\Carbon::parse(
@@ -605,7 +605,7 @@
                                                                         $dayAgendas =
                                                                             $agendas[$sale->id][$dateFormatted] ?? [];
                                                                         $productivityCount = 0;
-                                                                        $totalCount = 3; // Target minimum 3 per hari
+                                                                        $totalCount = 4; // Target minimum 4 per hari
                                                                         foreach ($dayAgendas as $agenda) {
                                                                             $checkin = !empty($agenda->checkin_time)
                                                                                 ? \Carbon\Carbon::parse(

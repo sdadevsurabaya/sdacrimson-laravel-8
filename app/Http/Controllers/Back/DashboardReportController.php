@@ -440,7 +440,7 @@ class DashboardReportController extends Controller
                             $isNewCust = (bool) $visit->is_first_visit;
 
                             // Valid visit: durasi >= 20 menit atau customer baru
-                            if (($minutes >= 20 || $isNewCust) && $dailyProductivity[$date] < 3) {
+                            if (($minutes >= 20 || $isNewCust) && $dailyProductivity[$date] < 4) {
                                 $dailyProductivity[$date]++;
                             }
                         }
@@ -455,8 +455,8 @@ class DashboardReportController extends Controller
 
                         // Hanya hitung hari kerja (Senin-Jumat)
                         if ($dayOfWeek >= 1 && $dayOfWeek <= 5 && !in_array($date, $arrayDateOff)) {
-                            $effectiveCount = min($visitCount, 3); // Max 3
-                            $dailyPercentage = ($effectiveCount / 3) * 100;
+                            $effectiveCount = min($visitCount, 4); // Max 4
+                            $dailyPercentage = ($effectiveCount / 4) * 100;
                             $totalProductivity += $dailyPercentage;
                             $productiveDaysCount++;
                         }

@@ -86,13 +86,17 @@ class DashboardController extends Controller
                 GROUP BY DATE(j.date)
             ", [$id_user, $startDate, $endDate]);
 
+            $productiveVisits = 0;
             foreach ($visits as $v) {
-                $totalAktual += min($v->visit_count, 4);
+                $totalAktual += $v->visit_count;
+                $productiveVisits += min($v->visit_count, 4);
             }
 
             $persenVisit = $totalPlan > 0
-                ? round(($totalAktual / $totalPlan) * 100, 1)
+                ? round(($productiveVisits / $totalPlan) * 100, 1)
                 : 0;
+                
+            if ($persenVisit > 100) $persenVisit = 100;
         }
 
         $start = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())
