@@ -97,7 +97,7 @@ class DashboardReportController extends Controller
                     dj.activity_type,
                     dj.note AS catatan,
                     g.id AS general_id,
-                    (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.id < l.id) = 0 AS is_first_visit,
+                    (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.user_id = l.user_id AND ls2.id < l.id) = 0 AS is_first_visit,
                     g.nama_usaha AS customer,
                     l.id AS laporan_id,
                     l.pesan AS laporan_kunjungan,
@@ -407,7 +407,7 @@ class DashboardReportController extends Controller
                             dj.activity_type,
                             a_in.created_at AS checkin_time,
                             a_out.created_at AS checkout_time,
-                            (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.id < l.id) = 0 AS is_first_visit
+                            (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.user_id = l.user_id AND ls2.id < l.id) = 0 AS is_first_visit
                         FROM users u
                         INNER JOIN jadwals j ON j.user_id = u.id
                         INNER JOIN detail_jadwals dj ON j.id = dj.jadwal_id
