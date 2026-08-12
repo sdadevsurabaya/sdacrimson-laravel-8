@@ -35,57 +35,64 @@ class ReportJourneyPlanController extends Controller
         ]);
 
         $userId = $request->user;
-        $startDate = Carbon::parse($request->start)->startOfMonth();
-        $endDate = Carbon::parse($request->end)->endOfMonth();
+        $startDate = Carbon::parse($request->start)->startOfDay();
+        $endDate = Carbon::parse($request->end)->endOfDay();
 
         $user = User::findOrFail($userId);
 
-        // Get all visit reports for the user in the period
-        $laporanQuery = LaporanSales::with(['general'])
-            ->join('jadwals', 'laporan_sales.jadwal_id', '=', 'jadwals.id')
-            ->where('laporan_sales.user_id', $userId)
-            ->whereBetween('jadwals.date', [$startDate->toDateString(), $endDate->toDateString()])
-            ->select('laporan_sales.*', 'jadwals.date as visit_date');
+        // Get all visit reports for the user in the filter period.
+        // is_first_visit uses the exact same subquery as DashboardReportController
+        // to ensure "customer baru" is consistent across all reports.
+        $laporan = DB::select("
+            SELECT
+                l.id AS laporan_id,
+                l.general_id,
+                g.nama_usaha,
+                j.date AS visit_date,
+                NOT EXISTS (SELECT 1 FROM laporan_sales ls2
+                 WHERE ls2.general_id = l.general_id
+                   AND ls2.user_id = l.user_id
+                   AND ls2.id < l.id) AS is_first_visit
+            FROM laporan_sales l
+            INNER JOIN jadwals j ON l.jadwal_id = j.id
+            INNER JOIN general_informations g ON l.general_id = g.id
+            WHERE l.user_id = ?
+              AND j.date BETWEEN ? AND ?
+            ORDER BY j.date ASC
+        ", [$userId, $startDate->toDateString(), $endDate->toDateString()]);
 
-        $laporan = $laporanQuery->get();
-
-        // Prepare Pivot Data
-        $customers = [];
+        // Build list of month labels for the pivot header
         $months = [];
-        $tempDate = clone $startDate;
-        while ($tempDate <= $endDate) {
+        $tempDate = $startDate->copy()->startOfMonth();
+        while ($tempDate->lte($endDate)) {
             $months[] = $tempDate->format('M Y');
             $tempDate->addMonth();
         }
 
         $pivotData = [];
 
-        // Identify new customers: those never visited by this user BEFORE the filter period
-        $existingCustomerIds = LaporanSales::join('jadwals', 'laporan_sales.jadwal_id', '=', 'jadwals.id')
-            ->where('laporan_sales.user_id', $userId)
-            ->where('jadwals.date', '<', $startDate->toDateString())
-            ->pluck('laporan_sales.general_id')
-            ->unique()
-            ->toArray();
-
         foreach ($laporan as $item) {
-            $customerId = $item->general_id;
-            $customerName = optional($item->general)->nama_usaha ?? 'Unnamed Customer';
-            $monthKey = Carbon::parse($item->visit_date)->format('M Y');
+            $customerId   = $item->general_id;
+            $customerName = $item->nama_usaha ?? 'Unnamed Customer';
+            $monthKey     = Carbon::parse($item->visit_date)->format('M Y');
+            $isFirstVisit = (bool) $item->is_first_visit;
 
             if (!isset($pivotData[$customerId])) {
                 $pivotData[$customerId] = [
-                    'name' => $customerName,
-                    'months' => array_fill_keys($months, 0),
-                    'total' => 0,
-                    'is_new' => !in_array($customerId, $existingCustomerIds),
-                    'first_visit_month' => $monthKey, // track which month first visited
+                    'name'             => $customerName,
+                    'months'           => array_fill_keys($months, 0),
+                    'total'            => 0,
+                    // is_new = true only when this laporan is the very first visit ever
+                    // AND that first visit falls within the filter date range
+                    'is_new'           => $isFirstVisit,
+                    'first_visit_month'=> $monthKey,
                 ];
             }
 
             $pivotData[$customerId]['months'][$monthKey]++;
             $pivotData[$customerId]['total']++;
         }
+
 
         // Calculate Totals per month
         $monthlyGrandTotal = array_fill_keys($months, 0);

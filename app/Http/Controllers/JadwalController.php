@@ -26,17 +26,34 @@ class JadwalController extends Controller
         $authUser = auth()->user();
 
         // Filter daftar user berdasarkan role yang sedang login
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+
         if ($authUser->hasRole('Logistik')) {
             // Logistik hanya bisa memilih user ber-role Driver
             $users = User::role('Driver')->pluck('name', 'id');
             $driverIds = User::role('Driver')->pluck('id');
-            $jadwals = Jadwal::whereIn('user_id', $driverIds)->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+            $jadwals = Jadwal::with('user')
+                ->whereIn('user_id', $driverIds)
+                ->whereMonth('date', $currentMonth)
+                ->whereYear('date', $currentYear)
+                ->orderBy('date', 'desc')
+                ->withTrashed()->whereNull('deleted_at')->get();
         } elseif ($authUser->hasRole('Admin')) {
             $users = User::pluck('name', 'id');
-            $jadwals = Jadwal::orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+            $jadwals = Jadwal::with('user')
+                ->whereMonth('date', $currentMonth)
+                ->whereYear('date', $currentYear)
+                ->orderBy('date', 'desc')
+                ->withTrashed()->whereNull('deleted_at')->get();
         } else {
             $users = User::pluck('name', 'id');
-            $jadwals = Jadwal::where('user_id', Auth::id())->orderBy('created_at', 'desc')->withTrashed()->whereNull('deleted_at')->get();
+            $jadwals = Jadwal::with('user')
+                ->where('user_id', Auth::id())
+                ->whereMonth('date', $currentMonth)
+                ->whereYear('date', $currentYear)
+                ->orderBy('date', 'desc')
+                ->withTrashed()->whereNull('deleted_at')->get();
         }
 
         $start = LocationTime::where('user_id', Auth::id())->whereDate('created_at', now())

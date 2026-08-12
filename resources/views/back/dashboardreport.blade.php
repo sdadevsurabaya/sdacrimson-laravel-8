@@ -406,7 +406,7 @@
                                                                                                 {{ $duration->i }} menit
                                                                                                 {{ $duration->s }} detik
                                                                                             </div>
-                                                                                            @if ($isNewCust && $minutes < 20)
+                                                                                            @if ($isNewCust)
                                                                                                 <small><em>*Customer Baru</em></small>
                                                                                             @endif
                                                                                         </div>

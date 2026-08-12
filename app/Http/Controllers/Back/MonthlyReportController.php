@@ -113,7 +113,7 @@ class MonthlyReportController extends Controller
                     AND (
                         TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
                         OR
-                        (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.user_id = l.user_id AND ls2.id < l.id) = 0
+                        NOT EXISTS (SELECT 1 FROM laporan_sales ls2 WHERE ls2.general_id = l.general_id AND ls2.user_id = l.user_id AND ls2.id < l.id)
                     )
                     GROUP BY j.user_id, j.date
                 ", array_merge($saleIds, [$year]));
@@ -223,7 +223,7 @@ class MonthlyReportController extends Controller
                 AND (
                     TIMESTAMPDIFF(MINUTE, a_in.created_at, a_out.created_at) >= 20
                     OR
-                    (SELECT COUNT(*) FROM laporan_sales ls2 WHERE ls2.general_id = g.id AND ls2.user_id = l.user_id AND ls2.id < l.id) = 0
+                    NOT EXISTS (SELECT 1 FROM laporan_sales ls2 WHERE ls2.general_id = l.general_id AND ls2.user_id = l.user_id AND ls2.id < l.id)
                 )
                 GROUP BY DATE(j.date)
             ", [$userId, $startDate->format('Y-m-d'), $endDate->format('Y-m-d')]);
