@@ -86,7 +86,7 @@
             <table id="data-excel">
                 <thead>
                     <tr>
-                        <th colspan="8" style="border: none; text-transform:capitalize;">Rekap Absen
+                        <th colspan="9" style="border: none; text-transform:capitalize;">Rekap Absen
                             {{ $userJadwal->user->name }}</th>
                     </tr>
                     <tr>
@@ -98,6 +98,7 @@
                         <th>Jarak</th>
                         <th>Durasi</th>
                         <th>Odo KM</th>
+                        <th>Pengiriman</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -143,6 +144,7 @@
                         </td>
                         <td>{{ $startLocation }}</td>
                         <td>{{ $startAddress }}</td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -205,6 +207,7 @@
                     {{ $durasi_menit }} Menit
                 </td>
                 <td>{{ $item->odo_km ?? '-' }}</td>
+                <td>{{ $item->pengiriman ?? '-' }}</td>
         </tr>
         @php
             if ($current_checkout) {
@@ -217,7 +220,7 @@
                     <tr>
                         <td colspan="5" style="text-align: right; font-weight:bold;">TOTAL</td>
                         <td style="font-weight:bold;">{{ number_format($total, 2, ',', '.') }} km</td>
-                        <td colspan="2"></td>
+                        <td colspan="3"></td>
                     </tr>
                     </tbody>
                 </table>

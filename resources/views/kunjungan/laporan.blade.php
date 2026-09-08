@@ -125,6 +125,16 @@
                                                 <label for="odoKm">Odo KM</label>
                                             </div>
                                         </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="pengiriman">
+                                                <span style="color: crimson;">*</span> Pengiriman
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="pengiriman" id="pengiriman" class="form-control"
+                                                    value="{{ $laporan->pengiriman }}" required>
+                                                <label for="pengiriman">Pengiriman</label>
+                                            </div>
+                                        </div>
                                         @endif
                                         <div class="col-xl-12 col-md-12">
                                             <div class="mb-3">
@@ -247,6 +257,16 @@
                                                 <input type="number" name="odo_km" id="odoKm" class="form-control"
                                                     value="{{ old('odo_km') }}" required>
                                                 <label for="odoKm">Odo KM</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="pengiriman">
+                                                <span style="color: crimson;">*</span> Pengiriman
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="pengiriman" id="pengiriman" class="form-control"
+                                                    value="{{ old('pengiriman') }}" required>
+                                                <label for="pengiriman">Pengiriman</label>
                                             </div>
                                         </div>
                                         @endif

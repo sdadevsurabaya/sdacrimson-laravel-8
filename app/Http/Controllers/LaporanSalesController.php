@@ -115,11 +115,14 @@ class LaporanSalesController extends Controller
             ]);
 
             $odoKm = null;
+            $pengiriman = null;
             if (Auth::user()->hasRole('Driver')) {
                 $odoRules = $request->validate([
-                    'odo_km' => 'required|numeric'
+                    'odo_km' => 'required|numeric',
+                    'pengiriman' => 'required|string',
                 ]);
                 $odoKm = $odoRules['odo_km'];
+                $pengiriman = $odoRules['pengiriman'];
             }
 
             // Simpan ke tabel laporan_sales
@@ -134,6 +137,7 @@ class LaporanSalesController extends Controller
             }
             if (Auth::user()->hasRole('Driver')) {
                 $laporanSales->odo_km = $odoKm;
+                $laporanSales->pengiriman = $pengiriman;
             }
             $laporanSales->save();
 
@@ -242,11 +246,14 @@ class LaporanSalesController extends Controller
             ]);
 
             $odoKm = null;
+            $pengiriman = null;
             if (Auth::user()->hasRole('Driver')) {
                 $odoRules = $request->validate([
-                    'odo_km' => 'required|numeric'
+                    'odo_km' => 'required|numeric',
+                    'pengiriman' => 'required|string',
                 ]);
                 $odoKm = $odoRules['odo_km'];
+                $pengiriman = $odoRules['pengiriman'];
             }
 
             $idLaporan = $validatedLaporan['laporan_id'];
@@ -264,6 +271,7 @@ class LaporanSalesController extends Controller
             }
             if (Auth::user()->hasRole('Driver')) {
                 $laporanSales->odo_km = $odoKm;
+                $laporanSales->pengiriman = $pengiriman;
             }
             $laporanSales->save();
 
