@@ -130,10 +130,49 @@
                                                 <span style="color: crimson;">*</span> Pengiriman
                                             </label>
                                             <div class="form-floating">
-                                                <input type="text" name="pengiriman" id="pengiriman" class="form-control"
-                                                    value="{{ $laporan->pengiriman }}" required>
+                                                <select name="pengiriman" id="pengiriman" class="form-select" required>
+                                                    <option value="" disabled {{ old('pengiriman', $laporan->pengiriman) ? '' : 'selected' }}>-- Pilih Pengiriman --</option>
+                                                    @foreach(\App\Models\LaporanSales::PENGIRIMAN_OPTIONS as $val => $label)
+                                                        <option value="{{ $val }}" {{ old('pengiriman', $laporan->pengiriman) == $val ? 'selected' : '' }}>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
                                                 <label for="pengiriman">Pengiriman</label>
                                             </div>
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="noSuratJalan">
+                                                <span style="color: crimson;">*</span> No Surat Jalan
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="no_surat_jalan" id="noSuratJalan" class="form-control text-uppercase"
+                                                    list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026"
+                                                    value="{{ old('no_surat_jalan', $laporan->no_surat_jalan) }}" required>
+                                                <label for="noSuratJalan">No Surat Jalan</label>
+                                            </div>
+                                            <div class="mt-2 d-flex flex-wrap gap-1 align-items-center">
+                                                <small class="text-muted me-1 fw-bold"><i class="uil uil-bolt-alt text-warning"></i> Pilihan Cepat:</small>
+                                                @foreach(\App\Models\LaporanSales::SURAT_JALAN_CODES as $code)
+                                                    <button type="button" class="btn btn-sm btn-outline-primary btn-sj-code px-2 py-1" style="font-size: 11px; font-weight: 500;" data-code="{{ $code }}">{{ $code }}</button>
+                                                @endforeach
+                                            </div>
+                                            <datalist id="sjSuggestions">
+                                                @php
+                                                    $romanMonths = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+                                                    $curMonthNum = (int) date('n');
+                                                    $prevMonthNum = (int) date('n', strtotime('-1 month'));
+                                                    $currentMonth = $romanMonths[$curMonthNum];
+                                                    $prevMonth = $romanMonths[$prevMonthNum];
+                                                    $currentYear = date('Y');
+                                                @endphp
+                                                @foreach(\App\Models\LaporanSales::SURAT_JALAN_CODES as $code)
+                                                    <option value="0001/{{ $code }}/{{ $currentMonth }}/{{ $currentYear }}">
+                                                @endforeach
+                                                @if($currentMonth !== $prevMonth)
+                                                    @foreach(\App\Models\LaporanSales::SURAT_JALAN_CODES as $code)
+                                                        <option value="0001/{{ $code }}/{{ $prevMonth }}/{{ $currentYear }}">
+                                                    @endforeach
+                                                @endif
+                                            </datalist>
                                         </div>
                                         @endif
                                         <div class="col-xl-12 col-md-12">
@@ -264,10 +303,49 @@
                                                 <span style="color: crimson;">*</span> Pengiriman
                                             </label>
                                             <div class="form-floating">
-                                                <input type="text" name="pengiriman" id="pengiriman" class="form-control"
-                                                    value="{{ old('pengiriman') }}" required>
+                                                <select name="pengiriman" id="pengiriman" class="form-select" required>
+                                                    <option value="" disabled {{ old('pengiriman') ? '' : 'selected' }}>-- Pilih Pengiriman --</option>
+                                                    @foreach(\App\Models\LaporanSales::PENGIRIMAN_OPTIONS as $val => $label)
+                                                        <option value="{{ $val }}" {{ old('pengiriman') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
                                                 <label for="pengiriman">Pengiriman</label>
                                             </div>
+                                        </div>
+                                        <div class="col-md-12 mb-3">
+                                            <label class="form-label" for="noSuratJalan">
+                                                <span style="color: crimson;">*</span> No Surat Jalan
+                                            </label>
+                                            <div class="form-floating">
+                                                <input type="text" name="no_surat_jalan" id="noSuratJalan" class="form-control text-uppercase"
+                                                    list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026"
+                                                    value="{{ old('no_surat_jalan') }}" required>
+                                                <label for="noSuratJalan">No Surat Jalan</label>
+                                            </div>
+                                            <div class="mt-2 d-flex flex-wrap gap-1 align-items-center">
+                                                <small class="text-muted me-1 fw-bold"><i class="uil uil-bolt-alt text-warning"></i> Pilihan Cepat:</small>
+                                                @foreach(\App\Models\LaporanSales::SURAT_JALAN_CODES as $code)
+                                                    <button type="button" class="btn btn-sm btn-outline-primary btn-sj-code px-2 py-1" style="font-size: 11px; font-weight: 500;" data-code="{{ $code }}">{{ $code }}</button>
+                                                @endforeach
+                                            </div>
+                                            <datalist id="sjSuggestions">
+                                                @php
+                                                    $romanMonths = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+                                                    $curMonthNum = (int) date('n');
+                                                    $prevMonthNum = (int) date('n', strtotime('-1 month'));
+                                                    $currentMonth = $romanMonths[$curMonthNum];
+                                                    $prevMonth = $romanMonths[$prevMonthNum];
+                                                    $currentYear = date('Y');
+                                                @endphp
+                                                @foreach(\App\Models\LaporanSales::SURAT_JALAN_CODES as $code)
+                                                    <option value="0001/{{ $code }}/{{ $currentMonth }}/{{ $currentYear }}">
+                                                @endforeach
+                                                @if($currentMonth !== $prevMonth)
+                                                    @foreach(\App\Models\LaporanSales::SURAT_JALAN_CODES as $code)
+                                                        <option value="0001/{{ $code }}/{{ $prevMonth }}/{{ $currentYear }}">
+                                                    @endforeach
+                                                @endif
+                                            </datalist>
                                         </div>
                                         @endif
 
@@ -633,6 +711,39 @@
                 $(".print-error-msg").find("ul").append('<li>' + value + '</li>');
             });
         }
+
+        // Handler pilihan cepat & format No Surat Jalan untuk Driver
+        $(document).on('click', '.btn-sj-code', function() {
+            var code = $(this).data('code');
+            var $input = $('#noSuratJalan');
+            var val = ($input.val() || '').trim().toUpperCase();
+
+            var romanMonths = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+            var now = new Date();
+            var romanMonth = romanMonths[now.getMonth() + 1];
+            var year = now.getFullYear();
+
+            var seq = '0001';
+            if (val.length > 0) {
+                var match = val.match(/^([0-9A-Za-z]+)\//);
+                if (match) {
+                    seq = match[1];
+                } else if (/^[0-9]+$/.test(val)) {
+                    seq = val;
+                }
+            }
+
+            var newSj = seq + '/' + code + '/' + romanMonth + '/' + year;
+            $input.val(newSj).focus();
+
+            if (seq === '0001' && $input[0].setSelectionRange) {
+                $input[0].setSelectionRange(0, 4);
+            }
+        });
+
+        $(document).on('input', '#noSuratJalan', function() {
+            this.value = this.value.toUpperCase();
+        });
     </script>
     <script src="{{ URL::asset('/assets/libs/select2/select2.min.js') }}"></script>
 @endsection

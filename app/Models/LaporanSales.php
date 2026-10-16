@@ -10,6 +10,18 @@ class LaporanSales extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
+    public const PENGIRIMAN_OPTIONS = [
+        'Margo' => 'Margo',
+        'Toko' => 'Toko',
+    ];
+
+    public const SURAT_JALAN_CODES = [
+        'SJ-GI-R',
+        'SJ-GI-M',
+        'SJ-INV-R',
+        'SJ-INV-M',
+    ];
+
     public function user()
     {
         return $this->belongsTo(User::class);

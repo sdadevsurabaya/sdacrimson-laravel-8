@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Auth; // 🔥 tambahkan ini
+use Illuminate\Validation\Rule;
 
 
 
@@ -116,13 +117,16 @@ class LaporanSalesController extends Controller
 
             $odoKm = null;
             $pengiriman = null;
+            $noSuratJalan = null;
             if (Auth::user()->hasRole('Driver')) {
                 $odoRules = $request->validate([
                     'odo_km' => 'required|numeric',
-                    'pengiriman' => 'required|string',
+                    'pengiriman' => ['required', 'string', Rule::in(array_keys(LaporanSales::PENGIRIMAN_OPTIONS))],
+                    'no_surat_jalan' => 'required|string',
                 ]);
                 $odoKm = $odoRules['odo_km'];
                 $pengiriman = $odoRules['pengiriman'];
+                $noSuratJalan = strtoupper(trim($odoRules['no_surat_jalan']));
             }
 
             // Simpan ke tabel laporan_sales
@@ -138,6 +142,7 @@ class LaporanSalesController extends Controller
             if (Auth::user()->hasRole('Driver')) {
                 $laporanSales->odo_km = $odoKm;
                 $laporanSales->pengiriman = $pengiriman;
+                $laporanSales->no_surat_jalan = $noSuratJalan;
             }
             $laporanSales->save();
 
@@ -247,13 +252,16 @@ class LaporanSalesController extends Controller
 
             $odoKm = null;
             $pengiriman = null;
+            $noSuratJalan = null;
             if (Auth::user()->hasRole('Driver')) {
                 $odoRules = $request->validate([
                     'odo_km' => 'required|numeric',
-                    'pengiriman' => 'required|string',
+                    'pengiriman' => ['required', 'string', Rule::in(array_keys(LaporanSales::PENGIRIMAN_OPTIONS))],
+                    'no_surat_jalan' => 'required|string',
                 ]);
                 $odoKm = $odoRules['odo_km'];
                 $pengiriman = $odoRules['pengiriman'];
+                $noSuratJalan = strtoupper(trim($odoRules['no_surat_jalan']));
             }
 
             $idLaporan = $validatedLaporan['laporan_id'];
@@ -272,6 +280,7 @@ class LaporanSalesController extends Controller
             if (Auth::user()->hasRole('Driver')) {
                 $laporanSales->odo_km = $odoKm;
                 $laporanSales->pengiriman = $pengiriman;
+                $laporanSales->no_surat_jalan = $noSuratJalan;
             }
             $laporanSales->save();
 
