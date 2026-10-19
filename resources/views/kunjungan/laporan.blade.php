@@ -476,7 +476,6 @@
 
             });
 
-            $('select').prop('selectedIndex', 0);
 
             $.ajaxSetup({
                 headers: {
