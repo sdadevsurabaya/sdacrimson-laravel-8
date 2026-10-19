@@ -122,11 +122,12 @@ class LaporanSalesController extends Controller
                 $odoRules = $request->validate([
                     'odo_km' => 'required|numeric',
                     'pengiriman' => ['required', 'string', Rule::in(array_keys(LaporanSales::PENGIRIMAN_OPTIONS))],
-                    'no_surat_jalan' => 'required|string',
+                    'no_surat_jalan' => 'required|array|min:1',
+                    'no_surat_jalan.*' => 'required|string',
                 ]);
                 $odoKm = $odoRules['odo_km'];
                 $pengiriman = $odoRules['pengiriman'];
-                $noSuratJalan = strtoupper(trim($odoRules['no_surat_jalan']));
+                $noSuratJalan = implode("\n", array_filter(array_map(fn($s) => strtoupper(trim($s)), $odoRules['no_surat_jalan'])));
             }
 
             // Simpan ke tabel laporan_sales
@@ -257,19 +258,18 @@ class LaporanSalesController extends Controller
                 $odoRules = $request->validate([
                     'odo_km' => 'required|numeric',
                     'pengiriman' => ['required', 'string', Rule::in(array_keys(LaporanSales::PENGIRIMAN_OPTIONS))],
-                    'no_surat_jalan' => 'required|string',
+                    'no_surat_jalan' => 'required|array|min:1',
+                    'no_surat_jalan.*' => 'required|string',
                 ]);
                 $odoKm = $odoRules['odo_km'];
                 $pengiriman = $odoRules['pengiriman'];
-                $noSuratJalan = strtoupper(trim($odoRules['no_surat_jalan']));
+                $noSuratJalan = implode("\n", array_filter(array_map(fn($s) => strtoupper(trim($s)), $odoRules['no_surat_jalan'])));
             }
 
             $idLaporan = $validatedLaporan['laporan_id'];
 
             // Ambil data laporan
-            $laporanSales = LaporanSales::where('id', $idLaporan)
-                ->where('created_at', '>=', Carbon::today())
-                ->firstOrFail();
+            $laporanSales = LaporanSales::where('id', $idLaporan)->firstOrFail();
 
             // Update laporan
             $laporanSales->pesan = $validatedLaporan['laporan'];

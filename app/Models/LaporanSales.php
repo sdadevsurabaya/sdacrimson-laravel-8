@@ -20,6 +20,8 @@ class LaporanSales extends Model
         'SJ-GI-M',
         'SJ-INV-R',
         'SJ-INV-M',
+        'IT-GI-R',
+        'IT-GI-M',
     ];
 
     public function user()

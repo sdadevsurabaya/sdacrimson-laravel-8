@@ -140,14 +140,26 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label class="form-label" for="noSuratJalan">
+                                            <label class="form-label">
                                                 <span style="color: crimson;">*</span> No Surat Jalan
                                             </label>
-                                            <div class="form-floating">
-                                                <input type="text" name="no_surat_jalan" id="noSuratJalan" class="form-control text-uppercase"
-                                                    list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026"
-                                                    value="{{ old('no_surat_jalan', $laporan->no_surat_jalan) }}" required>
-                                                <label for="noSuratJalan">No Surat Jalan</label>
+                                            <div id="sjContainer">
+                                                @php
+                                                    $sjList = old('no_surat_jalan')
+                                                        ? (array) old('no_surat_jalan')
+                                                        : array_values(array_filter(array_map('trim', explode("\n", $laporan->no_surat_jalan ?? ''))));
+                                                    if (empty($sjList)) $sjList = [''];
+                                                @endphp
+                                                @foreach($sjList as $sj)
+                                                <div class="sj-row d-flex gap-2 align-items-center mb-2">
+                                                    <input type="text" name="no_surat_jalan[]"
+                                                        class="form-control text-uppercase sj-input"
+                                                        list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026"
+                                                        value="{{ $sj }}" required>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm btn-sj-remove"
+                                                        title="Hapus"><i class="uil-trash"></i></button>
+                                                </div>
+                                                @endforeach
                                             </div>
                                             <div class="mt-2 d-flex flex-wrap gap-1 align-items-center">
                                                 <small class="text-muted me-1 fw-bold"><i class="uil uil-bolt-alt text-warning"></i> Pilihan Cepat:</small>
@@ -313,14 +325,23 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-3">
-                                            <label class="form-label" for="noSuratJalan">
+                                            <label class="form-label">
                                                 <span style="color: crimson;">*</span> No Surat Jalan
                                             </label>
-                                            <div class="form-floating">
-                                                <input type="text" name="no_surat_jalan" id="noSuratJalan" class="form-control text-uppercase"
-                                                    list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026"
-                                                    value="{{ old('no_surat_jalan') }}" required>
-                                                <label for="noSuratJalan">No Surat Jalan</label>
+                                            <div id="sjContainer">
+                                                @php
+                                                    $sjList = old('no_surat_jalan') ? (array) old('no_surat_jalan') : [''];
+                                                @endphp
+                                                @foreach($sjList as $sj)
+                                                <div class="sj-row d-flex gap-2 align-items-center mb-2">
+                                                    <input type="text" name="no_surat_jalan[]"
+                                                        class="form-control text-uppercase sj-input"
+                                                        list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026"
+                                                        value="{{ $sj }}" required>
+                                                    <button type="button" class="btn btn-outline-danger btn-sm btn-sj-remove"
+                                                        title="Hapus"><i class="uil-trash"></i></button>
+                                                </div>
+                                                @endforeach
                                             </div>
                                             <div class="mt-2 d-flex flex-wrap gap-1 align-items-center">
                                                 <small class="text-muted me-1 fw-bold"><i class="uil uil-bolt-alt text-warning"></i> Pilihan Cepat:</small>
@@ -711,36 +732,54 @@
             });
         }
 
-        // Handler pilihan cepat & format No Surat Jalan untuk Driver
+        // Handler pilihan cepat & format No Surat Jalan untuk Driver (multi-row)
+        function buildSjRow(val) {
+            return '<div class="sj-row d-flex gap-2 align-items-center mb-2">' +
+                '<input type="text" name="no_surat_jalan[]" class="form-control text-uppercase sj-input" list="sjSuggestions" placeholder="0001/SJ-GI-R/X/2026" value="' + (val || '') + '" required>' +
+                '<button type="button" class="btn btn-outline-danger btn-sm btn-sj-remove" title="Hapus"><i class="uil-trash"></i></button>' +
+                '</div>';
+        }
+
         $(document).on('click', '.btn-sj-code', function() {
             var code = $(this).data('code');
-            var $input = $('#noSuratJalan');
-            var val = ($input.val() || '').trim().toUpperCase();
-
             var romanMonths = ['', 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
             var now = new Date();
             var romanMonth = romanMonths[now.getMonth() + 1];
             var year = now.getFullYear();
 
-            var seq = '0001';
-            if (val.length > 0) {
+            var $container = $('#sjContainer');
+            var $lastInput = $container.find('.sj-input').last();
+            var val = ($lastInput.val() || '').trim().toUpperCase();
+
+            if (!$lastInput.length || val !== '') {
+                // Baris terakhir sudah terisi atau belum ada baris: tambah baris baru ke bawah
+                $container.append(buildSjRow('0001/' + code + '/' + romanMonth + '/' + year));
+            } else {
+                // Baris terakhir masih kosong: isi dengan kode yang dipilih
+                var seq = '0001';
                 var match = val.match(/^([0-9A-Za-z]+)\//);
-                if (match) {
-                    seq = match[1];
-                } else if (/^[0-9]+$/.test(val)) {
-                    seq = val;
+                if (match) seq = match[1];
+                else if (/^[0-9]+$/.test(val)) seq = val;
+                var newSj = seq + '/' + code + '/' + romanMonth + '/' + year;
+                $lastInput.val(newSj).trigger('input');
+                if (seq === '0001' && $lastInput[0].setSelectionRange) {
+                    $lastInput[0].setSelectionRange(0, 4);
                 }
-            }
-
-            var newSj = seq + '/' + code + '/' + romanMonth + '/' + year;
-            $input.val(newSj).focus();
-
-            if (seq === '0001' && $input[0].setSelectionRange) {
-                $input[0].setSelectionRange(0, 4);
+                $lastInput.focus();
             }
         });
 
-        $(document).on('input', '#noSuratJalan', function() {
+        $(document).on('click', '.btn-sj-remove', function() {
+            var $container = $('#sjContainer');
+            if ($container.find('.sj-row').length > 1) {
+                $(this).closest('.sj-row').remove();
+            } else {
+                // Jika hanya satu baris, cukup kosongkan inputnya
+                $(this).closest('.sj-row').find('.sj-input').val('');
+            }
+        });
+
+        $(document).on('input', '.sj-input', function() {
             this.value = this.value.toUpperCase();
         });
     </script>
