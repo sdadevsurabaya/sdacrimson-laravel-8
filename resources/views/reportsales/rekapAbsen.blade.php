@@ -210,7 +210,7 @@
                 </td>
                 <td>{{ $item->odo_km ?? '-' }}</td>
                 <td>{{ $item->pengiriman ?? '-' }}</td>
-                <td>{{ $item->no_surat_jalan ?? '-' }}</td>
+                <td>{!! nl2br(e($item->no_surat_jalan ?? '-')) !!}</td>
         </tr>
         @php
             if ($current_checkout) {

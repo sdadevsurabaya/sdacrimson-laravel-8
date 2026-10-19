@@ -753,7 +753,13 @@
 
             if (!$lastInput.length || val !== '') {
                 // Baris terakhir sudah terisi atau belum ada baris: tambah baris baru ke bawah
-                $container.append(buildSjRow('0001/' + code + '/' + romanMonth + '/' + year));
+                var $newRow = $(buildSjRow('0001/' + code + '/' + romanMonth + '/' + year));
+                $container.append($newRow);
+                var $newInput = $newRow.find('.sj-input');
+                if ($newInput.length && $newInput[0].setSelectionRange) {
+                    $newInput[0].setSelectionRange(0, 4);
+                }
+                $newInput.focus();
             } else {
                 // Baris terakhir masih kosong: isi dengan kode yang dipilih
                 var seq = '0001';
