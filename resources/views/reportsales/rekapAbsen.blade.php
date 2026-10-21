@@ -116,7 +116,11 @@
                         $startLocation = 'SDA GLOBAL INDONESIA';
                         $startAddress = 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20';
 
-                        if ($userCabang == 'surabaya') {
+                        if ($userJadwal->user->hasRole('Driver')) {
+                            // Driver selalu berangkat dari Margomulyo, terlepas dari cabang
+                            $startLocation = 'SDA MARGOMULYO';
+                            $startAddress = 'Jl. Margomulyo Indah 1A No. 7-8, Surabaya';
+                        } elseif ($userCabang == 'surabaya') {
                             $startLocation = 'SDA Surabaya';
                             $startAddress = 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20';
                         } elseif ($userCabang == 'jakarta') {
@@ -130,8 +134,7 @@
                             $startAddress = 'Jl. Mayjen Sutoyo No. 39 Gunung Sari Ulu, Balikpapan';
                         } else {
                             $debugCabang = $userCabang == '' ? 'Tanpa Cabang' : $userCabang;
-                            $startLocation = $userJadwal->user->hasRole('Driver') ? 'SDA MARGOMULYO' : 'SDA GLOBAL INDONESIA (' . $debugCabang . ')';
-                            $startAddress = $userJadwal->user->hasRole('Driver') ? 'Jl. Margomulyo Indah 1A No. 7-8, Surabaya' : 'Pertokoan Raden Saleh, Jalan Raden Saleh No.45, Permai Kav No.19-20';
+                            $startLocation = 'SDA GLOBAL INDONESIA (' . $debugCabang . ')';
                         }
                     @endphp
                     <tr>
